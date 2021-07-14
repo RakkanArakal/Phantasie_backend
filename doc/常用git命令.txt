@@ -43,6 +43,22 @@ git rm filename
 git commit -m <提交信息>
 git push
 
+#首先切换到主分支
+git checkout master
+
+#使用git pull 把领先的主分支代码pull下来
+git pull
+
+#切换到自己的开发分支
+git checkout 开发分支名
+
+#把主分支的代码merge到自己的分支
+git merge master
+
+#git push推上去即可, 现在自己开发分支代码就和主分支的代码一样了
+git push origin 开发分支名
+
 
 某些情况下，git会打开文本编辑器，让输入一些注解，默认为vim,vim的使用见
 https://blog.csdn.net/xiaolong2w/article/details/8224839
+
