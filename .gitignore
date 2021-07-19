@@ -364,3 +364,6 @@ sysinfo.txt
 ＃构建
 * .apk文件
 * .unitypackage
+
+#项目设置
+* .properties
