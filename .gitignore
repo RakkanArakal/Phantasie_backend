@@ -364,6 +364,10 @@ sysinfo.txt
 ＃构建
 * .apk文件
 * .unitypackage
+<<<<<<< HEAD
 
 #项目设置
 * .properties
+=======
+* .properties
+>>>>>>> aed205c (7.19)
