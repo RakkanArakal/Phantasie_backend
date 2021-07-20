@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
     public UserVerify checkUser(String username) { return userVerifyRepository.checkUser(username); }
 
     @Override
-    public User createUser(String name, String password) {
+    public User createUser(String name, String password,String phone) {
         User user = new User();
         user.setName(name);
         userRepository.saveAndFlush(user);
@@ -30,6 +30,7 @@ public class UserDaoImpl implements UserDao {
         userVerify.setUser_id(user.getUser_id());
         userVerify.setUsername(name);
         userVerify.setPassword(password);
+        userVerify.setPhone(phone);
         userVerifyRepository.saveAndFlush(userVerify);
         return user;
     }

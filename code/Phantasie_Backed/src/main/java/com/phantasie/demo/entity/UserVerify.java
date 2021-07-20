@@ -24,6 +24,9 @@ public class UserVerify {
 
     }
 
+    public String getPhone() {
+        return phone;
+    }
 
     @Id
     @Column(name = "user_id")

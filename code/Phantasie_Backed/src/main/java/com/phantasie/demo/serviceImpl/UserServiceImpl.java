@@ -40,10 +40,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Msg signup(String username, String password) {
+    public Msg signup(String username, String password,String phone) {
         User user = findUserByUsername(username);
         if (user == null) {
-            user = userDao.createUser(username, password);
+            user = userDao.createUser(username, password,phone);
             JSONObject obj = new JSONObject();
             UserVerify userVerify = checkUser(username, password);
             obj.put("user_id", user.getUser_id());
