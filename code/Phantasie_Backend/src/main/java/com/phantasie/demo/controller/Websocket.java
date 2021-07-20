@@ -100,7 +100,11 @@ public class Websocket {
         int rid = room.getGameId();
         game.setGameId(rid);
         allGames.put(rid, game);
+<<<<<<< HEAD
         sendMessageToRoom("gameStart",rid);
+=======
+        //sendGameMessageToRoom(rid);
+>>>>>>> b75f259 (9.42)
         return game;
     }
 

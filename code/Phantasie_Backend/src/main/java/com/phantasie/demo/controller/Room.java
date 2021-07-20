@@ -15,13 +15,20 @@ public class Room implements Serializable {
     public int roomsize;
 
     public Room() {
+<<<<<<< HEAD
+=======
+        roomsize = 1;
+>>>>>>> b75f259 (9.42)
 //        isready = false;
 //        readyarr = new int[2];
 //        for (int i = 0; i < 2; i++) {
 //            readyarr[i] = 0;
 //        }
         player = new GameStatus[2];
+
     }
+
+    public int getRoomsize(){return roomsize;}
 
     public int getGameId() {
         return gameId;
