@@ -68,6 +68,17 @@ public class Websocket {
         sendMessageBack("success",session);
         return room;
     }
+
+    private Room exitRoom(int rid,Session session) {
+        log.info("退出房间");
+        Room room = allRooms.get(rid);
+        if(room.roomsize > 1 || room.player[0].getPlayerId() != session.getId())
+            throw new NullPointerException("error");
+        allRooms.remove(rid);
+        sendMessageBack("success",session);
+        return room;
+    }
+
     private void searchRoom(Session session) {
         log.info("查询房间");
         String roomInfo = "allRoom$";
@@ -91,7 +102,7 @@ public class Websocket {
         room.player[1] = gameStatus;
         room.roomsize++;
         startGame(room);
-//        sendMessageBack("success",session);
+        sendMessageBack("success",session);
         return ;
     }
 
@@ -121,17 +132,23 @@ public class Websocket {
     public void onMessage(String message, Session session) {
         log.info("服务端收到客户端[{}]的消息:{}", session.getId(), message);
         String[] splitMessage=message.split("#");
+        int rid = 0;
         try {
+            if(splitMessage.length > 1 )
+                rid = Integer.parseInt(splitMessage[1]);
             switch (splitMessage[0]){
                 case "createRoom":  createRoom(session);
                     return;
-                case "Room":        searchRoom(session);
+                case "searchRoom":  searchRoom(session);
                     return;
-                case "joinRoom":{
-                    int rid = Integer.parseInt(splitMessage[1]);
-                    joinRoom(rid,session);
+                case "exitRoom":    exitRoom(rid,session);
                     return;
-                }
+                case "joinRoom":    joinRoom(rid,session);
+                    return;
+                case "getCard":     joinRoom(rid,session);
+                    return;
+                case "useCard":     joinRoom(rid,session);
+                    return;
                 default:
                     break;
             }
