@@ -2,6 +2,7 @@ package com.phantasie.demo.controller;
 
 
 
+import lombok.Setter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -57,13 +58,41 @@ public class Websocket {
 
 
     private Room createRoom(Session session) {
+        log.info("创建房间");
         Room room = new Room();
         int rid = currentGameId++;
         room.setGameId(rid);
         GameStatus gameStatus = allPlayers.get(session.getId());
         room.player[0] = gameStatus;
         allRooms.put(rid, room);
+        sendMessageBack("success",session);
         return room;
+    }
+    private void searchRoom(Session session) {
+        log.info("查询房间");
+        String roomInfo = "allRoom$";
+        for(Map.Entry<Integer, Room> roomMap:allRooms.entrySet()){
+            Room room = roomMap.getValue();
+            if(room.getRoomsize() == 1) {
+                roomInfo += room.player[0].getPlayerId();
+                roomInfo += "#";
+                roomInfo += Integer.toString(room.getGameId());
+                roomInfo += "$";
+            }
+        }
+        sendMessageBack(roomInfo,session);
+        return ;
+    }
+
+    private void joinRoom(int rid,Session session) {
+        log.info("加入房间");
+        Room room = allRooms.get(rid);
+        GameStatus gameStatus = allPlayers.get(session.getId());
+        room.player[1] = gameStatus;
+        room.roomsize++;
+        startGame(room);
+//        sendMessageBack("success",session);
+        return ;
     }
 
     private Game startGame(Room room) {
@@ -71,13 +100,9 @@ public class Websocket {
         int rid = room.getGameId();
         game.setGameId(rid);
         allGames.put(rid, game);
-        //sendGameMessageToRoom(rid);
-
+        sendMessageToRoom("gameStart",rid);
         return game;
     }
-
-
-
 
     /**
      * 收到客户端消息后调用的方法
@@ -88,58 +113,22 @@ public class Websocket {
     public void onMessage(String message, Session session) {
         log.info("服务端收到客户端[{}]的消息:{}", session.getId(), message);
         String[] splitMessage=message.split("#");
-        switch (splitMessage[0]){
-            case "createRoom":{
-                log.info("创建房间");
-                try {
-                    createRoom(session);
-                    sendMessageBack("success",session);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                break;
-            }
-            case "Room":{
-                log.info("查询房间");
-                try {
-                    //allRooms $   {user_id}   #  {room_id}   $
-                    String roomInfo = "allRoom$";
-                    for(Map.Entry<Integer, Room> roomMap:allRooms.entrySet()){
-                        Room room = roomMap.getValue();
-                        roomInfo += room.player[0].getPlayerId();
-                        roomInfo += "#";
-                        roomInfo += Integer.toString(room.getGameId());
-                        roomInfo += "$";
-                    }
-                    sendMessageBack(roomInfo,session);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                break;
-            }
-            case "joinRoom":{
-                int rid = Integer.parseInt(splitMessage[1]);
-                log.info("加入房间");
-                try {
-                    Room room = allRooms.get(rid);
-                    startGame(room);
-                    //allRooms.remove(rid);//加入游戏后只维护游戏不维护房间。
-                    sendMessageBack("success",session);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                break;
-            }
-            default:
-                GameStatus gamestatus = allPlayers.get(session.getId());
-                int gameId = gamestatus.getGameId();
-                Sequence playernum_message =  gamestatus.getSequence();
-
-
-                ///消息是否有效
-                Game nowGame = allGames.get(gameId);
-                if (nowGame == null)
+        try {
+            switch (splitMessage[0]){
+                case "createRoom":  createRoom(session);
                     return;
+                case "Room":        searchRoom(session);
+                    return;
+                case "joinRoom":{
+                    int rid = Integer.parseInt(splitMessage[1]);
+                    joinRoom(rid,session);
+                    return;
+                }
+                default:
+                    break;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -165,12 +154,12 @@ public class Websocket {
 
     /**
      *
-     * @param fromSession 会话号
+     *
      * @param message 消息
      * @param currentroomid 向那个房间发送
-     * 
+     *
      */
-    private void sendMessageToRoom(Session fromSession, String message, int currentroomid) {
+    private void sendMessageToRoom(String message, int currentroomid) {
         for (Map.Entry<String, GameStatus> gameStatusEntry : allPlayers.entrySet()) {
             GameStatus gamestatus = gameStatusEntry.getValue();
             if (gamestatus.getGameId() == currentroomid) {
