@@ -1,6 +1,8 @@
 package com.phantasie.demo.controller;
 
 import com.phantasie.demo.entity.Card;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +10,8 @@ import java.util.List;
 enum Sequence{First,Second};
 enum Job{Warrior,Archer,Magician};
 
+@Setter
+@Getter
 public class GameStatus {
     private String playerId;
 
@@ -16,6 +20,8 @@ public class GameStatus {
     private int hp;
 
     private int ap;
+
+    private List<Card> Remain = new LinkedList<>();
 
     private List<Card> cardList = new LinkedList<>();
 
@@ -60,6 +66,10 @@ public class GameStatus {
         }else{
             return false;
         }
+    }
+
+    public Sequence getSequence() {
+        return sequence;
     }
 
     public void hpChange(int num){

@@ -117,8 +117,29 @@ public class Websocket {
                 }
                 break;
             }
-            default:
+            case "joinRoom":{
+                int rid = Integer.parseInt(splitMessage[1]);
+                log.info("加入房间");
+                try {
+                    Room room = allRooms.get(rid);
+                    startGame(room);
+                    //allRooms.remove(rid);//加入游戏后只维护游戏不维护房间。
+                    sendMessageBack("success",session);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 break;
+            }
+            default:
+                GameStatus gamestatus = allPlayers.get(session.getId());
+                int gameId = gamestatus.getGameId();
+                Sequence playernum_message =  gamestatus.getSequence();
+
+
+                ///消息是否有效
+                Game nowGame = allGames.get(gameId);
+                if (nowGame == null)
+                    return;
         }
     }
 
