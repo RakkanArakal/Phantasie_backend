@@ -5,14 +5,14 @@ import com.phantasie.demo.entity.Card;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
-
-
-
+import java.util.Map;
 
 
 @Setter
 @Getter
 public class Game {
+    public static Map<Integer,Card> AllCards;
+
     private int current_player;
 
    // private int target_player;
