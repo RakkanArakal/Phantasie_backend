@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Random;
 
 @Setter
 @Getter
@@ -142,11 +141,25 @@ public class Game {
     }
 
     private void normalCard(Card card) {
-//        nowStatus ;
-//        enemyStatus ;
+
+        nowStatus.hpChange(card.getMy_hp());
+        nowStatus.apChange(card.getMy_cost());
+
+        enemyStatus.hpChange(card.getEmy_hp());
+        enemyStatus.apChange(card.getEmy_cost());
+
+        return;
     }
 
     private void healCard(Card card) {
+
+        nowStatus.hpChange(card.getMy_hp());
+        nowStatus.apChange(card.getMy_cost());
+
+        enemyStatus.hpChange(card.getEmy_hp());
+        enemyStatus.apChange(card.getEmy_cost());
+
+        return;
     }
 
     private void warriorCard(Card card) {
