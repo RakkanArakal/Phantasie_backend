@@ -30,10 +30,10 @@ public class Websocket {
     /**
      * 存放所有在线的客户端
      */
-    private static final Map<String, Session> clients = new ConcurrentHashMap<>();
-    private static final Map<String, GameStatus> allPlayers = new ConcurrentHashMap<>();
-    public static final Map<Integer, Game> allGames = new ConcurrentHashMap<>();
-    public static final Map<Integer, Room> allRooms = new ConcurrentHashMap<>();
+    private static  Map<String, Session> clients = new ConcurrentHashMap<>();
+    private static  Map<String, GameStatus> allPlayers = new ConcurrentHashMap<>();
+    public static  Map<Integer, Game> allGames = new ConcurrentHashMap<>();
+    public static  Map<Integer, Room> allRooms = new ConcurrentHashMap<>();
 
     public static int currentGameId = 0;
 

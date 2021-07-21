@@ -106,8 +106,8 @@ public class GameStatus {
         fireball.setCard_id(1);
 
         for(int i=0;i<10;i++){
-            Random r = new Random(1);
-            if(r.nextInt(1) == 1 )
+            int r = (int) (Math.random ()*(352324 +1));
+            if(r % 2 == 1)
                 Deck.add(fireball);
             else
                 Deck.add(attack);
