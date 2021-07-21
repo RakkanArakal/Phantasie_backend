@@ -4,30 +4,35 @@ package com.phantasie.demo.controller;
 import com.phantasie.demo.entity.Card;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.List;
-import java.util.Map;
 
+import java.util.List;
+import java.util.Random;
 
 @Setter
 @Getter
 public class Game {
-    public static Map<Integer,Card> AllCards;
-
     private int current_player;
 
-   // private int target_player;
-
-    private final GameStatus[] player = new GameStatus[2];
+    public static GameStatus[] player;
 
     private int gameId;
 
-
     boolean isRunning = true;
 
+    public GameStatus nowStatus ;
+    public GameStatus enemyStatus ;
 
-//    public void setTarget_player(int target_player) {
-//        this.target_player = target_player;
-//    }
+    public Game (Room room){
+        player = room.player;
+        player[0].newGame();
+        player[1].newGame();
+    }
+
+    public static void changePlayer() {
+        GameStatus tmp = player[0];
+        player[0] = player[1];
+        player[1] = tmp;
+    }
 
     public GameStatus[] getPlayer() {
         return player;
@@ -41,13 +46,7 @@ public class Game {
         return current_player;
     }
 
-    public void run(){
-
-    }
-
-    public void initGame(){
-
-    }
+    public void run(){}
 
     public static final String playerStatFormat(int id,int hp,int ap){
         return
@@ -55,11 +54,10 @@ public class Game {
     }
 
     public static final String cardlistFormat(String type,List<Card> cardList){
-        String form = String.format("%s#",type);
+        String form = String.format("%s",type);
         for(Card card : cardList){
-            form += String.format("%d#",card.getCard_id());
+            form += String.format("#%d",card.getCard_id());
         }
-        form += "$";
         return form;
     }
 
@@ -67,23 +65,108 @@ public class Game {
         if(player.length != 2){
             return ("");
         }
-        GameStatus nowStatus = player[current_player];
-        int enemy = (current_player ^ 1);
-        String ret ="/";
-        ret += playerStatFormat(1,player[0].getHp(),player[0].getAp());
-        ret += "&";
-        ret += playerStatFormat(2,player[1].getHp(),player[1].getAp());
-        ret += String.format("Remain#%d",nowStatus.getRemain().size());
-        ret += cardlistFormat("Card",nowStatus.getCardList());
-        ret += cardlistFormat("Grave",nowStatus.getGraveList());
-        ret += String.format("EnemyCount#%d$/",player[enemy].getCardList().size());
+        GameStatus toStatus = player[id];
+        int enemy = (id ^ 1);
+
+        String ret ="$";
+        ret += playerStatFormat(0,player[0].getHp(),player[0].getAp());
+        ret += playerStatFormat(1,player[1].getHp(),player[1].getAp());
+
+//        ret += cardlistFormat("$Grave",toStatus.getGraveList());
+        ret += String.format("deckList#%d",toStatus.getDeckList().size());
+        ret += cardlistFormat("$cardList",toStatus.getCardList());
+        ret += String.format("$EnemyCount#%d$",player[enemy].getCardList().size());
         return ret;
+    }
+
+    public void getCard(int id) {
+        GameStatus nowStatus = player[id];
+
+        List<Card> cardList = nowStatus.getCardList();
+        List<Card> deckList = nowStatus.getDeckList();
+        int total = nowStatus.getTurnCount();
+        if(total >= 3)            total = 3 - cardList.size();        //抽到3张为止;
+        if(deckList.size() < total)   total = deckList.size();
+
+        for(int i=0;i<total;i++){
+            cardList.add(deckList.get(0));
+            deckList.remove(0);
+        }
+
+        if(deckList.size() == 0)     nowStatus.resetDeckList();
+
+        return;
+    }
+
+    /**
+     *  todo
+        卡片使用
+     */
+    public void useCard(int id, int cardOrder) {
+        nowStatus = player[id];
+        enemyStatus = player[id^1];
+
+        List<Card> cardList = nowStatus.getCardList();
+        Card card = cardList.get(cardOrder);
+        cardList.remove(cardOrder);
+        switch (card.getType()){
+            case 0:{
+                normalCard(card);
+            }
+                break;
+            case 1:{
+                healCard(card);
+            }
+                break;
+            case 2:{
+                warriorCard(card);
+            }
+                break;
+            case 3:{
+                mageCard(card);
+            }
+                break;
+            case 4:{
+                hunterCard(card);
+            }
+                break;
+            default:
+                break;
+        }
+
+
+
+        if(nowStatus.getHp() <= 0 || enemyStatus.getHp() <= 0)
+            isRunning = false;
+        return;
+    }
+
+    private void normalCard(Card card) {
+//        nowStatus ;
+//        enemyStatus ;
+    }
+
+    private void healCard(Card card) {
+    }
+
+    private void warriorCard(Card card) {
+    }
+
+    private void mageCard(Card card) {
+    }
+
+    private void hunterCard(Card card) {
     }
 
 
 
+    public void endTurn(int id) {
+        GameStatus nowStatus = player[id];
+        int turn = nowStatus.getTurnCount();
+        nowStatus.setTurnCount(turn+1);                 //增加回合数
+        return;
+    }
     public void handleGameMessage(String message){
-
 
         switch (message){
 

@@ -63,6 +63,8 @@ public class Websocket {
         int rid = currentGameId++;
         room.setGameId(rid);
         GameStatus gameStatus = allPlayers.get(session.getId());
+        gameStatus.setGameId(rid);
+        gameStatus.setSeat(0);
         room.player[0] = gameStatus;
         allRooms.put(rid, room);
         sendMessageBack("success",session);
@@ -99,17 +101,21 @@ public class Websocket {
         log.info("加入房间");
         Room room = allRooms.get(rid);
         GameStatus gameStatus = allPlayers.get(session.getId());
+        gameStatus.setGameId(rid);
+        gameStatus.setSeat(1);
         room.player[1] = gameStatus;
         room.roomsize++;
         startGame(room);
-        sendMessageBack("success",session);
+//        sendMessageBack("success",session);
         return ;
     }
 
     private Game startGame(Room room) {
-        Game game = new Game();
+
         int rid = room.getGameId();
+        Game game = new Game(room);
         game.setGameId(rid);
+<<<<<<< HEAD
         allGames.put(rid, game);
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -120,7 +126,93 @@ public class Websocket {
 =======
         sendMessageToRoom("gameStart",rid);
 >>>>>>> 663c87b (9.42)
+=======
+        allGames.put(rid,game);
+
+        int r = (int) (Math.random ()*(352324 +1));
+        if(r % 2 == 1)
+            Game.changePlayer();
+
+        Session toSession0 = clients.get(game.getPlayer()[0].getPlayerId());
+        Session toSession1 = clients.get(game.getPlayer()[1].getPlayerId());
+
+        String status0 = "gameStart#" + rid + "#0#";
+        String status1 = "gameStart#" + rid + "#1#";
+
+        status0 += game.packStat(0);
+        status1 += game.packStat(1);
+
+        sendMessageBack(status0,toSession0);
+        sendMessageBack(status1,toSession1);
+
+//        gameRun(rid,toSession1,1,1);
+        game.getCard(1);                         //后手抽卡
+        gameRun(rid,toSession0,0,0);
+
+
+>>>>>>> 3a4695c (7.21 15:56)
         return game;
+    }
+
+
+    private void gameRun(int rid,Session curSession,int seat,int type) {
+
+        Game game = allGames.get(rid);
+        int enemy = (seat ^ 1);
+
+        Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());
+        String curStatus = "",enemyStatus = "";
+        switch (type){
+            case 0:{                                            //回合开始
+                curStatus   = "yourTurn#" + rid  ;
+                enemyStatus = "waitTurn#" + rid ;
+            }
+                break;
+            case 1:{
+                curStatus = "getCard#" + rid + "#current#";
+                enemyStatus = "getCard#" + rid + "#enemy#";
+                game.getCard(seat);
+            }
+                break;
+            case 2:{
+                int cardOrder = seat;
+                seat = allPlayers.get(curSession.getId()).getSeat();
+                game.useCard(seat,cardOrder);
+            }
+                break;
+            case 3:{
+//                curStatus   = "yourTurn#" + rid  ;
+//                enemyStatus = "waitTurn#" + rid ;
+                game.endTurn(seat);
+                gameRun(rid,enemySession,enemy,0);        // 敌方回合开始
+                return ;
+            }
+            default:
+                break;
+        }
+
+        curStatus += game.packStat(0);
+        enemyStatus += game.packStat(1);
+        sendMessageBack(curStatus,curSession);
+        sendMessageBack(enemyStatus,enemySession);
+
+        if(!game.isRunning())
+        {                                                     //判断输赢
+            String winner = "youWin";
+            String loser = "enemyWin";
+            if(game.getPlayer()[seat].getHp() <= 0){
+                sendMessageBack(winner,curSession);
+                sendMessageBack(loser,enemySession);
+            }
+            else{
+                sendMessageBack(winner,enemySession);
+                sendMessageBack(loser,curSession);
+            }
+            allRooms.remove(rid);
+            allGames.remove(rid);
+            return ;
+        }
+        return ;
     }
 
     /**
@@ -132,10 +224,12 @@ public class Websocket {
     public void onMessage(String message, Session session) {
         log.info("服务端收到客户端[{}]的消息:{}", session.getId(), message);
         String[] splitMessage=message.split("#");
-        int rid = 0;
+        int rid,seat,cardOrder = 0;
+        rid = allPlayers.get(session.getId()).getGameId();
+        seat = allPlayers.get(session.getId()).getSeat();
+        if(splitMessage.length > 1)
+            cardOrder = Integer.parseInt(splitMessage[1]);
         try {
-            if(splitMessage.length > 1 )
-                rid = Integer.parseInt(splitMessage[1]);
             switch (splitMessage[0]){
                 case "createRoom":  createRoom(session);
                     return;
@@ -145,9 +239,11 @@ public class Websocket {
                     return;
                 case "joinRoom":    joinRoom(rid,session);
                     return;
-                case "getCard":     joinRoom(rid,session);
+                case "getCard":     gameRun(rid,session,seat,1);
                     return;
-                case "useCard":     joinRoom(rid,session);
+                case "useCard":     gameRun(rid,session,cardOrder,2); //这里不传位置传卡号
+                    return;
+                case "endTurn":     gameRun(rid,session,seat,3);
                     return;
                 default:
                     break;
@@ -164,7 +260,6 @@ public class Websocket {
     }
 
 
-
     /**
      * 服务端单独返回消息消息给请求的客户端
      */
@@ -179,7 +274,11 @@ public class Websocket {
 
     /**
      *
+<<<<<<< HEAD
      *
+=======
+//     * @param fromSession 会话号
+>>>>>>> 3a4695c (7.21 15:56)
      * @param message 消息
      * @param currentroomid 向那个房间发送
      *
@@ -191,7 +290,7 @@ public class Websocket {
                 Session toSession = clients.get(gamestatus.getPlayerId());
                 log.info("服务端发给客户端[{}]消息:{}", toSession.getId(), message);
                 try {
-                    toSession.getBasicRemote().sendText(message);
+                    toSession.getBasicRemote().sendText(message + currentroomid);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -19,13 +19,31 @@ public class Card {
     @GeneratedValue(generator = "increment", strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "card_Id")
+
+    private String card_name;
+
     private int card_id;
 
-    private String name;
+    private int type;
 
-    private int level;
+    private int attribute;
 
-    private int apCost;
+    private int emy_hp;
 
+    private int my_hp;
+
+    private int emy_cost;
+
+    private int my_cost;
+
+    private int emy_status;
+
+    private int my_status;
+
+    private int duration;
+
+    private int special;
+
+    private int special_count;
 
 }

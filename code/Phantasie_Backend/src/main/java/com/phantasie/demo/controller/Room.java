@@ -25,7 +25,6 @@ public class Room implements Serializable {
 //            readyarr[i] = 0;
 //        }
         player = new GameStatus[2];
-
     }
 
     public int getRoomsize(){return roomsize;}
