@@ -61,6 +61,8 @@ public class Websocket {
 
     private void createRoom(Session session) throws ExceptionMessage {
         log.info("创建房间");
+        CardController cardController = new CardController();
+        System.out.print(cardController);
         GameStatus gameStatus = allPlayers.get(session.getId());
 
         if(gameStatus.isInRoom()) {
@@ -117,7 +119,6 @@ public class Websocket {
 
         GameStatus gameStatus = allPlayers.get(session.getId());
         gameStatus.setGameId(rid);
-        gameStatus.setSeat(1);
         room.player[1] = gameStatus;
         room.roomsize++;
         startGame(room);
@@ -135,9 +136,10 @@ public class Websocket {
         if( r == 1)
             game.setPlayer(room.player);
         else{
-            game.player[1] = room.player[0];
             game.player[0] = room.player[1];
+            game.player[1] = room.player[0];
         }
+<<<<<<< HEAD
         game.start();
         game.setGameId(rid);
 <<<<<<< HEAD
@@ -152,6 +154,9 @@ public class Websocket {
         sendMessageToRoom("gameStart",rid);
 >>>>>>> 663c87b (9.42)
 =======
+=======
+        game.start(rid);
+>>>>>>> 87f1811 (14:30)
         allGames.put(rid,game);
 
         Session toSession0 = clients.get(game.getPlayer()[0].getPlayerId());
@@ -186,9 +191,6 @@ public class Websocket {
 
         Game game = allGames.get(rid);
         int enemy = (seat ^ 1);
-
-        GameStatus game1 = game.getPlayer()[seat];
-        GameStatus game2 = game.getPlayer()[enemy];
 
         Session seatSession = clients.get(game.getPlayer()[seat].getPlayerId());
         Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());

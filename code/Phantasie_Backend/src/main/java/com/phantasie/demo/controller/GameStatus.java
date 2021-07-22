@@ -14,6 +14,7 @@ enum Job{Warrior,Archer,Magician};
 @Setter
 @Getter
 public class GameStatus implements Cloneable {
+
     private String playerId;
 
     private String playerName;

@@ -164,8 +164,11 @@ public class Game {
     }
 
 
-    public void start() {
+    public void start(int rid) {
         player[0].newGame();
         player[1].newGame();
+        player[0].setSeat(0);
+        player[1].setSeat(1);
+        setGameId(rid);
     }
 }
