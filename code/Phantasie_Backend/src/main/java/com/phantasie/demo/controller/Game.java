@@ -121,10 +121,8 @@ public class Game {
 
         nowStatus.hpChange(card.getMy_hp());
         nowStatus.apChange(card.getMy_cost());
-
         enemyStatus.hpChange(card.getEmy_hp());
         enemyStatus.apChange(card.getEmy_cost());
-
         return;
     }
 
@@ -132,10 +130,8 @@ public class Game {
 
         nowStatus.hpChange(card.getMy_hp());
         nowStatus.apChange(card.getMy_cost());
-
         enemyStatus.hpChange(card.getEmy_hp());
         enemyStatus.apChange(card.getEmy_cost());
-
         return;
     }
 
@@ -143,17 +139,27 @@ public class Game {
 
         nowStatus.hpChange(card.getMy_hp());
         nowStatus.apChange(card.getMy_cost());
-
         enemyStatus.hpChange(card.getEmy_hp());
         enemyStatus.apChange(card.getEmy_cost());
-
         return;
     }
 
     private void mageCard(Card card) {
+
+        nowStatus.hpChange(card.getMy_hp());
+        nowStatus.apChange(card.getMy_cost());
+        enemyStatus.hpChange(card.getEmy_hp());
+        enemyStatus.apChange(card.getEmy_cost());
+        return;
     }
 
     private void hunterCard(Card card) {
+
+        nowStatus.hpChange(card.getMy_hp());
+        nowStatus.apChange(card.getMy_cost());
+        enemyStatus.hpChange(card.getEmy_hp());
+        enemyStatus.apChange(card.getEmy_cost());
+        return;
     }
 
     public void endTurn(int id) {
