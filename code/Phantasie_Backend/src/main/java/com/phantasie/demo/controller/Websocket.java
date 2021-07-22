@@ -59,13 +59,13 @@ public class Websocket {
     }
 
 
-    private void createRoom(Session session) {
+    private void createRoom(Session session) throws ExceptionMessage {
         log.info("创建房间");
         GameStatus gameStatus = allPlayers.get(session.getId());
 
         if(gameStatus.isInRoom()) {
             sendMessageBack("玩家已在房间内",session);
-            throw new NullPointerException("error");
+            throw new ExceptionMessage("error");
         }
 
         Room room = new Room();
@@ -76,11 +76,11 @@ public class Websocket {
         return ;
     }
 
-    private void exitRoom(int rid,Session session) {
+    private void exitRoom(int rid,Session session) throws ExceptionMessage {
         log.info("退出房间");
         Room room = allRooms.get(rid);
         if(room.roomsize > 1 || room.player[0].getPlayerId() != session.getId())
-            throw new NullPointerException("error");
+            throw new ExceptionMessage("error");
         allRooms.remove(rid);
         sendMessageBack("success",session);
         return;
@@ -102,15 +102,18 @@ public class Websocket {
         return ;
     }
 
-    private void joinRoom(int rid,Session session) {
+    private void joinRoom(int rid,Session session) throws ExceptionMessage {
         log.info("加入房间");
         Room room = allRooms.get(rid);
 
-        if(room.getRoomsize() > 1){
-            sendMessageBack("玩家已在房间内",session);
-            throw new NullPointerException("");
+        if(room == null){
+            sendMessageBack("房间不存在",session);
+            throw new ExceptionMessage("error");
         }
-
+        if(room.getRoomsize() > 1 ){
+            sendMessageBack("玩家已在房间内",session);
+            throw new ExceptionMessage("error");
+        }
 
         GameStatus gameStatus = allPlayers.get(session.getId());
         gameStatus.setGameId(rid);
@@ -125,7 +128,17 @@ public class Websocket {
     private Game startGame(Room room) {
 
         int rid = room.getGameId();
-        Game game = new Game(room);
+//        int r = (int) (Math.random ()*(352324 +1)) % 2 ;
+        int r = 0;
+
+        Game game = new Game();
+        if( r == 1)
+            game.setPlayer(room.player);
+        else{
+            game.player[1] = room.player[0];
+            game.player[0] = room.player[1];
+        }
+        game.start();
         game.setGameId(rid);
 <<<<<<< HEAD
         allGames.put(rid, game);
@@ -141,15 +154,11 @@ public class Websocket {
 =======
         allGames.put(rid,game);
 
-        int r = (int) (Math.random ()*(352324 +1));
-        if(r % 2 == 1)
-            Game.changePlayer();
-
         Session toSession0 = clients.get(game.getPlayer()[0].getPlayerId());
         Session toSession1 = clients.get(game.getPlayer()[1].getPlayerId());
 
-        String status0 = "gameStart#" + rid + "#0#";
-        String status1 = "gameStart#" + rid + "#1#";
+        String status0 = "gameStart#" + rid ;
+        String status1 = "gameStart#" + rid;
 
         status0 += game.packStat(0);
         status1 += game.packStat(1);
@@ -158,9 +167,15 @@ public class Websocket {
         sendMessageBack(status1,toSession1);
 
 //        gameRun(rid,toSession1,1,1);
-        game.getCard(1);                         //后手抽卡
-        gameRun(rid,toSession0,0,0);
 
+        if(r == 1) {
+            game.getCard(0);                         //后手抽卡
+            gameRun(rid, toSession1, 1, 0);
+        }
+        else{
+            game.getCard(1);                         //后手抽卡
+            gameRun(rid, toSession0, 0, 0);
+        }
 
 >>>>>>> 3a4695c (7.21 15:56)
         return game;
@@ -172,6 +187,10 @@ public class Websocket {
         Game game = allGames.get(rid);
         int enemy = (seat ^ 1);
 
+        GameStatus game1 = game.getPlayer()[seat];
+        GameStatus game2 = game.getPlayer()[enemy];
+
+        Session seatSession = clients.get(game.getPlayer()[seat].getPlayerId());
         Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());
         String curStatus = "",enemyStatus = "";
         switch (type){
@@ -203,8 +222,8 @@ public class Websocket {
                 break;
         }
 
-        curStatus += game.packStat(0);
-        enemyStatus += game.packStat(1);
+        curStatus += game.packStat(seat);
+        enemyStatus += game.packStat(enemy);
         sendMessageBack(curStatus,curSession);
         sendMessageBack(enemyStatus,enemySession);
 
@@ -236,24 +255,24 @@ public class Websocket {
     public void onMessage(String message, Session session) {
         log.info("服务端收到客户端[{}]的消息:{}", session.getId(), message);
         String[] splitMessage=message.split("#");
-        int rid,seat,cardOrder = 0;
+        int rid,seat,argu1 = 0;
         rid = allPlayers.get(session.getId()).getGameId();
         seat = allPlayers.get(session.getId()).getSeat();
         if(splitMessage.length > 1)
-            cardOrder = Integer.parseInt(splitMessage[1]);
+            argu1 = Integer.parseInt(splitMessage[1]);
         try {
             switch (splitMessage[0]){
                 case "createRoom":  createRoom(session);
                     return;
                 case "searchRoom":  searchRoom(session);
                     return;
-                case "exitRoom":    exitRoom(rid,session);
+                case "exitRoom":    exitRoom(argu1,session);
                     return;
-                case "joinRoom":    joinRoom(rid,session);
+                case "joinRoom":    joinRoom(argu1,session);
                     return;
                 case "getCard":     gameRun(rid,session,seat,1);
                     return;
-                case "useCard":     gameRun(rid,session,cardOrder,2); //这里不传位置传卡号
+                case "useCard":     gameRun(rid,session,argu1,2); //这里不传位置传卡号
                     return;
                 case "endTurn":     gameRun(rid,session,seat,3);
                     return;
@@ -261,7 +280,7 @@ public class Websocket {
                     break;
             }
         }catch (Exception e){
-            e.printStackTrace();
+            log.info("发生错误");
         }
     }
 
@@ -307,6 +326,11 @@ public class Websocket {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+    public class ExceptionMessage  extends Exception {
+        public ExceptionMessage(String message) {
+            super(message);
         }
     }
 

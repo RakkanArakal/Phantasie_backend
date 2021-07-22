@@ -13,7 +13,7 @@ enum Job{Warrior,Archer,Magician};
 
 @Setter
 @Getter
-public class GameStatus {
+public class GameStatus implements Cloneable {
     private String playerId;
 
     private String playerName;
@@ -50,9 +50,20 @@ public class GameStatus {
 
     private Job curJob;
 
+    @Override
+    public Object clone() {
+        GameStatus gameStatus = null;
+        try{
+            gameStatus = (GameStatus)super.clone();
+        }catch(CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return gameStatus;
+    }
 
     public void hpChange(int num){
         hp += num;
+        return;
     }
 
     public void apChange(int num){

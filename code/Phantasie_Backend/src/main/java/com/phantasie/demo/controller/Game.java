@@ -12,7 +12,7 @@ import java.util.List;
 public class Game {
     private int current_player;
 
-    public static GameStatus[] player;
+    public  GameStatus[] player = new GameStatus[2];
 
     private int gameId;
 
@@ -20,18 +20,6 @@ public class Game {
 
     public GameStatus nowStatus ;
     public GameStatus enemyStatus ;
-
-    public Game (Room room){
-        player = room.player;
-        player[0].newGame();
-        player[1].newGame();
-    }
-
-    public static void changePlayer() {
-        GameStatus tmp = player[0];
-        player[0] = player[1];
-        player[1] = tmp;
-    }
 
     public GameStatus[] getPlayer() {
         return player;
@@ -176,4 +164,8 @@ public class Game {
     }
 
 
+    public void start() {
+        player[0].newGame();
+        player[1].newGame();
+    }
 }
