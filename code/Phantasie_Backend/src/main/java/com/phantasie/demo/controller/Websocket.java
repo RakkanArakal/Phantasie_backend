@@ -134,17 +134,17 @@ public class Websocket {
 
     private Game startGame(Room room) {
 
-        int rid = room.getGameId();
-//        int r = (int) (Math.random ()*(352324 +1)) % 2 ;
-        int r = 0;
-
         Game game = new Game();
+        int rid = room.getGameId();
+        int r = (int) (Math.random ()*(352324 +1)) % 2;
+
         if( r == 1)
             game.setPlayer(room.player);
         else{
             game.player[0] = room.player[1];
             game.player[1] = room.player[0];
         }
+<<<<<<< HEAD
 <<<<<<< HEAD
         game.start();
         game.setGameId(rid);
@@ -161,6 +161,9 @@ public class Websocket {
 >>>>>>> 663c87b (9.42)
 =======
 =======
+=======
+
+>>>>>>> d96d41d (15:17)
         game.start(rid);
 >>>>>>> 87f1811 (14:30)
         allGames.put(rid,game);
@@ -168,8 +171,8 @@ public class Websocket {
         Session toSession0 = clients.get(game.getPlayer()[0].getPlayerId());
         Session toSession1 = clients.get(game.getPlayer()[1].getPlayerId());
 
-        String status0 = "gameStart#" + rid ;
-        String status1 = "gameStart#" + rid;
+        String status0 = "gameStart#" + rid + "#0";
+        String status1 = "gameStart#" + rid + "#1";
 
         status0 += game.packStat(0);
         status1 += game.packStat(1);
@@ -177,30 +180,26 @@ public class Websocket {
         sendMessageBack(status0,toSession0);
         sendMessageBack(status1,toSession1);
 
-//        gameRun(rid,toSession1,1,1);
-
-        if(r == 1) {
-            game.getCard(0);                         //后手抽卡
-            gameRun(rid, toSession1, 1, 0);
-        }
-        else{
-            game.getCard(1);                         //后手抽卡
-            gameRun(rid, toSession0, 0, 0);
-        }
+        game.getCard(1);                         //后手抽卡
+        gameRun(rid, toSession0, 0, 0);
 
 >>>>>>> 3a4695c (7.21 15:56)
         return game;
     }
 
-
     private void gameRun(int rid,Session curSession,int seat,int type) {
 
         Game game = allGames.get(rid);
-        int enemy = (seat ^ 1);
+        int enemy = (seat ^ 1),cardOrder = 0;
 
         Session seatSession = clients.get(game.getPlayer()[seat].getPlayerId());
         Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());
         String curStatus = "",enemyStatus = "";
+        
+        if(type >= 200) {
+            cardOrder = type - 200;
+            type = 2;
+        }
         switch (type){
             case 0:{                                            //回合开始
                 curStatus   = "yourTurn#" + rid  ;
@@ -208,14 +207,14 @@ public class Websocket {
             }
                 break;
             case 1:{
-                curStatus = "getCard#" + rid + "#current#";
-                enemyStatus = "getCard#" + rid + "#enemy#";
+                curStatus = "getCard#" + rid + "#current";
+                enemyStatus = "getCard#" + rid + "#enemy";
                 game.getCard(seat);
             }
                 break;
             case 2:{
-                int cardOrder = seat;
-                seat = allPlayers.get(curSession.getId()).getSeat();
+                curStatus = "useCard#" + rid + "#current";
+                enemyStatus = "useCard#" + rid + "#enemy";
                 game.useCard(seat,cardOrder);
             }
                 break;
@@ -239,7 +238,7 @@ public class Websocket {
         {                                                     //判断输赢
             String winner = "youWin";
             String loser = "enemyWin";
-            if(game.getPlayer()[seat].getHp() <= 0){
+            if(game.getPlayer()[enemy].getHp() <= 0){
                 sendMessageBack(winner,curSession);
                 sendMessageBack(loser,enemySession);
             }
@@ -253,7 +252,6 @@ public class Websocket {
         }
         return ;
     }
-
     /**
      * 收到客户端消息后调用的方法
      *
@@ -263,9 +261,9 @@ public class Websocket {
     public void onMessage(String message, Session session) {
         log.info("服务端收到客户端[{}]的消息:{}", session.getId(), message);
         String[] splitMessage=message.split("#");
-        int rid,seat,argu1 = 0;
-        rid = allPlayers.get(session.getId()).getGameId();
-        seat = allPlayers.get(session.getId()).getSeat();
+        int rid = allPlayers.get(session.getId()).getGameId();
+        int seat = allPlayers.get(session.getId()).getSeat();
+        int argu1 = 0;
         if(splitMessage.length > 1)
             argu1 = Integer.parseInt(splitMessage[1]);
         try {
@@ -280,7 +278,7 @@ public class Websocket {
                     return;
                 case "getCard":     gameRun(rid,session,seat,1);
                     return;
-                case "useCard":     gameRun(rid,session,argu1,2); //这里不传位置传卡号
+                case "useCard":     gameRun(rid,session,seat,200+argu1);
                     return;
                 case "endTurn":     gameRun(rid,session,seat,3);
                     return;
@@ -298,7 +296,6 @@ public class Websocket {
         log.error("发生错误");
         error.printStackTrace();
     }
-
 
     /**
      * 服务端单独返回消息消息给请求的客户端
@@ -342,5 +339,4 @@ public class Websocket {
             super(message);
         }
     }
-
 }

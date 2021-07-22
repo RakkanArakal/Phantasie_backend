@@ -20,11 +20,11 @@ public class GameStatus implements Cloneable {
 
     private String playerName;
 
-    private Sequence sequence;
-
     private int hp ;
 
     private int ap ;
+
+    private int carOrder;
 
     private List<Card> deckList = new LinkedList<>();
 
@@ -64,7 +64,7 @@ public class GameStatus implements Cloneable {
     }
 
     public void hpChange(int num){
-        hp += num;
+        hp -= num;
         return;
     }
 

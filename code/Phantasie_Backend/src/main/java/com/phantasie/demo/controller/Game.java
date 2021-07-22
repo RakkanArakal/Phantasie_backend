@@ -4,6 +4,7 @@ package com.phantasie.demo.controller;
 import com.phantasie.demo.entity.Card;
 import lombok.Getter;
 import lombok.Setter;
+import net.sf.json.JSONObject;
 
 import java.util.List;
 
@@ -44,7 +45,8 @@ public class Game {
         }
         GameStatus toStatus = player[id];
         int enemy = (id ^ 1);
-
+//        JSONObject data=JSONObject.fromObject(player[0]);
+//        System.out.print(data);
         String ret ="$";
         ret += playerStatFormat(0,player[0].getHp(),player[0].getAp());
         ret += playerStatFormat(1,player[1].getHp(),player[1].getAp());
@@ -80,6 +82,7 @@ public class Game {
         卡片使用
      */
     public void useCard(int id, int cardOrder) {
+
         nowStatus = player[id];
         enemyStatus = player[id^1];
 
@@ -128,9 +131,9 @@ public class Game {
 
     private void healCard(Card card) {
 
-        nowStatus.hpChange(card.getMy_hp());
+        nowStatus.hpChange(-card.getMy_hp());
         nowStatus.apChange(card.getMy_cost());
-        enemyStatus.hpChange(card.getEmy_hp());
+        enemyStatus.hpChange(-card.getEmy_hp());
         enemyStatus.apChange(card.getEmy_cost());
         return;
     }
