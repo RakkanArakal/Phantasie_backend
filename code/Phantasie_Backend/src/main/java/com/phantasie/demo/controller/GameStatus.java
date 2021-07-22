@@ -16,6 +16,8 @@ enum Job{Warrior,Archer,Magician};
 public class GameStatus {
     private String playerId;
 
+    private String playerName;
+
     private Sequence sequence;
 
     private int hp ;
@@ -40,42 +42,14 @@ public class GameStatus {
 
     private int seat;
 
+    private boolean isInRoom ;
+
+    private boolean isInTurn ;
+
     private boolean isGameOver = false;
 
     private Job curJob;
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
-    }
-
-    public String getPlayerId() {
-        return playerId;
-    }
-
-    public boolean useCard(int index){
-        if(cardList.size() >= index+1){
-            //使用卡牌的效果
-            Card card = cardList.get(index);
-
-            cardList.remove(index);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean checkDeath(){
-        if(hp <= 0){
-            hp = 0;
-            isGameOver = true;
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public Sequence getSequence() {
-        return sequence;
-    }
 
     public void hpChange(int num){
         hp += num;
@@ -119,6 +93,13 @@ public class GameStatus {
     public void resetDeckList() {
         deckList = getPlayerDeck();
         return;
+    }
+
+
+    public void setRoomOwner(int rid) {
+        gameId = rid;
+        seat = 0 ;
+        isInRoom = true;
     }
 }
 

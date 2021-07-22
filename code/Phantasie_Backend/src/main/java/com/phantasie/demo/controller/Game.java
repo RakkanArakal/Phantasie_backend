@@ -37,16 +37,6 @@ public class Game {
         return player;
     }
 
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
-    }
-
-    public int getCurrent_player() {
-        return current_player;
-    }
-
-    public void run(){}
-
     public static final String playerStatFormat(int id,int hp,int ap){
         return
             String.format("player_%d$hp#%d$ap#%d$",id,hp,ap);
@@ -132,7 +122,6 @@ public class Game {
             default:
                 break;
         }
-
 
 
         if(nowStatus.getHp() <= 0 || enemyStatus.getHp() <= 0)

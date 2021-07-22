@@ -25,6 +25,7 @@ public class Room implements Serializable {
 //            readyarr[i] = 0;
 //        }
         player = new GameStatus[2];
+        isready = false;
     }
 
     public int getRoomsize(){return roomsize;}
@@ -35,5 +36,14 @@ public class Room implements Serializable {
 
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    public void setOwner(int rid, GameStatus gameStatus) {
+        gameId = rid;
+        gameStatus.setGameId(rid);
+        gameStatus.setSeat(0);
+        gameStatus.setInRoom(true);
+
+        player[0] = gameStatus;
     }
 }

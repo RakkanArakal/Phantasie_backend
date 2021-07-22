@@ -45,6 +45,8 @@ public class Websocket {
 
         GameStatus player = new GameStatus();
         player.setPlayerId(session.getId());
+        //TODO:登陆后在此保存玩家昵称
+        player.setPlayerName("玩家名字");
         allPlayers.put(session.getId(), player);
     }
 
@@ -57,28 +59,31 @@ public class Websocket {
     }
 
 
-    private Room createRoom(Session session) {
+    private void createRoom(Session session) {
         log.info("创建房间");
+        GameStatus gameStatus = allPlayers.get(session.getId());
+
+        if(gameStatus.isInRoom()) {
+            sendMessageBack("玩家已在房间内",session);
+            throw new NullPointerException("error");
+        }
+
         Room room = new Room();
         int rid = currentGameId++;
-        room.setGameId(rid);
-        GameStatus gameStatus = allPlayers.get(session.getId());
-        gameStatus.setGameId(rid);
-        gameStatus.setSeat(0);
-        room.player[0] = gameStatus;
+        room.setOwner(rid,gameStatus);
         allRooms.put(rid, room);
         sendMessageBack("success",session);
-        return room;
+        return ;
     }
 
-    private Room exitRoom(int rid,Session session) {
+    private void exitRoom(int rid,Session session) {
         log.info("退出房间");
         Room room = allRooms.get(rid);
         if(room.roomsize > 1 || room.player[0].getPlayerId() != session.getId())
             throw new NullPointerException("error");
         allRooms.remove(rid);
         sendMessageBack("success",session);
-        return room;
+        return;
     }
 
     private void searchRoom(Session session) {
@@ -87,7 +92,7 @@ public class Websocket {
         for(Map.Entry<Integer, Room> roomMap:allRooms.entrySet()){
             Room room = roomMap.getValue();
             if(room.getRoomsize() == 1) {
-                roomInfo += room.player[0].getPlayerId();
+                roomInfo += room.player[0].getPlayerName();
                 roomInfo += "#";
                 roomInfo += Integer.toString(room.getGameId());
                 roomInfo += "$";
@@ -100,6 +105,13 @@ public class Websocket {
     private void joinRoom(int rid,Session session) {
         log.info("加入房间");
         Room room = allRooms.get(rid);
+
+        if(room.getRoomsize() > 1){
+            sendMessageBack("玩家已在房间内",session);
+            throw new NullPointerException("");
+        }
+
+
         GameStatus gameStatus = allPlayers.get(session.getId());
         gameStatus.setGameId(rid);
         gameStatus.setSeat(1);
