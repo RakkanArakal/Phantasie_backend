@@ -13,6 +13,7 @@ import com.phantasie.demo.entity.Card;
 import com.phantasie.demo.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,7 +27,8 @@ public class CardController {
 
     public static Map<Integer , Card> allCards = new ConcurrentHashMap<>();
 
-    public void getCardMap(){
+    @PostConstruct
+    private void init(){
         List<Card> cards= cardService.getAllCard();
         allCards = cards.stream().collect(Collectors.toMap(Card::getCard_id, a -> a,(k1, k2)->k1));
         return;
@@ -34,7 +36,7 @@ public class CardController {
 
 
     @GetMapping("/getbook")
-    public List<Card> getAllBook(String name){
+    public List<Card> getCards(){
         return cardService.getAllCard();
     }
 

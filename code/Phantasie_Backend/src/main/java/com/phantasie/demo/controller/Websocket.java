@@ -2,10 +2,13 @@ package com.phantasie.demo.controller;
 
 
 
+import com.phantasie.demo.entity.Card;
+import com.phantasie.demo.service.CardService;
 import lombok.Setter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -26,6 +29,8 @@ public class Websocket {
 
     private Session session;
 
+    @Autowired
+    private CardController cardController ;
 
     /**
      * 存放所有在线的客户端
@@ -61,8 +66,12 @@ public class Websocket {
 
     private void createRoom(Session session) throws ExceptionMessage {
         log.info("创建房间");
-        CardController cardController = new CardController();
-        System.out.print(cardController);
+
+//        for(Map.Entry<Integer, Card> cardMap: CardController.allCards.entrySet()){
+//            Card card = cardMap.getValue();
+//            System.out.print(card);
+//        }
+
         GameStatus gameStatus = allPlayers.get(session.getId());
 
         if(gameStatus.isInRoom()) {
@@ -283,6 +292,7 @@ public class Websocket {
             }
         }catch (Exception e){
             log.info("发生错误");
+//            e.printStackTrace();
         }
     }
 
