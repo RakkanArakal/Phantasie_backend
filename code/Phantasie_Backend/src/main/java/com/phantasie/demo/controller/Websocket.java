@@ -29,9 +29,6 @@ public class Websocket {
 
     private Session session;
 
-    @Autowired
-    private CardController cardController ;
-
     /**
      * 存放所有在线的客户端
      */

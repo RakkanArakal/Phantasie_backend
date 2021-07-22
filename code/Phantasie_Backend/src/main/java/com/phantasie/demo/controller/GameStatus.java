@@ -3,6 +3,7 @@ package com.phantasie.demo.controller;
 import com.phantasie.demo.entity.Card;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -85,18 +86,22 @@ public class GameStatus implements Cloneable {
     }
 
     private List<Card> getPlayerDeck() {
-        List<Card> Deck = new LinkedList<>();;
-        Card attack = new Card();
-        Card fireball = new Card();
-        attack.setCard_id(0);
-        fireball.setCard_id(1);
+        List<Card> Deck = new LinkedList<>();
+        Card c000 = CardController.allCards.get(0);
+        Card c100 = CardController.allCards.get(100);
+        Card c200 = CardController.allCards.get(200);
+        System.out.print(c000);
+        System.out.print(c100);
+        System.out.print(c200);
 
         for(int i=0;i<10;i++){
             int r = (int) (Math.random ()*(352324 +1));
-            if(r % 2 == 1)
-                Deck.add(fireball);
+            if  (r % 3 == 1)
+                Deck.add(c000);
+            else if(r % 3 == 2)
+                Deck.add(c100);
             else
-                Deck.add(attack);
+                Deck.add(c200);
         }
 
         return Deck;
@@ -105,13 +110,6 @@ public class GameStatus implements Cloneable {
     public void resetDeckList() {
         deckList = getPlayerDeck();
         return;
-    }
-
-
-    public void setRoomOwner(int rid) {
-        gameId = rid;
-        seat = 0 ;
-        isInRoom = true;
     }
 }
 

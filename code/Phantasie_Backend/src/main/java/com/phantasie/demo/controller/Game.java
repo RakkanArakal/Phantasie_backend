@@ -140,6 +140,14 @@ public class Game {
     }
 
     private void warriorCard(Card card) {
+
+        nowStatus.hpChange(card.getMy_hp());
+        nowStatus.apChange(card.getMy_cost());
+
+        enemyStatus.hpChange(card.getEmy_hp());
+        enemyStatus.apChange(card.getEmy_cost());
+
+        return;
     }
 
     private void mageCard(Card card) {
@@ -148,21 +156,12 @@ public class Game {
     private void hunterCard(Card card) {
     }
 
-
-
     public void endTurn(int id) {
         GameStatus nowStatus = player[id];
         int turn = nowStatus.getTurnCount();
         nowStatus.setTurnCount(turn+1);                 //增加回合数
         return;
     }
-    public void handleGameMessage(String message){
-
-        switch (message){
-
-        }
-    }
-
 
     public void start(int rid) {
         player[0].newGame();
