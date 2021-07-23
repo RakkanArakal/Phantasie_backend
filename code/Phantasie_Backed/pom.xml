@@ -111,9 +111,17 @@
             <classifier>jdk15</classifier>
         </dependency>
         <dependency>
+<<<<<<< HEAD:code/Phantasie_Backed/pom.xml
             <groupId>net.minidev</groupId>
             <artifactId>json-smart</artifactId>
         </dependency>
+=======
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+>>>>>>> e7d2d37 (TestDemo but failed):code/Phantasie_Backend/pom.xml
 
     </dependencies>
 
