@@ -16,6 +16,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+
     @Override
     public Msg login(String username, String password) {
         UserVerify userVerify = checkUser(username, password);
@@ -23,7 +24,7 @@ public class UserServiceImpl implements UserService {
             User user = findUserById(userVerify.getUser_id());
             JSONObject obj = new JSONObject();
             obj.put("user_id", user.getUser_id());
-            obj.put("name", user.getName());
+            obj.put("name", userVerify.getUsername());
             return MsgUtil.makeMsg(MsgCode.LOGIN_SUCCESS, MsgUtil.LOGIN_SUCCESS_MSG, obj);
         }
         else {
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
             JSONObject obj = new JSONObject();
             UserVerify userVerify = checkUser(username, password);
             obj.put("user_id", user.getUser_id());
-            obj.put("name", user.getName());
+            obj.put("name", userVerify.getUsername());
             return MsgUtil.makeMsg(MsgCode.SIGNUP_SUCCESS, MsgUtil.SIGNUP_SUCCESS_MSG, obj);
         }
         else {

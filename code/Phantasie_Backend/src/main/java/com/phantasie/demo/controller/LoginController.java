@@ -23,12 +23,17 @@ public class LoginController {
         System.out.println("用户登录请求");
         String username = (String) map.get("username");
         String password = (String) map.get("password");
+<<<<<<< HEAD
         //return userService.login(username, password);
         JSONObject obj = new JSONObject();
         obj.put("user_id", 1120);
         obj.put("name", username);
         obj.put("pass",password);
         return MsgUtil.makeMsg(MsgCode.SIGNUP_SUCCESS, MsgUtil.SIGNUP_SUCCESS_MSG, obj);
+=======
+
+        return userService.login(username, password);
+>>>>>>> efaab6e (14:15)
     }
 
     @PostMapping(value = "/signup")
@@ -37,6 +42,7 @@ public class LoginController {
         String username = (String) map.get("username");
         String password = (String) map.get("password");
         String phone = (String) map.get("phone");
+
         return userService.signup(username, password,phone);
     }
 }

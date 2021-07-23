@@ -47,7 +47,7 @@ public class Game {
         int enemy = (id ^ 1);
 //        JSONObject data=JSONObject.fromObject(player[0]);
 //        System.out.print(data);
-        String ret ="$";
+        String ret ="~$";
         ret += playerStatFormat(0,player[0].getHp(),player[0].getAp());
         ret += playerStatFormat(1,player[1].getHp(),player[1].getAp());
 

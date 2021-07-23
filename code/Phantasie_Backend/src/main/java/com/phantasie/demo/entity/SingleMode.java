@@ -25,10 +25,12 @@ public class SingleMode {
 
     private int curHP;
 
-    private int gold;//金币
+    private int gold;
+
+    private String mapRoute;
 
     @OneToMany(mappedBy = "singleMode",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<SingleModeCard> cardList;//牌库
+    private List<SingleModeCard> cardList;
 
 //    TODO:为每个状态设计实体
 //

@@ -17,6 +17,10 @@ public class UserVerify {
     private Integer user_id;
     private String username;
     private String password;
+<<<<<<< HEAD:code/Phantasie_Backed/src/main/java/com/phantasie/demo/entity/UserVerify.java
+=======
+    private String phone;
+>>>>>>> efaab6e (14:15):code/Phantasie_Backend/src/main/java/com/phantasie/demo/entity/UserVerify.java
 
     private User user;
 

@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User createUser(String name, String password,String phone) {
         User user = new User();
-        user.setName(name);
+        user.setNick_name(name);
         userRepository.saveAndFlush(user);
         System.out.println("new user "+user.getUser_id().toString()+" named "+name);
         UserVerify userVerify = new UserVerify();
