@@ -45,17 +45,18 @@ public class Game {
         }
         GameStatus toStatus = player[id];
         int enemy = (id ^ 1);
-//        JSONObject data=JSONObject.fromObject(player[0]);
+        JSONObject data=JSONObject.fromObject(player[0]);
+        data.remove("deckList");
 //        System.out.print(data);
-        String ret ="~$";
-        ret += playerStatFormat(0,player[0].getHp(),player[0].getAp());
-        ret += playerStatFormat(1,player[1].getHp(),player[1].getAp());
-
-//        ret += cardlistFormat("$Grave",toStatus.getGraveList());
-        ret += String.format("deckList#%d",toStatus.getDeckList().size());
-        ret += cardlistFormat("$cardList",toStatus.getCardList());
-        ret += String.format("$EnemyCount#%d$",player[enemy].getCardList().size());
-        return ret;
+//        String ret ="~$";
+//        ret += playerStatFormat(0,player[0].getHp(),player[0].getAp());
+//        ret += playerStatFormat(1,player[1].getHp(),player[1].getAp());
+//
+////        ret += cardlistFormat("$Grave",toStatus.getGraveList());
+//        ret += String.format("deckList#%d",toStatus.getDeckList().size());
+//        ret += cardlistFormat("$cardList",toStatus.getCardList());
+//        ret += String.format("$EnemyCount#%d$",player[enemy].getCardList().size());
+        return String.valueOf(data);
     }
 
     public void getCard(int id) {

@@ -24,19 +24,19 @@ public class GameStatus implements Cloneable {
 
     private int ap ;
 
-    private int carOrder;
+//    private int carOrder;
 
     private List<Card> deckList = new LinkedList<>();
 
-    private List<Card> graveList = new LinkedList<>();
+//    private List<Card> graveList = new LinkedList<>();
 
     private List<Card> cardList = new LinkedList<>();
 
     private int turnCount;
 
-    private int cardCount;
+//    private int cardCount;
 
-    private int maxCardCount;
+//    private int maxCardCount;
 
 //    private List<status> statusList = new LinkedList<>();
 
@@ -46,7 +46,7 @@ public class GameStatus implements Cloneable {
 
     private boolean isInRoom ;
 
-    private boolean isInTurn ;
+//    private boolean isInTurn ;
 
     private boolean isGameOver = false;
 
@@ -80,9 +80,10 @@ public class GameStatus implements Cloneable {
         hp = 2000;
         ap = 100;
         turnCount = 1 ;
-        graveList.clear();
+//        graveList.clear();
         cardList.clear();
         deckList = getPlayerDeck();
+        curJob = Job.Warrior;
     }
 
     private List<Card> getPlayerDeck() {

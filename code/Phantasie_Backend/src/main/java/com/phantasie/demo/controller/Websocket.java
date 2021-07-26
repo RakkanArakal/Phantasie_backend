@@ -80,7 +80,7 @@ public class Websocket {
         int rid = currentGameId++;
         room.setOwner(rid,gameStatus);
         allRooms.put(rid, room);
-        sendMessageBack("success",session);
+        sendMessageBack("successCreate",session);
         return ;
     }
 
@@ -90,7 +90,7 @@ public class Websocket {
         if(room.roomsize > 1 || room.player[0].getPlayerId() != session.getId())
             throw new ExceptionMessage("error");
         allRooms.remove(rid);
-        sendMessageBack("success",session);
+        sendMessageBack("successExit",session);
         return;
     }
 
@@ -127,8 +127,12 @@ public class Websocket {
         gameStatus.setGameId(rid);
         room.player[1] = gameStatus;
         room.roomsize++;
+        sendMessageBack("successJoin",session);
+
+        Session toSession = clients.get(room.getPlayer()[0].getPlayerId());
+        sendMessageBack("successJoin",toSession);
+
         startGame(room);
-//        sendMessageBack("success",session);
         return ;
     }
 
@@ -202,10 +206,10 @@ public class Websocket {
         }
         switch (type){
             case 0:{                                            //回合开始
-                curStatus   = "yourTurn#" + rid  ;
-                enemyStatus = "waitTurn#" + rid ;
+//                curStatus   = "yourTurn#" + rid  ;
+//                enemyStatus = "waitTurn#" + rid ;
             }
-                break;
+//                break;
             case 1:{
                 curStatus = "getCard#" + rid + "#current";
                 enemyStatus = "getCard#" + rid + "#enemy";
@@ -276,8 +280,8 @@ public class Websocket {
                     return;
                 case "joinRoom":    joinRoom(argu1,session);
                     return;
-                case "getCard":     gameRun(rid,session,seat,1);
-                    return;
+//                case "getCard":     gameRun(rid,session,seat,1);
+//                    return;
                 case "useCard":     gameRun(rid,session,seat,200+argu1);
                     return;
                 case "endTurn":     gameRun(rid,session,seat,3);

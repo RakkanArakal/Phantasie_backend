@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Getter
 public class Room implements Serializable {
     private int gameId;
-    public GameStatus[] player;
+    public GameStatus[] player = new GameStatus[2];
     public boolean isready;
     public int[] readyarr;
     public int roomsize;
@@ -45,5 +45,9 @@ public class Room implements Serializable {
         gameStatus.setInRoom(true);
 
         player[0] = gameStatus;
+    }
+
+    public GameStatus[] getPlayer() {
+        return player;
     }
 }
