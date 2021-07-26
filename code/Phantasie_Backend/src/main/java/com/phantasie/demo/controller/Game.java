@@ -220,9 +220,10 @@ public class Game {
 
 
     public String cardMsg(boolean flag) {
-        cardMsg cardmsg = new cardMsg(nowStatus.getCardList().size(),nowStatus.getCardList());
+        cardMsg cardmsg = new cardMsg(nowStatus.getCardList().size(),nowStatus.getDeckList().size(),nowStatus.getCardList());
         JSONObject data = JSONObject.fromObject(cardmsg);
         if(!flag){
+            data.replace("decks",null);
             data.replace("cardList",null);
         }
         return data.toString();

@@ -9,12 +9,16 @@ import java.util.List;
 @Setter
 @Getter
 public class cardMsg {
+
     Integer hands;
+
+    Integer decks;
 
     private List<Integer> cardList = new LinkedList<>();
 
-    public cardMsg(Integer h, List<Integer> c){
+    public cardMsg(Integer h,Integer d, List<Integer> c){
         hands = h;
+        decks = d;
         cardList = c;
     }
 }
