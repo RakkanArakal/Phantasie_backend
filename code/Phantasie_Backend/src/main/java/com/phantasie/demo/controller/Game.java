@@ -91,7 +91,7 @@ public class Game {
      *  todo
         卡片使用
      */
-    public void useCard(int id, int cardOrder) {
+    public int useCard(int id, int cardOrder) {
 
 //        nowStatus = player[id];
 //        enemyStatus = player[id^1];
@@ -137,7 +137,7 @@ public class Game {
         if(nowStatus.getHp() <= 0 || enemyStatus.getHp() <= 0)
             isRunning = false;
 
-        return;
+        return cardId;
     }
 
     private void normalCard(Card card) {

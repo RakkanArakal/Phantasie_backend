@@ -218,10 +218,11 @@ public class Websocket {
             }
                 break;
             case 2:{
-                game.useCard(seat,cardOrder);
+                int cardID = game.useCard(seat,cardOrder);
                 int time = game.getTimeStamp();
-                curStatus = "useCard#current$" + time + "$" + cardOrder;
-                enemyStatus = "useCard#enemy$" + time + "$" + cardOrder;
+
+                curStatus = "useCard#current$" + time + "$" + cardID;
+                enemyStatus = "useCard#enemy$" + time + "$" + cardID;
 
             }
                 break;
