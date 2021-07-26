@@ -3,17 +3,16 @@ package com.phantasie.demo.controller;
 import com.phantasie.demo.entity.Card;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 enum Sequence{First,Second};
 enum Job{Warrior,Archer,Magician};
 
 @Setter
 @Getter
+
 public class GameStatus implements Cloneable {
 
     private String playerId;
@@ -24,19 +23,17 @@ public class GameStatus implements Cloneable {
 
     private int ap ;
 
-//    private int carOrder;
 
-    private List<Card> deckList = new LinkedList<>();
+//    @JsonIgnore
+    private List<Integer> deckList = new LinkedList<>();
 
-//    private List<Card> graveList = new LinkedList<>();
+    private List<Integer> cardList = new LinkedList<>();
 
-    private List<Card> cardList = new LinkedList<>();
+//    private List<Integer> cardIndex = new LinkedList<>();
 
     private int turnCount;
 
-//    private int cardCount;
-
-//    private int maxCardCount;
+//    private List<Card> graveList = new LinkedList<>();
 
 //    private List<status> statusList = new LinkedList<>();
 
@@ -52,24 +49,14 @@ public class GameStatus implements Cloneable {
 
     private Job curJob;
 
-    @Override
-    public Object clone() {
-        GameStatus gameStatus = null;
-        try{
-            gameStatus = (GameStatus)super.clone();
-        }catch(CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return gameStatus;
-    }
-
     public void hpChange(int num){
         hp -= num;
         return;
     }
 
     public void apChange(int num){
-        ap += num;
+        ap -= num;
+        return;
     }
 
     public int getGameId() {
@@ -86,8 +73,9 @@ public class GameStatus implements Cloneable {
         curJob = Job.Warrior;
     }
 
-    private List<Card> getPlayerDeck() {
-        List<Card> Deck = new LinkedList<>();
+    private List<Integer> getPlayerDeck() {
+        List<Integer> Deck = new LinkedList<>();
+
         Card c000 = CardController.allCards.get(0);
         Card c100 = CardController.allCards.get(100);
         Card c200 = CardController.allCards.get(200);
@@ -98,11 +86,11 @@ public class GameStatus implements Cloneable {
         for(int i=0;i<10;i++){
             int r = (int) (Math.random ()*(352324 +1));
             if  (r % 3 == 1)
-                Deck.add(c000);
+                Deck.add(0);
             else if(r % 3 == 2)
-                Deck.add(c100);
+                Deck.add(200);
             else
-                Deck.add(c200);
+                Deck.add(203);
         }
 
         return Deck;
@@ -111,6 +99,10 @@ public class GameStatus implements Cloneable {
     public void resetDeckList() {
         deckList = getPlayerDeck();
         return;
+    }
+
+    public Object getHands() {
+        return cardList.size();
     }
 }
 

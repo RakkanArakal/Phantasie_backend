@@ -2,13 +2,7 @@ package com.phantasie.demo.controller;
 
 
 
-import com.phantasie.demo.entity.Card;
-import com.phantasie.demo.service.CardService;
-import lombok.Setter;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -80,7 +74,7 @@ public class Websocket {
         int rid = currentGameId++;
         room.setOwner(rid,gameStatus);
         allRooms.put(rid, room);
-        sendMessageBack("successCreate",session);
+        sendMessageBack("successCreate#" + rid ,session);
         return ;
     }
 
@@ -125,6 +119,7 @@ public class Websocket {
 
         GameStatus gameStatus = allPlayers.get(session.getId());
         gameStatus.setGameId(rid);
+        gameStatus.setInRoom(true);
         room.player[1] = gameStatus;
         room.roomsize++;
         sendMessageBack("successJoin",session);
@@ -175,11 +170,11 @@ public class Websocket {
         Session toSession0 = clients.get(game.getPlayer()[0].getPlayerId());
         Session toSession1 = clients.get(game.getPlayer()[1].getPlayerId());
 
-        String status0 = "gameStart#" + rid + "#0";
-        String status1 = "gameStart#" + rid + "#1";
+        String status0 = "gameStart$";
+        String status1 = "gameStart$";
 
-        status0 += game.packStat(0);
-        status1 += game.packStat(1);
+        status0 += game.packStat(0) + "$" + game.packStatsimple(1);
+        status1 += game.packStat(1) + "$" + game.packStatsimple(0);
 
         sendMessageBack(status0,toSession0);
         sendMessageBack(status1,toSession1);
@@ -195,6 +190,7 @@ public class Websocket {
 
         Game game = allGames.get(rid);
         int enemy = (seat ^ 1),cardOrder = 0;
+        int timeStamp = game.getTimeStamp();
 
         Session seatSession = clients.get(game.getPlayer()[seat].getPlayerId());
         Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());
@@ -206,20 +202,27 @@ public class Websocket {
         }
         switch (type){
             case 0:{                                            //回合开始
-//                curStatus   = "yourTurn#" + rid  ;
-//                enemyStatus = "waitTurn#" + rid ;
+                curStatus   = "yourTurn$" + timeStamp + "$" + game.packStat(seat) +
+                                                        "$" + game.packStatsimple(enemy);
+
+                enemyStatus = "waitTurn$" + timeStamp + "$" + game.packStat(enemy) + "" +
+                        "                                $" + game.packStatsimple(seat);
             }
-//                break;
+                break;
             case 1:{
-                curStatus = "getCard#" + rid + "#current";
-                enemyStatus = "getCard#" + rid + "#enemy";
                 game.getCard(seat);
+                int time = game.getTimeStamp();
+                curStatus = "getCard#current$" + time + "$" + game.cardMsg(true);
+                enemyStatus = "getCard#enemy$" + time + "$" + game.cardMsg(false);
+
             }
                 break;
             case 2:{
-                curStatus = "useCard#" + rid + "#current";
-                enemyStatus = "useCard#" + rid + "#enemy";
                 game.useCard(seat,cardOrder);
+                int time = game.getTimeStamp();
+                curStatus = "useCard#current$" + time + "$" + cardOrder;
+                enemyStatus = "useCard#enemy$" + time + "$" + cardOrder;
+
             }
                 break;
             case 3:{
@@ -233,9 +236,15 @@ public class Websocket {
                 break;
         }
 
-        curStatus += game.packStat(seat);
-        enemyStatus += game.packStat(enemy);
+//        curStatus += game.packStat(seat) + "$" + game.packStatsimple(enemy);
+//        enemyStatus += game.packStat(enemy) + "$" + game.packStatsimple(seat);
+
+        curStatus +=  "$" + game.stageChange(timeStamp);
+
+        enemyStatus += "$" + game.stageChange(timeStamp);
+
         sendMessageBack(curStatus,curSession);
+
         sendMessageBack(enemyStatus,enemySession);
 
         if(!game.isRunning())
@@ -253,6 +262,9 @@ public class Websocket {
             allRooms.remove(rid);
             allGames.remove(rid);
             return ;
+        }
+        if(type == 0){
+            gameRun(rid,curSession,seat,1);
         }
         return ;
     }
@@ -285,6 +297,8 @@ public class Websocket {
                 case "useCard":     gameRun(rid,session,seat,200+argu1);
                     return;
                 case "endTurn":     gameRun(rid,session,seat,3);
+                    return;
+                case "update":     gameRun(rid,session,seat,3);
                     return;
                 default:
                     break;

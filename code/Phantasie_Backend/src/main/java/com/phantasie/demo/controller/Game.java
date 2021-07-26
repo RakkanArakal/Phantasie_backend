@@ -1,12 +1,22 @@
 package com.phantasie.demo.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phantasie.demo.entity.Card;
+import com.phantasie.demo.msg.cardMsg;
+import com.phantasie.demo.msg.newState;
 import lombok.Getter;
 import lombok.Setter;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static com.phantasie.demo.controller.CardController.allCards;
+
 
 @Setter
 @Getter
@@ -15,55 +25,53 @@ public class Game {
 
     public  GameStatus[] player = new GameStatus[2];
 
+    public Map<Integer, newState> allState = new ConcurrentHashMap<>();
+
+    @JsonIgnore
     private int gameId;
+
+    private int timeStamp;
 
     boolean isRunning = true;
 
     public GameStatus nowStatus ;
+
     public GameStatus enemyStatus ;
 
     public GameStatus[] getPlayer() {
         return player;
     }
 
-    public static final String playerStatFormat(int id,int hp,int ap){
-        return
-            String.format("player_%d$hp#%d$ap#%d$",id,hp,ap);
-    }
-
-    public static final String cardlistFormat(String type,List<Card> cardList){
-        String form = String.format("%s",type);
-        for(Card card : cardList){
-            form += String.format("#%d",card.getCard_id());
-        }
-        return form;
-    }
 
     public String packStat(int id){
         if(player.length != 2){
             return ("");
         }
-        GameStatus toStatus = player[id];
-        int enemy = (id ^ 1);
-        JSONObject data=JSONObject.fromObject(player[0]);
+
+        JSONObject data=JSONObject.fromObject(player[id]);
         data.remove("deckList");
-//        System.out.print(data);
-//        String ret ="~$";
-//        ret += playerStatFormat(0,player[0].getHp(),player[0].getAp());
-//        ret += playerStatFormat(1,player[1].getHp(),player[1].getAp());
-//
-////        ret += cardlistFormat("$Grave",toStatus.getGraveList());
-//        ret += String.format("deckList#%d",toStatus.getDeckList().size());
-//        ret += cardlistFormat("$cardList",toStatus.getCardList());
-//        ret += String.format("$EnemyCount#%d$",player[enemy].getCardList().size());
-        return String.valueOf(data);
+        data.put("decksSize",player[id].getDeckList().size());
+        return data.toString();
+    }
+
+    public String packStatsimple(int id){
+        if(player.length != 2){
+            return ("");
+        }
+        JSONObject data=JSONObject.fromObject(player[id]);
+        data.remove("cardList");
+        data.remove("deckList");
+        data.put("hands",player[id].getCardList().size());
+        return data.toString();
     }
 
     public void getCard(int id) {
-        GameStatus nowStatus = player[id];
 
-        List<Card> cardList = nowStatus.getCardList();
-        List<Card> deckList = nowStatus.getDeckList();
+        nowStatus = player[id];
+        enemyStatus = player[id^1];
+
+        List<Integer> cardList = nowStatus.getCardList();
+        List<Integer> deckList = nowStatus.getDeckList();
         int total = nowStatus.getTurnCount();
         if(total >= 3)            total = 3 - cardList.size();        //抽到3张为止;
         if(deckList.size() < total)   total = deckList.size();
@@ -75,6 +83,7 @@ public class Game {
 
         if(deckList.size() == 0)     nowStatus.resetDeckList();
 
+//        timeStamp++;
         return;
     }
 
@@ -84,12 +93,14 @@ public class Game {
      */
     public void useCard(int id, int cardOrder) {
 
-        nowStatus = player[id];
-        enemyStatus = player[id^1];
+//        nowStatus = player[id];
+//        enemyStatus = player[id^1];
 
-        List<Card> cardList = nowStatus.getCardList();
-        Card card = cardList.get(cardOrder);
+        List<Integer> cardList = nowStatus.getCardList();
+        Integer cardId = cardList.get(cardOrder);
         cardList.remove(cardOrder);
+
+        Card card = allCards.get(cardId);
         switch (card.getType()){
             case 0:{
                 normalCard(card);
@@ -115,9 +126,17 @@ public class Game {
                 break;
         }
 
+        timeStamp++;
+        newState stateHp = new newState(id^1,0,true,card.getEmy_hp(),enemyStatus.getHp());
+        allState.put(timeStamp,stateHp);
+
+        timeStamp++;
+        newState stateMp = new newState(id,1,false,card.getMy_cost(),nowStatus.getAp());
+        allState.put(timeStamp,stateMp);
 
         if(nowStatus.getHp() <= 0 || enemyStatus.getHp() <= 0)
             isRunning = false;
+
         return;
     }
 
@@ -179,5 +198,33 @@ public class Game {
         player[0].setSeat(0);
         player[1].setSeat(1);
         setGameId(rid);
+        timeStamp = 0 ;
+    }
+
+
+    public String stageChange(int time) {
+        String ret = "";
+        if(time == timeStamp)
+            return ret;
+        else{
+            List<newState> newStateList= new LinkedList<>();
+            while(time != timeStamp){
+                time ++ ;
+                newStateList.add(allState.get(time));
+            }
+            JSONArray data=JSONArray.fromObject(newStateList);
+            ret += data.toString() ;
+            return ret;
+        }
+    }
+
+
+    public String cardMsg(boolean flag) {
+        cardMsg cardmsg = new cardMsg(nowStatus.getCardList().size(),nowStatus.getCardList());
+        JSONObject data = JSONObject.fromObject(cardmsg);
+        if(!flag){
+            data.replace("cardList",null);
+        }
+        return data.toString();
     }
 }
