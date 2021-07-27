@@ -281,7 +281,7 @@ public class Websocket {
         String[] splitMessage=message.split("#");
         int rid = allPlayers.get(session.getId()).getGameId();
         int seat = allPlayers.get(session.getId()).getSeat();
-        int playerNow = allGames.get(rid).getPlayerNow();
+        int playerNow = 0;
         int argu1 = 0;
         if(splitMessage.length > 1)
             argu1 = Integer.parseInt(splitMessage[1]);
@@ -299,12 +299,14 @@ public class Websocket {
 //                    return;
 
                 case "useCard": {
+                    playerNow = allGames.get(rid).getPlayerNow();
                     if (seat != playerNow)
                         break;
                     gameRun(rid, session, seat, 200 + argu1);
                     return;
                 }
                 case "endTurn": {
+                    playerNow = allGames.get(rid).getPlayerNow();
                     if (seat != playerNow)
                         break;
                     gameRun(rid, session, seat, 3);
