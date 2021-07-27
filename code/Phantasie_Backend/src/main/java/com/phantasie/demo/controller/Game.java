@@ -207,6 +207,7 @@ public class Game {
         if(time == timeStamp)
             return ret;
         else{
+            ret += "$";
             List<newState> newStateList= new LinkedList<>();
             while(time != timeStamp){
                 time ++ ;

@@ -240,9 +240,9 @@ public class Websocket {
 //        curStatus += game.packStat(seat) + "$" + game.packStatsimple(enemy);
 //        enemyStatus += game.packStat(enemy) + "$" + game.packStatsimple(seat);
 
-        curStatus +=  "$" + game.stageChange(timeStamp);
+        curStatus +=  game.stageChange(timeStamp);
 
-        enemyStatus += "$" + game.stageChange(timeStamp);
+        enemyStatus += game.stageChange(timeStamp);
 
         sendMessageBack(curStatus,curSession);
 
