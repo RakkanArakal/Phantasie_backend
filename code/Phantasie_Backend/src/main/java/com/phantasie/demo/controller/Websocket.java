@@ -203,10 +203,10 @@ public class Websocket {
         switch (type){
             case 0:{                                            //回合开始
                 curStatus   = "yourTurn$" + timeStamp + "$" + game.packStat(seat) +
-                                                        "$" + game.packStatsimple(enemy);
+                                      "$" + game.packStatsimple(enemy);
 
-                enemyStatus = "waitTurn$" + timeStamp + "$" + game.packStat(enemy) + "" +
-                        "                                $" + game.packStatsimple(seat);
+                enemyStatus = "waitTurn$" + timeStamp + "$" + game.packStat(enemy) +
+                                      "$" + game.packStatsimple(seat);
             }
                 break;
             case 1:{
