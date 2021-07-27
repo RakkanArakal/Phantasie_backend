@@ -24,7 +24,7 @@ public class SessionUtil {
                 return true;
             }
         }
-        return false;
+        return true;
     }
 
     public static JSONObject getAuth(){
