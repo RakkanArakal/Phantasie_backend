@@ -166,7 +166,7 @@ public class Game {
             switch (card.getSpecial()){
                 case 1:{
                 getCard(id,1);
-                break;
+                break; //
                 }
             }
         }
