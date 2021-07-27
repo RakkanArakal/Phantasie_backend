@@ -51,5 +51,10 @@ public class LoginController {
 
         return userService.signup(username, password,phone);
     }
+
+    @RequestMapping(value = "/test")
+    public String TestFunc(){
+        return "wrong!";
+    }
 }
 
