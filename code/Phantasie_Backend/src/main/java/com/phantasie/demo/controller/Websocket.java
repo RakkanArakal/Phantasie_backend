@@ -179,7 +179,7 @@ public class Websocket {
         sendMessageBack(status0,toSession0);
         sendMessageBack(status1,toSession1);
 
-        game.getCard(1);                         //后手抽卡
+        gameRun(rid, toSession1, 1, 1);                         //后手抽卡
         gameRun(rid, toSession0, 0, 0);
 
 >>>>>>> 3a4695c (7.21 15:56)
