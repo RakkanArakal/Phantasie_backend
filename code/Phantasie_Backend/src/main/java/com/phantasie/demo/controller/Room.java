@@ -11,7 +11,7 @@ public class Room implements Serializable {
     private int gameId;
     public GameStatus[] player = new GameStatus[2];
     public boolean isready;
-    public int[] readyarr;
+    public int playerNow;
     public int roomsize;
 
     public Room() {
@@ -43,7 +43,7 @@ public class Room implements Serializable {
         gameStatus.setGameId(rid);
         gameStatus.setSeat(0);
         gameStatus.setInRoom(true);
-
+        playerNow = 0;
         player[0] = gameStatus;
     }
 

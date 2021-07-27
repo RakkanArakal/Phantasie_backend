@@ -90,14 +90,14 @@ public class Websocket {
 
     private void searchRoom(Session session) {
         log.info("查询房间");
-        String roomInfo = "allRoom$";
+        String roomInfo = "allRoom";
         for(Map.Entry<Integer, Room> roomMap:allRooms.entrySet()){
             Room room = roomMap.getValue();
             if(room.getRoomsize() == 1) {
+                roomInfo += "$";
                 roomInfo += room.player[0].getPlayerName();
                 roomInfo += "#";
                 roomInfo += Integer.toString(room.getGameId());
-                roomInfo += "$";
             }
         }
         sendMessageBack(roomInfo,session);
@@ -231,6 +231,7 @@ public class Websocket {
 //                enemyStatus = "waitTurn#" + rid ;
                 game.endTurn(seat);
                 gameRun(rid,enemySession,enemy,0);        // 敌方回合开始
+                game.setPlayerNow(enemy);
                 return ;
             }
             default:
@@ -280,6 +281,7 @@ public class Websocket {
         String[] splitMessage=message.split("#");
         int rid = allPlayers.get(session.getId()).getGameId();
         int seat = allPlayers.get(session.getId()).getSeat();
+        int playerNow = allGames.get(rid).getPlayerNow();
         int argu1 = 0;
         if(splitMessage.length > 1)
             argu1 = Integer.parseInt(splitMessage[1]);
@@ -295,11 +297,21 @@ public class Websocket {
                     return;
 //                case "getCard":     gameRun(rid,session,seat,1);
 //                    return;
-                case "useCard":     gameRun(rid,session,seat,200+argu1);
+
+                case "useCard": {
+                    if (seat != playerNow)
+                        break;
+                    gameRun(rid, session, seat, 200 + argu1);
                     return;
-                case "endTurn":     gameRun(rid,session,seat,3);
+                }
+                case "endTurn": {
+                    if (seat != playerNow)
+                        break;
+                    gameRun(rid, session, seat, 3);
                     return;
-                case "update":     gameRun(rid,session,seat,3);
+                }
+                case "update":
+                    gameRun(rid,session,seat,3);
                     return;
                 default:
                     break;

@@ -32,6 +32,8 @@ public class Game {
 
     private int timeStamp;
 
+    private int playerNow;
+
     boolean isRunning = true;
 
     public GameStatus nowStatus ;
@@ -199,6 +201,7 @@ public class Game {
         player[1].setSeat(1);
         setGameId(rid);
         timeStamp = 0 ;
+        playerNow = 0;
     }
 
 
