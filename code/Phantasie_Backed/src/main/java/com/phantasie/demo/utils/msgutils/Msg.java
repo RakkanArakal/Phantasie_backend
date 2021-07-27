@@ -1,7 +1,11 @@
 package com.phantasie.demo.utils.msgutils;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.sf.json.JSONObject;
 
+@Getter
+@Setter
 public class Msg {
     private int status;
     private String msg;

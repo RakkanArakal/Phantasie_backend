@@ -1,17 +1,19 @@
 package com.phantasie.demo.controller;
 
-import com.phantasie.demo.entity.UserVerify;
 import com.phantasie.demo.service.UserService;
 import com.phantasie.demo.utils.msgutils.Msg;
-import com.phantasie.demo.utils.msgutils.MsgCode;
-import com.phantasie.demo.utils.msgutils.MsgUtil;
-import net.sf.json.JSONObject;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-
+@Getter
+@Setter
 @RestController
 @RequestMapping("/api")
 public class LoginController {
@@ -37,7 +39,6 @@ public class LoginController {
     }
 
     @PostMapping(value = "/signup")
-    @ResponseBody
     public Msg signup(@RequestBody Map map) {
         String username = (String) map.get("username");
         String password = (String) map.get("password");
