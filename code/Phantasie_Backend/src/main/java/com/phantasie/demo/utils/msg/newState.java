@@ -1,4 +1,4 @@
-package com.phantasie.demo.msg;
+package com.phantasie.demo.utils.msg;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,12 +6,11 @@ import lombok.Setter;
 @Setter
 @Getter
 public class newState {
-
-    int seat;
-    int varType;
-    boolean plusVar;
-    int changeVar;
-    int updateVar;
+    private int seat;
+    private int varType;
+    private boolean plusVar;
+    private int changeVar;
+    private int updateVar;
 
     public newState(int s, int v, boolean p, int c, int u) {
         seat = s;
@@ -19,8 +18,5 @@ public class newState {
         plusVar = p;
         changeVar = c;
         updateVar = u;
-    }
-
-    newState() {
     }
 }

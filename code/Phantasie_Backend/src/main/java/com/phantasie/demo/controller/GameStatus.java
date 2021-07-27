@@ -85,12 +85,44 @@ public class GameStatus implements Cloneable {
 
         for(int i=0;i<10;i++){
             int r = (int) (Math.random ()*(352324 +1));
-            if  (r % 3 == 1)
-                Deck.add(0);
-            else if(r % 3 == 2)
-                Deck.add(200);
-            else
-                Deck.add(203);
+            switch (r % 17){
+                case 0 : Deck.add(0);
+                    break;
+                case 1 : Deck.add(100);
+                    break;
+                case 2 : Deck.add(200);
+                    break;
+                case 3 : Deck.add(201);
+                    break;
+                case 4 : Deck.add(202);
+                    break;
+                case 5 : Deck.add(203);
+                    break;
+                case 6 : Deck.add(204);
+                    break;
+                case 7 : Deck.add(300);
+                    break;
+                case 8 : Deck.add(301);
+                    break;
+                case 9 : Deck.add(302);
+                    break;
+                case 10 : Deck.add(303);
+                    break;
+                case 11 : Deck.add(304);
+                    break;
+                case 12 : Deck.add(400);
+                    break;
+                case 13 : Deck.add(401);
+                    break;
+                case 14 : Deck.add(402);
+                    break;
+                case 15 : Deck.add(403);
+                    break;
+                case 16 : Deck.add(404);
+                    break;
+
+            }
+
         }
 
         return Deck;

@@ -1,4 +1,4 @@
-package com.phantasie.demo.msg;
+package com.phantasie.demo.utils.msg;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,9 +10,9 @@ import java.util.List;
 @Getter
 public class cardMsg {
 
-    Integer hands;
+    private Integer hands;
 
-    Integer decks;
+    private Integer decks;
 
     private List<Integer> cardList = new LinkedList<>();
 

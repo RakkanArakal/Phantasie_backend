@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
             JSONObject obj = new JSONObject();
             obj.put("user_id", user.getUser_id());
             obj.put("name", userVerify.getUsername());
+
             return MsgUtil.makeMsg(MsgCode.LOGIN_SUCCESS, MsgUtil.LOGIN_SUCCESS_MSG, obj);
         }
         else {

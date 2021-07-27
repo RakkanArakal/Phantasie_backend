@@ -51,6 +51,7 @@ public class Websocket {
         String sessionid = session.getId();
         int cnt = onlineCount.decrementAndGet(); // 在线数减1
         clients.remove(sessionid);
+        allPlayers.remove(sessionid);
         log.info("有一连接关闭：{}，当前在线人数为：{}", session.getId(), cnt);
     }
 
@@ -83,7 +84,9 @@ public class Websocket {
         Room room = allRooms.get(rid);
         if(room.roomsize > 1 || room.player[0].getPlayerId() != session.getId())
             throw new ExceptionMessage("error");
+
         allRooms.remove(rid);
+        allPlayers.get(session.getId()).setInRoom(false);
         sendMessageBack("successExit",session);
         return;
     }
@@ -261,8 +264,11 @@ public class Websocket {
                 sendMessageBack(winner,enemySession);
                 sendMessageBack(loser,curSession);
             }
+            game.player[0].setInRoom(false);
+            game.player[1].setInRoom(false);
             allRooms.remove(rid);
             allGames.remove(rid);
+
             return ;
         }
         if(type == 0){

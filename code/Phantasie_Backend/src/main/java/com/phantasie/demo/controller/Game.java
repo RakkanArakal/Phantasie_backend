@@ -3,8 +3,8 @@ package com.phantasie.demo.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phantasie.demo.entity.Card;
-import com.phantasie.demo.msg.cardMsg;
-import com.phantasie.demo.msg.newState;
+import com.phantasie.demo.utils.msg.cardMsg;
+import com.phantasie.demo.utils.msg.newState;
 import lombok.Getter;
 import lombok.Setter;
 import net.sf.json.JSONArray;
@@ -89,6 +89,28 @@ public class Game {
         return;
     }
 
+
+    public void getCard(int id,int cnt) {
+
+//        nowStatus = player[id];
+//        enemyStatus = player[id^1];
+
+        List<Integer> cardList = nowStatus.getCardList();
+        List<Integer> deckList = nowStatus.getDeckList();
+
+        if(deckList.size() == 0)     nowStatus.resetDeckList();
+
+        for(int i=0;i<cnt;i++){
+            cardList.add(deckList.get(0));
+            deckList.remove(0);
+        }
+
+
+
+//        timeStamp++;
+        return;
+    }
+
     /**
      *  todo
         卡片使用
@@ -127,14 +149,28 @@ public class Game {
             default:
                 break;
         }
+        if(card.getEmy_hp() != 0 ) {
+            timeStamp++;
+            newState stateHp = new newState(id ^ 1, 0, true, card.getEmy_hp(), enemyStatus.getHp());
+            allState.put(timeStamp, stateHp);
+        }
 
-        timeStamp++;
-        newState stateHp = new newState(id^1,0,true,card.getEmy_hp(),enemyStatus.getHp());
-        allState.put(timeStamp,stateHp);
+        if(card.getMy_cost() != 0 ) {
+            timeStamp++;
+            newState stateMp = new newState(id, 1, false, card.getMy_cost(), nowStatus.getAp());
+            allState.put(timeStamp, stateMp);
+        }
 
-        timeStamp++;
-        newState stateMp = new newState(id,1,false,card.getMy_cost(),nowStatus.getAp());
-        allState.put(timeStamp,stateMp);
+        if(card.getSpecial() != 0){
+            timeStamp++;
+            switch (card.getSpecial()){
+                case 1:{
+                getCard(id,1);
+                break;
+                }
+            }
+        }
+
 
         if(nowStatus.getHp() <= 0 || enemyStatus.getHp() <= 0)
             isRunning = false;
