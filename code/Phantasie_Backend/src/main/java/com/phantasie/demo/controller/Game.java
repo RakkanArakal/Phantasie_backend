@@ -32,7 +32,7 @@ public class Game {
 
     private int timeStamp;
 
-    private int playerNow;
+    private int playerNow = 0;
 
     boolean isRunning = true;
 
