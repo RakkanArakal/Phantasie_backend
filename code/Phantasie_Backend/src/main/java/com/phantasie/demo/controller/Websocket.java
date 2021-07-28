@@ -1,13 +1,20 @@
 package com.phantasie.demo.controller;
 
+<<<<<<< HEAD
 import com.phantasie.demo.utils.msgutils.Msg;
 import com.phantasie.demo.utils.msgutils.MsgUtil;
+=======
+
+
+import com.phantasie.demo.config.config.WebSocketConfig;
+>>>>>>> e24ea9e (session)
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
@@ -18,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
-@ServerEndpoint(value = "/game/test")
+@ServerEndpoint(value = "/game/test",configurator = WebSocketConfig.class)
 @Component
 public class Websocket {
     /**
@@ -31,7 +38,9 @@ public class Websocket {
     /**
      * 存放所有在线的客户端
      */
+
     private static  Map<String, Session> clients = new ConcurrentHashMap<>();
+    private static Map<Session,HttpSession> sessionMap = new ConcurrentHashMap<>();
     private static  Map<String, GameStatus> allPlayers = new ConcurrentHashMap<>();
     public static  Map<Integer, Game> allGames = new ConcurrentHashMap<>();
     public static  Map<Integer, Room> allRooms = new ConcurrentHashMap<>();
@@ -40,7 +49,8 @@ public class Websocket {
     public static int currentGameId = 0;
 
     @OnOpen
-    public void onOpen(Session session){
+    public void onOpen(Session session,EndpointConfig endpointConfig){
+        //HttpSession httpSession = (HttpSession) endpointConfig.getUserProperties().get(HttpSession.class.getName());
         int cnt = onlineCount.incrementAndGet();
         clients.put(session.getId(),session);
         log.info("有新连接加入：{}，当前在线人数为：{}", session.getId(), cnt);
@@ -49,6 +59,10 @@ public class Websocket {
         player.setPlayerId(session.getId());
         //TODO:登陆后在此保存玩家昵称
         player.setPlayerName("玩家名字");
+        //String id = httpSession.getId();
+        log.info(session.getId()+"\n");
+        //log.info(id);
+        //sessionMap.put(session,httpSession);
         allPlayers.put(session.getId(), player);
     }
 
@@ -63,6 +77,7 @@ public class Websocket {
         }
         clients.remove(sessionid);
         allPlayers.remove(sessionid);
+        sessionMap.remove(sessionid);
         log.info("有一连接关闭：{}，当前在线人数为：{}", session.getId(), cnt);
     }
 

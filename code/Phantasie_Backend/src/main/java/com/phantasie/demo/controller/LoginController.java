@@ -2,9 +2,13 @@ package com.phantasie.demo.controller;
 
 import com.phantasie.demo.entity.User;
 import com.phantasie.demo.service.UserService;
+import com.phantasie.demo.utils.SessionUtil;
 import com.phantasie.demo.utils.msgutils.Msg;
+import com.phantasie.demo.utils.msgutils.MsgCode;
+import com.phantasie.demo.utils.msgutils.MsgUtil;
 import lombok.Getter;
 import lombok.Setter;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,6 +59,24 @@ public class LoginController {
     @RequestMapping(value = "/test")
     public String TestFunc(){
         return "wrong!";
+    }
+
+
+
+
+
+
+
+    @RequestMapping("/checkSession")
+    public Msg checkSession(){
+        JSONObject auth = SessionUtil.getAuth();
+
+        if(auth == null){
+            return MsgUtil.makeMsg(MsgCode.NOT_LOGGED_IN_ERROR);
+        }
+        else{
+            return MsgUtil.makeMsg(MsgCode.LOGIN_SUCCESS, MsgUtil.LOGIN_SUCCESS_MSG, auth);
+        }
     }
 }
 

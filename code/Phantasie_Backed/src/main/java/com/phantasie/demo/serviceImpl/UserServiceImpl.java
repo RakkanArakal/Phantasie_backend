@@ -10,6 +10,9 @@ import com.phantasie.demo.utils.msgutils.MsgUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.phantasie.demo.utils.SessionUtil;
+
+import static com.phantasie.demo.utils.SessionUtil.setSession;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,6 +28,7 @@ public class UserServiceImpl implements UserService {
             JSONObject obj = new JSONObject();
             obj.put("user_id", user.getUserId());
             obj.put("name", userVerify.getUsername());
+            setSession(obj);
             return MsgUtil.makeMsg(MsgCode.LOGIN_SUCCESS, MsgUtil.LOGIN_SUCCESS_MSG, obj);
         }
         else {

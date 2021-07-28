@@ -37,8 +37,8 @@ public class SessionUtil {
             if(session != null) {
                 JSONObject ret = new JSONObject();
                 //TODO:加上会话存在会返回的信息
-                //ret.put(Constant.USER_ID, (Integer)session.getAttribute(Constant.USER_ID));
-                //ret.put(Constant.USERNAME, (String)session.getAttribute(Constant.USERNAME));
+                ret.put("userId", (Integer)session.getAttribute("user_id"));
+                ret.put("username", (String)session.getAttribute("name"));
                 //ret.put(Constant.USER_TYPE, (Integer)session.getAttribute(Constant.USER_TYPE));
                 return ret;
             }
