@@ -7,16 +7,25 @@ import com.phantasie.demo.utils.msgutils.MsgUtil;
 
 
 import com.phantasie.demo.config.config.WebSocketConfig;
+<<<<<<< HEAD
 >>>>>>> e24ea9e (session)
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
+=======
+import com.phantasie.demo.utils.SessionUtil;
+import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
+>>>>>>> 1a79dbb (token)
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import javax.websocket.server.ServerEndpointConfig;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
-@ServerEndpoint(value = "/game/test",configurator = WebSocketConfig.class)
+@ServerEndpoint(value = "/game/test/{token}",configurator = WebSocketConfig.class)
 @Component
 public class Websocket {
     /**
@@ -33,7 +42,8 @@ public class Websocket {
      */
     private static final AtomicInteger onlineCount = new AtomicInteger(0);
 
-    private Session session;
+    private CloseReason closeReason = new CloseReason(CloseReason.CloseCodes.PROTOCOL_ERROR,
+            "未经允许的连接");
 
     /**
      * 存放所有在线的客户端
@@ -49,7 +59,9 @@ public class Websocket {
     public static int currentGameId = 0;
 
     @OnOpen
-    public void onOpen(Session session,EndpointConfig endpointConfig){
+    public void onOpen(Session session, @PathParam("token") String token) throws IOException {
+        if(!token.equals("1"))
+        session.close(closeReason);
         //HttpSession httpSession = (HttpSession) endpointConfig.getUserProperties().get(HttpSession.class.getName());
         int cnt = onlineCount.incrementAndGet();
         clients.put(session.getId(),session);

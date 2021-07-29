@@ -58,7 +58,7 @@ public class LoginController {
 
     @RequestMapping(value = "/test")
     public String TestFunc(){
-        return "wrong!";
+        return SessionUtil.setToken();
     }
 
 

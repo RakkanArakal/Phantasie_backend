@@ -18,15 +18,9 @@ public class WebSocketConfig extends ServerEndpointConfig.Configurator{
     /* 修改握手,就是在握手协议建立之前修改其中携带的内容 */
     @Override
     public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
-        /*如果没有监听器,那么这里获取到的HttpSession是null*/
-        StandardSessionFacade ssf = (StandardSessionFacade) request.getHttpSession();
-        if (ssf != null) {
-            HttpSession session = (javax.servlet.http.HttpSession) request.getHttpSession();
-            sec.getUserProperties().put("sessionid", session);
-            log.info("获取到的SessionID：{}",session.getId());
-        }
-        sec.getUserProperties().put("name", "小强");
-        super.modifyHandshake(sec, request, response);
+
+            HttpSession httpSession = (HttpSession)request.getHttpSession();
+            sec.getUserProperties().put(HttpSession.class.getName(),httpSession);
     }
 
 

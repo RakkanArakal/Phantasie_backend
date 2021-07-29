@@ -61,6 +61,18 @@ public class SessionUtil {
         }
     }
 
+    public static String setToken(){
+        ServletRequestAttributes requestAttributes
+                = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if(requestAttributes != null) {
+            HttpServletRequest request = requestAttributes.getRequest();
+            HttpSession session = request.getSession();
+            System.out.println("设置了识别码"+session.getId());
+            return session.getId();
+        }
+        return "";
+    }
+
     public static Boolean removeSession(){
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
