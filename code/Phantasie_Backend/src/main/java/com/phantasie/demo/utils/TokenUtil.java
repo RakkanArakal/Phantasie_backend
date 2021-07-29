@@ -13,7 +13,7 @@ public class TokenUtil {
 
     protected static String SHA256(String str){
         MessageDigest messageDigest;
-        String encodeStr = "";
+        String encodeStr = str;
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
             messageDigest.update(str.getBytes("UTF-8"));

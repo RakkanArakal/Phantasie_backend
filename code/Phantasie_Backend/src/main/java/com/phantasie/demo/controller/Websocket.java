@@ -42,7 +42,7 @@ public class Websocket {
      */
     private static final AtomicInteger onlineCount = new AtomicInteger(0);
 
-    private CloseReason closeReason = new CloseReason(CloseReason.CloseCodes.PROTOCOL_ERROR,
+    private static CloseReason closeReason = new CloseReason(CloseReason.CloseCodes.PROTOCOL_ERROR,
             "未经允许的连接");
 
     /**

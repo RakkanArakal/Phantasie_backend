@@ -67,7 +67,6 @@ public class SessionUtil {
         if(requestAttributes != null) {
             HttpServletRequest request = requestAttributes.getRequest();
             HttpSession session = request.getSession();
-            System.out.println("设置了识别码"+session.getId());
             return session.getId();
         }
         return "";

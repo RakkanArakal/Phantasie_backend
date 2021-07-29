@@ -3,6 +3,7 @@ package com.phantasie.demo.controller;
 import com.phantasie.demo.entity.User;
 import com.phantasie.demo.service.UserService;
 import com.phantasie.demo.utils.SessionUtil;
+import com.phantasie.demo.utils.TokenUtil;
 import com.phantasie.demo.utils.msgutils.Msg;
 import com.phantasie.demo.utils.msgutils.MsgCode;
 import com.phantasie.demo.utils.msgutils.MsgUtil;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -57,8 +59,8 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/test")
-    public String TestFunc(){
-        return SessionUtil.setToken();
+    public String TestFunc() throws UnsupportedEncodingException {
+        return TokenUtil.generate(SessionUtil.setToken(),"12345");
     }
 
 
