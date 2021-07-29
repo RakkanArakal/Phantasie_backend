@@ -33,6 +33,7 @@ public class User {
     private String achieve;
 
 <<<<<<< HEAD:code/Phantasie_Backed/src/main/java/com/phantasie/demo/entity/User.java
+<<<<<<< HEAD:code/Phantasie_Backed/src/main/java/com/phantasie/demo/entity/User.java
     private String unlockSkill;
 
     private String unlockBuff;
@@ -43,6 +44,9 @@ public class User {
 =======
 >>>>>>> 328bd2a (14:37):code/Phantasie_Backend/src/main/java/com/phantasie/demo/entity/User.java
     private String job;
+=======
+    private Integer job;
+>>>>>>> 367b954 (17:33):code/Phantasie_Backend/src/main/java/com/phantasie/demo/entity/User.java
 
     private String jobInfo;
 
@@ -50,7 +54,7 @@ public class User {
 
     public User() {
         achieve = null;
-        job = "Warrior";
+        job = 0;
     }
 
     @Id

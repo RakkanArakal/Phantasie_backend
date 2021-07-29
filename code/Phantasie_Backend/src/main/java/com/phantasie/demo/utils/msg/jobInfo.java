@@ -49,6 +49,7 @@ public class jobInfo {
             }break;
         }
     }
+    public jobInfo(){}
 
     public static List<jobInfo> initJob(){
         List<jobInfo> jobInfoList = new LinkedList<>();

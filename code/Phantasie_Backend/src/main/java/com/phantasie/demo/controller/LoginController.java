@@ -1,9 +1,11 @@
 package com.phantasie.demo.controller;
 
 import com.phantasie.demo.entity.User;
+import com.phantasie.demo.entity.UserVerify;
 import com.phantasie.demo.service.UserService;
 import com.phantasie.demo.utils.SessionUtil;
 import com.phantasie.demo.utils.TokenUtil;
+import com.phantasie.demo.utils.msg.jobInfo;
 import com.phantasie.demo.utils.msgutils.Msg;
 import com.phantasie.demo.utils.msgutils.MsgCode;
 import com.phantasie.demo.utils.msgutils.MsgUtil;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,10 +32,12 @@ public class LoginController {
     UserService userService;
 
     public static Map<Integer ,User> allUsers = new ConcurrentHashMap<>();
+    public static Map<Integer ,List<jobInfo>> allJobInfos = new ConcurrentHashMap<>();
+
 
 
     @RequestMapping("/login")
-    public Msg login(@RequestBody Map<String,String> map) {
+    public Msg login(@RequestBody Map<String,String> map) throws UnsupportedEncodingException {
         System.out.println("用户登录请求");
         String username = (String) map.get("username");
         String password = (String) map.get("password");
@@ -45,16 +50,41 @@ public class LoginController {
         return MsgUtil.makeMsg(MsgCode.SIGNUP_SUCCESS, MsgUtil.SIGNUP_SUCCESS_MSG, obj);
 =======
 
+<<<<<<< HEAD
         return userService.login(username, password);
 >>>>>>> efaab6e (14:15)
+=======
+        Msg ret = userService.login(username, password);
+        if(ret.getStatus() == -100) {
+            return ret;
+        }
+        User user = userService.findUserByUsername(username);
+        Integer id = user.getUserId();
+
+        if(allUsers.get(id) != null && allJobInfos.get(id) != null){
+            String token = allUsers.get(id).getUserVerify().getToken();
+            ret.getData().put("token",token);
+            return ret;
+        }
+        UserVerify userVerify = user.getUserVerify();
+        userVerify.setToken(TokenUtil.generate(SessionUtil.setToken(),userVerify.getPhone()));
+        allUsers.put(id,user);
+        String jobInfoStr = user.getJobInfo();
+        List<jobInfo> jobInfoList = com.alibaba.fastjson.JSONArray.parseArray(jobInfoStr,jobInfo.class);
+        allJobInfos.put(id,jobInfoList);
+        String token = allUsers.get(id).getUserVerify().getToken();
+        ret.getData().put("token",token);
+        return ret;
+>>>>>>> 367b954 (17:33)
     }
+
+
 
     @PostMapping(value = "/signup")
     public Msg signup(@RequestBody Map map) {
         String username = (String) map.get("username");
         String password = (String) map.get("password");
         String phone = (String) map.get("phone");
-
         return userService.signup(username, password,phone);
     }
 
@@ -62,11 +92,6 @@ public class LoginController {
     public String TestFunc() throws UnsupportedEncodingException {
         return TokenUtil.generate(SessionUtil.setToken(),"12345");
     }
-
-
-
-
-
 
 
     @RequestMapping("/checkSession")

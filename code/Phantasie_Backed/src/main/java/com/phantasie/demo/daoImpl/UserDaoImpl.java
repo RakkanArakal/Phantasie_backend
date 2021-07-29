@@ -32,8 +32,9 @@ public class UserDaoImpl implements UserDao {
         List<jobInfo> jobInfoList = jobInfo.initJob();
         JSONArray data = JSONArray.fromObject(jobInfoList);
         user.setJobInfo(data.toString());
-        userRepository.saveAndFlush(user);
 
+        System.out.print(data.toString());
+        userRepository.saveAndFlush(user);
 
         System.out.println("new user "+user.getUserId().toString()+" named "+name);
         UserVerify userVerify = new UserVerify();
@@ -42,6 +43,7 @@ public class UserDaoImpl implements UserDao {
         userVerify.setPassword(password);
         userVerify.setPhone(phone);
         userVerifyRepository.saveAndFlush(userVerify);
+
         return user;
     }
 

@@ -10,7 +10,6 @@ import com.phantasie.demo.utils.msgutils.MsgUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.phantasie.demo.utils.SessionUtil;
 
 import static com.phantasie.demo.utils.SessionUtil.setSession;
 
@@ -66,7 +65,8 @@ public class UserServiceImpl implements UserService {
         return userDao.findUserById(id);
     }
 
-    private User findUserByUsername(String username) {
+    @Override
+    public User findUserByUsername(String username) {
         if (username.isEmpty()) return null;
         return userDao.findUserByUsername(username);
     }

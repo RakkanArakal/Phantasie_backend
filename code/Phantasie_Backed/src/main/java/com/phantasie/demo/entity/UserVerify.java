@@ -14,13 +14,22 @@ import javax.persistence.*;
 @JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler", "user"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "user_id")
 public class UserVerify {
+
     private Integer user_id;
+
     private String username;
+
     private String password;
 <<<<<<< HEAD:code/Phantasie_Backed/src/main/java/com/phantasie/demo/entity/UserVerify.java
+<<<<<<< HEAD:code/Phantasie_Backed/src/main/java/com/phantasie/demo/entity/UserVerify.java
 =======
+=======
+
+>>>>>>> 367b954 (17:33):code/Phantasie_Backend/src/main/java/com/phantasie/demo/entity/UserVerify.java
     private String phone;
 >>>>>>> efaab6e (14:15):code/Phantasie_Backend/src/main/java/com/phantasie/demo/entity/UserVerify.java
+
+    private String token;
 
     private User user;
 
