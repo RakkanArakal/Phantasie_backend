@@ -6,8 +6,12 @@ import com.phantasie.demo.entity.User;
 import com.phantasie.demo.entity.UserVerify;
 import com.phantasie.demo.repository.UserRepository;
 import com.phantasie.demo.repository.UserVerifyRepository;
+import com.phantasie.demo.utils.msg.jobInfo;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -25,7 +29,12 @@ public class UserDaoImpl implements UserDao {
         User user = new User();
         user.setNickName(name);
 
+        List<jobInfo> jobInfoList = jobInfo.initJob();
+        JSONArray data = JSONArray.fromObject(jobInfoList);
+        user.setJobInfo(data.toString());
         userRepository.saveAndFlush(user);
+
+
         System.out.println("new user "+user.getUserId().toString()+" named "+name);
         UserVerify userVerify = new UserVerify();
         userVerify.setUser_id(user.getUserId());

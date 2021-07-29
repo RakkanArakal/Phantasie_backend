@@ -30,10 +30,9 @@ public class User {
 
     private String nickName;
 
-    private String unlockCard;
-
     private String achieve;
 
+<<<<<<< HEAD:code/Phantasie_Backed/src/main/java/com/phantasie/demo/entity/User.java
     private String unlockSkill;
 
     private String unlockBuff;
@@ -41,16 +40,16 @@ public class User {
 >>>>>>> efaab6e (14:15):code/Phantasie_Backend/src/main/java/com/phantasie/demo/entity/User.java
     private UserVerify userVerify;
 
+=======
+>>>>>>> 328bd2a (14:37):code/Phantasie_Backend/src/main/java/com/phantasie/demo/entity/User.java
     private String job;
 
-    private Integer skillId;
+    private String jobInfo;
 
-    private Integer buffId;
-
-    private String cardLibrary;
+    private UserVerify userVerify;
 
     public User() {
-
+        achieve = null;
         job = "Warrior";
     }
 

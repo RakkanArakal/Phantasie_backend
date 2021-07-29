@@ -46,11 +46,15 @@ public class jobInfo {
                 unlockBuff = List.of(241,242);
                 unlockCard = List.of(0,100,500,400,401,402,403,404);
                 cardLibrary = List.of(500,100,0,0,400,400,401,402,403,404);
-
             }break;
-
         }
     }
 
-
+    public static List<jobInfo> initJob(){
+        List<jobInfo> jobInfoList = new LinkedList<>();
+        jobInfoList.add(new jobInfo(0));
+        jobInfoList.add(new jobInfo(1));
+        jobInfoList.add(new jobInfo(2));
+        return jobInfoList;
+    }
 }
