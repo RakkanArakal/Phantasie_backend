@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,7 +38,7 @@ public class LoginController {
 
 
     @RequestMapping("/login")
-    public Msg login(@RequestBody Map<String,String> map) throws UnsupportedEncodingException {
+    public Msg login(@RequestBody Map<String,String> map) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         System.out.println("用户登录请求");
         String username = (String) map.get("username");
         String password = (String) map.get("password");
@@ -89,7 +90,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/test")
-    public String TestFunc() throws UnsupportedEncodingException {
+    public String TestFunc() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         return TokenUtil.generate(SessionUtil.setToken(),"12345");
     }
 

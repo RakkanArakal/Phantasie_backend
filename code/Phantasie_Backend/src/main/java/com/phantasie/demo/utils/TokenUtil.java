@@ -7,13 +7,27 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class TokenUtil {
-    protected static String base64(String str){
-        return Base64.getEncoder().encodeToString(str.getBytes(StandardCharsets.UTF_8));
+    protected static String MD5(String str) throws NoSuchAlgorithmException {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(str.getBytes(StandardCharsets.UTF_8));
+            byte s[] = md.digest();
+            String result = "";
+
+            for (int i = 0; i < s.length; i++) {
+                result += Integer.toHexString((0x000000FF & s[i]) | 0xFFFFFF00).substring(6);
+            }
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     protected static String SHA256(String str){
         MessageDigest messageDigest;
-        String encodeStr = str;
+        String encodeStr;
+        encodeStr = str;
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
             messageDigest.update(str.getBytes("UTF-8"));
@@ -45,12 +59,15 @@ public class TokenUtil {
         return stringBuffer.toString();
     }
 
-    public static String generate(String param1, String param2) throws UnsupportedEncodingException {
+    public static String generate(String param1, String param2) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         int ran = (int)(Math.random()*100);
+        String ret;
         if(ran %2 == 1){
-            return (base64(param1) + SHA256(param2));
+            ret = (MD5(param1) + SHA256(param2));
+            return ret;
         }else {
-            return (SHA256(param1) + base64(param2));
+            ret = (SHA256(param1) + MD5(param2));
+            return ret;
         }
     }
 }
