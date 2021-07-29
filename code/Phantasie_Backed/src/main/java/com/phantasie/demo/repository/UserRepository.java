@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query(value = "select u from User u where u.user_id = :id")
+    @Query(value = "select u from User u where u.userId = :id")
     User findUserById(@Param("id") Integer id);
 
-    @Query(value = "select u from User u where u.nick_name = :nick_name")
-    User findUserByName(@Param("nick_name") String name);
+    @Query(value = "select u from User u where u.nickName = :nickName")
+    User findUserByName(@Param("nickName") String name);
 }

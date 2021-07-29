@@ -32,6 +32,8 @@ public class Game {
 
     private int timeStamp;
 
+    private int msgCount;
+
     private int playerNow = 0;
 
     boolean isRunning = true;
@@ -45,26 +47,24 @@ public class Game {
     }
 
 
-    public String packStat(int id){
+    public JSONArray packStat(int id){
         if(player.length != 2){
-            return ("");
+            return (null);
         }
+        List<JSONObject> jsonObjectList = new LinkedList<>();
 
-        JSONObject data=JSONObject.fromObject(player[id]);
-        data.remove("deckList");
-        data.put("decksSize",player[id].getDeckList().size());
-        return data.toString();
-    }
+        JSONObject data0=JSONObject.fromObject(player[id]);
+        data0.remove("deckList");
+        data0.put("decksSize",player[id].getDeckList().size());
+        jsonObjectList.add(data0);
 
-    public String packStatsimple(int id){
-        if(player.length != 2){
-            return ("");
-        }
-        JSONObject data=JSONObject.fromObject(player[id]);
-        data.remove("cardList");
-        data.remove("deckList");
-        data.put("hands",player[id].getCardList().size());
-        return data.toString();
+        JSONObject data1=JSONObject.fromObject(player[id^1]);
+        data1.remove("cardList");
+        data1.remove("deckList");
+        data1.put("hands",player[id].getCardList().size());
+        jsonObjectList.add(data1);
+
+        return JSONArray.fromObject(jsonObjectList);
     }
 
     public void getCard(int id) {
@@ -155,9 +155,15 @@ public class Game {
             allState.put(timeStamp, stateHp);
         }
 
+        if(card.getMy_hp() != 0 ) {
+            timeStamp++;
+            newState stateHp = new newState(id, 0, false, card.getMy_hp(), nowStatus.getHp());
+            allState.put(timeStamp, stateHp);
+        }
+
         if(card.getMy_cost() != 0 ) {
             timeStamp++;
-            newState stateMp = new newState(id, 1, false, card.getMy_cost(), nowStatus.getAp());
+            newState stateMp = new newState(id, 1, true, card.getMy_cost(), nowStatus.getAp());
             allState.put(timeStamp, stateMp);
         }
 
@@ -165,9 +171,13 @@ public class Game {
             timeStamp++;
             switch (card.getSpecial()){
                 case 1:{
-                getCard(id,1);
-                break; //
+                    getCard(id,1);
+                    newState stateGet = new newState(1);
+                    allState.put(timeStamp,stateGet);
+                    break;
                 }
+                default:
+                    break;
             }
         }
 
@@ -237,35 +247,38 @@ public class Game {
         player[1].setSeat(1);
         setGameId(rid);
         timeStamp = 0 ;
-        playerNow = 0;
+        playerNow = 0 ;
+        msgCount = 0 ;
     }
 
 
-    public String stageChange(int time) {
-        String ret = "";
+    public JSONArray stageChange(int time) {
         if(time == timeStamp)
-            return ret;
+            return null;
         else{
-            ret += "$";
+
             List<newState> newStateList= new LinkedList<>();
             while(time != timeStamp){
                 time ++ ;
-                newStateList.add(allState.get(time));
+                if(allState.get(time).getSpecial() != 0)
+                    continue;
+                else
+                    newStateList.add(allState.get(time));
             }
             JSONArray data=JSONArray.fromObject(newStateList);
-            ret += data.toString() ;
-            return ret;
+
+            return data;
         }
     }
 
 
-    public String cardMsg(boolean flag) {
+    public JSONObject cardMsg(boolean flag) {
         cardMsg cardmsg = new cardMsg(nowStatus.getCardList().size(),nowStatus.getDeckList().size(),nowStatus.getCardList());
         JSONObject data = JSONObject.fromObject(cardmsg);
         if(!flag){
             data.replace("decks",null);
             data.replace("cardList",null);
         }
-        return data.toString();
+        return data;
     }
 }

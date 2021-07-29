@@ -1,6 +1,5 @@
 package com.phantasie.demo.entity;
 
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,18 +11,17 @@ import javax.persistence.*;
 @Setter
 @Data
 @Entity
-@Table(name = "card")
-//@JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler", "userVerify", "cartList", "orderList"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cardId")
-public class Card {
-
+@Table(name = "skillBuff")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "skillBuff")
+public class SkillBuff {
     @Id
-//    @GeneratedValue(generator = "increment", strategy = GenerationType.IDENTITYunlockCard)
+    @GeneratedValue(generator = "increment", strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "increment", strategy = "increment")
+    private Integer id;
 
-    private Integer card_id;
+    private Integer skillBuff_id;
 
-    private String card_name;
+    private String skillBuff_name;
 
     private Integer type;
 
@@ -43,9 +41,8 @@ public class Card {
 
     private Integer duration;
 
-    private Integer special;
+    private int special;
 
-    private Integer special_count;
+    private int special_count;
 
-    private Integer rare;
 }

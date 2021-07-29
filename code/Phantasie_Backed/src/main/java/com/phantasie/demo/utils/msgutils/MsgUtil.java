@@ -1,5 +1,6 @@
 package com.phantasie.demo.utils.msgutils;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class MsgUtil {
@@ -55,11 +56,23 @@ public class MsgUtil {
         return new Msg(code, msg);
     }
 
+    public static Msg makeMsg(int status, String msg){
+        return new Msg(status, msg);
+    }
+
     public static Msg makeMsg(int status, String msg, JSONObject data){
         return new Msg(status, msg, data);
     }
 
-    public static Msg makeMsg(int status, String msg){
-        return new Msg(status, msg);
+    public static Msg makeMsg(int status, String msg, JSONArray list){
+        return new Msg(status, msg,list);
+    }
+
+    public static Msg makeMsg(int status, String msg, JSONObject data,int time){
+        return new Msg(status, msg, data,time);
+    }
+
+    public static Msg makeMsg(int status, String msg, JSONArray list,int time){
+        return new Msg(status, msg,list,time);
     }
 }

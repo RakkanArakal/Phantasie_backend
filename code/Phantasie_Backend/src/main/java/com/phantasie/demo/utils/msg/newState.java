@@ -11,6 +11,7 @@ public class newState {
     private boolean plusVar;
     private int changeVar;
     private int updateVar;
+    private int special = 0;
 
     public newState(int s, int v, boolean p, int c, int u) {
         seat = s;
@@ -18,5 +19,9 @@ public class newState {
         plusVar = p;
         changeVar = c;
         updateVar = u;
+        special = 0;
+    }
+    public newState(int s){
+        special = s;
     }
 }

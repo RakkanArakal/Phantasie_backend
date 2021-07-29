@@ -23,11 +23,12 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User createUser(String name, String password,String phone) {
         User user = new User();
-        user.setNick_name(name);
+        user.setNickName(name);
+
         userRepository.saveAndFlush(user);
-        System.out.println("new user "+user.getUser_id().toString()+" named "+name);
+        System.out.println("new user "+user.getUserId().toString()+" named "+name);
         UserVerify userVerify = new UserVerify();
-        userVerify.setUser_id(user.getUser_id());
+        userVerify.setUser_id(user.getUserId());
         userVerify.setUsername(name);
         userVerify.setPassword(password);
         userVerify.setPhone(phone);

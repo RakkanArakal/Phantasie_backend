@@ -17,7 +17,7 @@ public class CardController {
     @Autowired
     private CardService cardService;
 
-    public static Map<Integer , Card> allCards = new ConcurrentHashMap<>();
+    public static Map<Integer ,Card> allCards = new ConcurrentHashMap<>();
 
     @PostConstruct
     private void init(){
@@ -25,11 +25,5 @@ public class CardController {
         allCards = cards.stream().collect(Collectors.toMap(Card::getCard_id, a -> a,(k1, k2)->k1));
         return;
     }
-
-//
-//    @GetMapping("/getbook")
-//    public List<Card> getCards(){
-//        return cardService.getAllCard();
-//    }
 
 }

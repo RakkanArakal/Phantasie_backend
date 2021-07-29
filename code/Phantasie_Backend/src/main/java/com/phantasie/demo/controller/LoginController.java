@@ -1,5 +1,6 @@
 package com.phantasie.demo.controller;
 
+import com.phantasie.demo.entity.User;
 import com.phantasie.demo.service.UserService;
 import com.phantasie.demo.utils.msgutils.Msg;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter
@@ -19,6 +21,9 @@ import java.util.Map;
 public class LoginController {
     @Autowired
     UserService userService;
+
+    public static Map<Integer ,User> allUsers = new ConcurrentHashMap<>();
+
 
     @RequestMapping("/login")
     public Msg login(@RequestBody Map<String,String> map) {

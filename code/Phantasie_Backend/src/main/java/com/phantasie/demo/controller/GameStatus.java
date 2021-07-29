@@ -7,8 +7,7 @@ import lombok.Setter;
 import java.util.LinkedList;
 import java.util.List;
 
-enum Sequence{First,Second};
-enum Job{Warrior,Archer,Magician};
+enum Job{Warrior,Magician,Ranger};
 
 @Setter
 @Getter
