@@ -59,15 +59,19 @@ public class TokenUtil {
         return stringBuffer.toString();
     }
 
-    public static String generate(String param1, String param2) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        int ran = (int)(Math.random()*100);
+    public static String generate() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        int ran = 0;
+        ran = (int)(Math.random()*100);
+        String rannum = String.valueOf((int)(Math.random()*100000));
+        String param1 = String.valueOf((int)(Math.random()*233333));
+        String param2 = String.valueOf((int)(Math.random()*25565));
         String ret;
+        System.out.println(rannum);
         if(ran %2 == 1){
-            ret = (MD5(param1) + SHA256(param2));
-            return ret;
+            ret = (MD5(param1) + SHA256(param2) +MD5(rannum));
         }else {
-            ret = (SHA256(param1) + MD5(param2));
-            return ret;
+            ret = (MD5(rannum) + SHA256(param1) + MD5(param2));
         }
+        return ret;
     }
 }

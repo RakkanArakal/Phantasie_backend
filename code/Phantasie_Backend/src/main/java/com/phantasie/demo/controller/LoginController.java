@@ -68,7 +68,7 @@ public class LoginController {
             return ret;
         }
         UserVerify userVerify = user.getUserVerify();
-        userVerify.setToken(TokenUtil.generate(SessionUtil.setToken(),userVerify.getPhone()));
+        userVerify.setToken(TokenUtil.generate());
         allUsers.put(id,user);
         String jobInfoStr = user.getJobInfo();
         List<jobInfo> jobInfoList = com.alibaba.fastjson.JSONArray.parseArray(jobInfoStr,jobInfo.class);
@@ -91,7 +91,7 @@ public class LoginController {
 
     @RequestMapping(value = "/test")
     public String TestFunc() throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        return TokenUtil.generate(SessionUtil.setToken(),"12345");
+        return TokenUtil.generate();
     }
 
 
