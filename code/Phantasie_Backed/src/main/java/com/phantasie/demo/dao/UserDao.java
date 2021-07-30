@@ -9,4 +9,6 @@ public interface UserDao {
     User createUser(String name, String password,String phone);
     User findUserById(Integer id);
     User findUserByUsername(String username);
+
+    void setToken(String token, Integer id);
 }

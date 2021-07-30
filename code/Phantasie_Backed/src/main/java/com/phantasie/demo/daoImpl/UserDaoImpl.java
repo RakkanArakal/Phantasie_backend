@@ -52,4 +52,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByUsername(String username) { return userRepository.findUserByName(username); }
+
+    @Override
+    public void setToken(String token, Integer id){
+        User user = userRepository.findUserById(id);
+        user.setToken(token);
+        userRepository.saveAndFlush(user);
+    }
 }

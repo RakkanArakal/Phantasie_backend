@@ -50,6 +50,8 @@ public class User {
 
     private String jobInfo;
 
+    private String token;
+
     private UserVerify userVerify;
 
     public User() {

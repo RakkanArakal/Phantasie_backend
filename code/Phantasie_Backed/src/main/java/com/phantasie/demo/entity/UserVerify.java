@@ -29,7 +29,7 @@ public class UserVerify {
     private String phone;
 >>>>>>> efaab6e (14:15):code/Phantasie_Backend/src/main/java/com/phantasie/demo/entity/UserVerify.java
 
-    private String token;
+//    private String token;
 
     private User user;
 
@@ -46,6 +46,7 @@ public class UserVerify {
     public Integer getUser_id() { return user_id; }
 
     public void setUser_id(Integer user_id) { this.user_id = user_id; }
+
 
     @Column(name = "username")
     public String getUsername() {

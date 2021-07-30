@@ -1,7 +1,6 @@
 package com.phantasie.demo.controller;
 
 import com.phantasie.demo.entity.User;
-import com.phantasie.demo.entity.UserVerify;
 import com.phantasie.demo.service.UserService;
 import com.phantasie.demo.utils.SessionUtil;
 import com.phantasie.demo.utils.TokenUtil;
@@ -63,17 +62,18 @@ public class LoginController {
         Integer id = user.getUserId();
 
         if(allUsers.get(id) != null && allJobInfos.get(id) != null){
-            String token = allUsers.get(id).getUserVerify().getToken();
+            String token = allUsers.get(id).getToken();
             ret.getData().put("token",token);
             return ret;
         }
-        UserVerify userVerify = user.getUserVerify();
-        userVerify.setToken(TokenUtil.generate());
+
+        String token = TokenUtil.generate();
+        userService.setToken(token,id);
         allUsers.put(id,user);
+
         String jobInfoStr = user.getJobInfo();
         List<jobInfo> jobInfoList = com.alibaba.fastjson.JSONArray.parseArray(jobInfoStr,jobInfo.class);
         allJobInfos.put(id,jobInfoList);
-        String token = allUsers.get(id).getUserVerify().getToken();
         ret.getData().put("token",token);
         Websocket.insertToken(token,id);
         return ret;

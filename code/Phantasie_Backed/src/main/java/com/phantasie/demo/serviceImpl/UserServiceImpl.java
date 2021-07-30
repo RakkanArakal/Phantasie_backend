@@ -70,5 +70,11 @@ public class UserServiceImpl implements UserService {
         if (username.isEmpty()) return null;
         return userDao.findUserByUsername(username);
     }
+
+    @Override
+    public void setToken(String token, Integer id){
+        userDao.setToken(token,id);
+        return;
+    }
 }
 

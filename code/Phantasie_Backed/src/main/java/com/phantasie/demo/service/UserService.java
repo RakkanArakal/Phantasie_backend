@@ -7,4 +7,6 @@ public interface UserService {
     Msg login(String username, String password);
     Msg signup(String username, String password,String phone);
     User findUserByUsername(String username);
+
+    void setToken(String token, Integer id);
 }
