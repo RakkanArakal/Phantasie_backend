@@ -75,6 +75,7 @@ public class LoginController {
         allJobInfos.put(id,jobInfoList);
         String token = allUsers.get(id).getUserVerify().getToken();
         ret.getData().put("token",token);
+        Websocket.insertToken(token,id);
         return ret;
 >>>>>>> 367b954 (17:33)
     }

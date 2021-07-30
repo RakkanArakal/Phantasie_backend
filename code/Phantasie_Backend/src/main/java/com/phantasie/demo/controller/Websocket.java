@@ -49,8 +49,9 @@ public class Websocket {
      * 存放所有在线的客户端
      */
 
+    private static Map<String,Integer> tokenMap = new ConcurrentHashMap<>();
     private static  Map<String, Session> clients = new ConcurrentHashMap<>();
-    private static Map<Session,HttpSession> sessionMap = new ConcurrentHashMap<>();
+    //private static Map<Session,HttpSession> sessionMap = new ConcurrentHashMap<>();
     private static  Map<String, GameStatus> allPlayers = new ConcurrentHashMap<>();
     public static  Map<Integer, Game> allGames = new ConcurrentHashMap<>();
     public static  Map<Integer, Room> allRooms = new ConcurrentHashMap<>();
@@ -58,10 +59,19 @@ public class Websocket {
 
     public static int currentGameId = 0;
 
+    static boolean insertToken(String token, int userid){
+        tokenMap.put(token,userid);
+        return true;
+    }
+
+
     @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) throws IOException {
-        if(!token.equals("1"))
-        session.close(closeReason);
+
+        if(tokenMap.get(token) == null){
+            session.close(closeReason);
+        }
+
         //HttpSession httpSession = (HttpSession) endpointConfig.getUserProperties().get(HttpSession.class.getName());
         int cnt = onlineCount.incrementAndGet();
         clients.put(session.getId(),session);
@@ -72,7 +82,7 @@ public class Websocket {
         //TODO:登陆后在此保存玩家昵称
         player.setPlayerName("玩家名字");
         //String id = httpSession.getId();
-        log.info(session.getId()+"\n");
+        //log.info(session.getId()+"\n");
         //log.info(id);
         //sessionMap.put(session,httpSession);
         allPlayers.put(session.getId(), player);
@@ -89,7 +99,7 @@ public class Websocket {
         }
         clients.remove(sessionid);
         allPlayers.remove(sessionid);
-        sessionMap.remove(sessionid);
+        //sessionMap.remove(sessionid);
         log.info("有一连接关闭：{}，当前在线人数为：{}", session.getId(), cnt);
     }
 

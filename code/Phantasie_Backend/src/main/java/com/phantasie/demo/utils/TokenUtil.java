@@ -17,7 +17,7 @@ public class TokenUtil {
             for (int i = 0; i < s.length; i++) {
                 result += Integer.toHexString((0x000000FF & s[i]) | 0xFFFFFF00).substring(6);
             }
-            return result;
+            return result.substring(0,6);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -37,7 +37,7 @@ public class TokenUtil {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return encodeStr;
+        return encodeStr.substring(5,10);
     }
 
     /**
