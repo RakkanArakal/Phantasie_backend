@@ -1,9 +1,12 @@
 package com.phantasie.demo.utils.msgutils;
 
+import com.phantasie.demo.utils.msg.jobInfo;
 import lombok.Getter;
 import lombok.Setter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -70,5 +73,7 @@ public class Msg {
         this.msg = extra;
         this.data = null;
     }
-
+    public void setList(List<jobInfo> jobInfoList){
+        this.list = JSONArray.fromObject(jobInfoList);
+    }
 }

@@ -34,8 +34,6 @@ public class LoginController {
     public static Map<Integer ,User> allUsers = new ConcurrentHashMap<>();
     public static Map<Integer ,List<jobInfo>> allJobInfos = new ConcurrentHashMap<>();
 
-
-
     @RequestMapping("/login")
     public Msg login(@RequestBody Map<String,String> map) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         System.out.println("用户登录请求");
@@ -64,23 +62,25 @@ public class LoginController {
         if(allUsers.get(id) != null && allJobInfos.get(id) != null){
             String token = allUsers.get(id).getToken();
             ret.getData().put("token",token);
+            List<jobInfo> jobInfoList = allJobInfos.get(id);
+            ret.setList(jobInfoList);
             return ret;
         }
 
         String token = TokenUtil.generate();
         userService.setToken(token,id);
+        ret.getData().put("token",token);
         allUsers.put(id,user);
 
         String jobInfoStr = user.getJobInfo();
         List<jobInfo> jobInfoList = com.alibaba.fastjson.JSONArray.parseArray(jobInfoStr,jobInfo.class);
+        ret.setList(jobInfoList);
         allJobInfos.put(id,jobInfoList);
-        ret.getData().put("token",token);
+
         Websocket.insertToken(token,id);
         return ret;
 >>>>>>> 367b954 (17:33)
     }
-
-
 
     @PostMapping(value = "/signup")
     public Msg signup(@RequestBody Map map) {
@@ -95,11 +95,9 @@ public class LoginController {
         return TokenUtil.generate();
     }
 
-
     @RequestMapping("/checkSession")
     public Msg checkSession(){
         JSONObject auth = SessionUtil.getAuth();
-
         if(auth == null){
             return MsgUtil.makeMsg(MsgCode.NOT_LOGGED_IN_ERROR);
         }

@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 public class TokenUtil {
     protected static String MD5(String str) throws NoSuchAlgorithmException {
@@ -66,7 +65,7 @@ public class TokenUtil {
         String param1 = String.valueOf((int)(Math.random()*233333));
         String param2 = String.valueOf((int)(Math.random()*25565));
         String ret;
-        System.out.println(rannum);
+//        System.out.println(rannum);
         if(ran %2 == 1){
             ret = (MD5(param1) + SHA256(param2) +MD5(rannum));
         }else {
