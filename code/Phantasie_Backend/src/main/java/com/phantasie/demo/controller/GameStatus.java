@@ -1,6 +1,5 @@
 package com.phantasie.demo.controller;
 
-import com.phantasie.demo.entity.Card;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -74,13 +73,6 @@ public class GameStatus implements Cloneable {
 
     private List<Integer> getPlayerDeck() {
         List<Integer> Deck = new LinkedList<>();
-
-        Card c000 = CardController.allCards.get(0);
-        Card c100 = CardController.allCards.get(100);
-        Card c200 = CardController.allCards.get(200);
-        System.out.print(c000);
-        System.out.print(c100);
-        System.out.print(c200);
 
         for(int i=0;i<10;i++){
             int r = (int) (Math.random ()*(352324 +1));

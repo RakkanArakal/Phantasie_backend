@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @Data
 @Entity
-@Table(name = "skillBuff")
+@Table(name = "skill_buff")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "skillBuff")
 public class SkillBuff {
     @Id

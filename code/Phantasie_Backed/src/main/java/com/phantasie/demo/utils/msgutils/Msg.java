@@ -13,7 +13,7 @@ import java.util.List;
 public class Msg {
     private int status;
     private String msg;
-    private Integer timeStamp = null;
+    private int timeStamp;
     private JSONObject data;
     private JSONArray list = null;
 
