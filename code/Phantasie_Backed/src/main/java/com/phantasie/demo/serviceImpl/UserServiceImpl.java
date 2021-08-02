@@ -76,5 +76,10 @@ public class UserServiceImpl implements UserService {
         userDao.setToken(token,id);
         return;
     }
+
+    @Override
+    public void setJobInfo(String data, User user){
+        userDao.setJobInfo(data,user);
+    }
 }
 

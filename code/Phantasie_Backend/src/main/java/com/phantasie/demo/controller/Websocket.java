@@ -8,7 +8,12 @@ import com.phantasie.demo.utils.msgutils.MsgUtil;
 
 import com.phantasie.demo.config.config.WebSocketConfig;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> e24ea9e (session)
+=======
+import com.phantasie.demo.utils.msgutils.Msg;
+import com.phantasie.demo.utils.msgutils.MsgUtil;
+>>>>>>> 1887f3e (9:11)
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -19,13 +24,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 >>>>>>> 1a79dbb (token)
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import javax.websocket.server.ServerEndpointConfig;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,7 +51,7 @@ public class Websocket {
      * 存放所有在线的客户端
      */
 
-    private static Map<String,Integer> tokenMap = new ConcurrentHashMap<>();
+    public static Map<String,Integer> tokenMap = new ConcurrentHashMap<>();
     private static  Map<String, Session> clients = new ConcurrentHashMap<>();
     //private static Map<Session,HttpSession> sessionMap = new ConcurrentHashMap<>();
     private static  Map<String, GameStatus> allPlayers = new ConcurrentHashMap<>();

@@ -59,4 +59,10 @@ public class UserDaoImpl implements UserDao {
         user.setToken(token);
         userRepository.saveAndFlush(user);
     }
+
+    @Override
+    public void setJobInfo(String data, User user){
+        user.setJobInfo(data);
+        userRepository.saveAndFlush(user);
+    }
 }

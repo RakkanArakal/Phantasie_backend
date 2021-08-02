@@ -11,4 +11,6 @@ public interface UserDao {
     User findUserByUsername(String username);
 
     void setToken(String token, Integer id);
+
+    void setJobInfo(String data, User user);
 }

@@ -9,4 +9,6 @@ public interface UserService {
     User findUserByUsername(String username);
 
     void setToken(String token, Integer id);
+
+    void setJobInfo(String toString, User user);
 }
