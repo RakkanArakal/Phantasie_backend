@@ -124,6 +124,17 @@ public class Websocket {
         JSONObject data = new JSONObject();
         data.put("rid",rid);
         sendMessageBack(MsgUtil.makeMsg(101,"successCreate",data),session);
+
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"player"});
+        JSONObject roomInfo = JSONObject.fromObject(room,jsonConfig);
+        Msg msg = MsgUtil.makeMsg(111,"新增房间",roomInfo);
+        for(Map.Entry<String,GameStatus> playerMap:allPlayers.entrySet()){
+            GameStatus gameStatus1 = playerMap.getValue();
+            if(!gameStatus1.isInRoom()){
+                sendMessageBack(msg,clients.get(playerMap.getKey()));
+            }
+        }
         return ;
     }
 
@@ -139,6 +150,17 @@ public class Websocket {
         waitRooms.remove(room);
         allPlayers.get(session.getId()).setInRoom(false);
         sendMessageBack(MsgUtil.makeMsg(112,"successExit"),session);
+
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"player"});
+        JSONObject roomInfo = JSONObject.fromObject(room,jsonConfig);
+        Msg msg = MsgUtil.makeMsg(112,"退出房间",roomInfo);
+        for(Map.Entry<String,GameStatus> playerMap:allPlayers.entrySet()){
+            GameStatus gameStatus1 = playerMap.getValue();
+            if(!gameStatus1.isInRoom()){
+                sendMessageBack(msg,clients.get(playerMap.getKey()));
+            }
+        }
         return;
     }
 
@@ -184,6 +206,17 @@ public class Websocket {
 
         Session toSession = clients.get(room.getPlayer()[0].getPlayerId());
         sendMessageBack(MsgUtil.makeMsg(102,"successJoin"),toSession);
+
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"player"});
+        JSONObject roomInfo = JSONObject.fromObject(room,jsonConfig);
+        Msg msg = MsgUtil.makeMsg(112,"失去房间",roomInfo);
+        for(Map.Entry<String,GameStatus> playerMap:allPlayers.entrySet()){
+            GameStatus gameStatus1 = playerMap.getValue();
+            if(!gameStatus1.isInRoom()){
+                sendMessageBack(msg,clients.get(playerMap.getKey()));
+            }
+        }
 
         startGame(room);
         return ;
@@ -328,7 +361,6 @@ public class Websocket {
             gameRun(rid,curSession,seat,1);
         }
         if(game.allState.size()>0 && game.allState.get(timeStamp).getSpecial() == 1){
-
             gameRun(rid,curSession,seat,4);
         }
         return ;

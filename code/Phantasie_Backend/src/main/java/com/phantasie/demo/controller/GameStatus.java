@@ -20,13 +20,14 @@ public class GameStatus implements Cloneable {
 
     private int hp ;
 
-    private int ap ;
-
+    private int mp ;
 
 //    @JsonIgnore
     private List<Integer> deckList = new LinkedList<>();
 
     private List<Integer> cardList = new LinkedList<>();
+
+    private List<Status> statusList = new LinkedList<>();
 
 //    private List<Integer> cardIndex = new LinkedList<>();
 
@@ -34,15 +35,14 @@ public class GameStatus implements Cloneable {
 
 //    private List<Card> graveList = new LinkedList<>();
 
-//    private List<status> statusList = new LinkedList<>();
+
 
     private int gameId;
 
     private int seat;
 
-    private boolean isInRoom ;
+    private boolean isInRoom = false;
 
-//    private boolean isInTurn ;
 
     private boolean isGameOver = false;
 
@@ -54,7 +54,7 @@ public class GameStatus implements Cloneable {
     }
 
     public void apChange(int num){
-        ap -= num;
+        mp -= num;
         return;
     }
 
@@ -64,7 +64,7 @@ public class GameStatus implements Cloneable {
 
     public void newGame() {
         hp = 2000;
-        ap = 100;
+        mp = 100;
         turnCount = 1 ;
 //        graveList.clear();
         cardList.clear();

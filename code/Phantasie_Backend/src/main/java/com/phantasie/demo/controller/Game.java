@@ -163,7 +163,7 @@ public class Game {
 
         if(card.getMy_cost() != 0 ) {
             timeStamp++;
-            newState stateMp = new newState(id, 1, true, card.getMy_cost(), nowStatus.getAp());
+            newState stateMp = new newState(id, 1, true, card.getMy_cost(), nowStatus.getMp());
             allState.put(timeStamp, stateMp);
         }
 
