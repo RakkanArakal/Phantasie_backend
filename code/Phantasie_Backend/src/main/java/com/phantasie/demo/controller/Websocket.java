@@ -15,7 +15,6 @@ import com.phantasie.demo.config.config.WebSocketConfig;
 =======
 
 import com.phantasie.demo.config.config.WebSocketConfig;
-import com.phantasie.demo.entity.User;
 import com.phantasie.demo.service.UserService;
 >>>>>>> d354314 (10:59)
 import com.phantasie.demo.utils.msgutils.Msg;
@@ -37,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -80,26 +78,39 @@ public class Websocket {
         tokenMap.put(token,userid);
         return true;
     }
-
+//
+//    @OnOpen
+//    public void onOpen(Session session, @PathParam("token") String token) throws IOException {
+//
+//        if(tokenMap.get(token) == null){
+//            session.close(closeReason);
+//            return;
+//        }
+//        User user = userService.findUserById(tokenMap.get(token));
+//        int cnt = onlineCount.incrementAndGet();
+//        clients.put(session.getId(),session);
+//        log.info("有新连接加入：{}，当前在线人数为：{}", session.getId(), cnt);
+//
+//        GameStatus player = new GameStatus();
+//        player.setPlayerId(session.getId());
+//        player.setUserId(user.getUserId());
+//        player.setCurJob(user.getJob());
+//        player.setPlayerName(user.getNickName());
+//
+//        allPlayers.put(session.getId(), player);
+//    }
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("token") String token) throws IOException {
-
-        if(tokenMap.get(token) == null){
-            session.close(closeReason);
-            return;
-        }
-        User user = userService.findUserById(tokenMap.get(token));
+    public void onOpen(Session session) throws IOException {
         int cnt = onlineCount.incrementAndGet();
         clients.put(session.getId(),session);
         log.info("有新连接加入：{}，当前在线人数为：{}", session.getId(), cnt);
 
         GameStatus player = new GameStatus();
         player.setPlayerId(session.getId());
-        player.setUserId(user.getUserId());
-        player.setCurJob(user.getJob());
-        player.setPlayerName(user.getNickName());
-
+        player.setUserId(2);
+        player.setCurJob(0);
+        player.setPlayerName("4234234");
         allPlayers.put(session.getId(), player);
     }
 

@@ -42,10 +42,14 @@ public class SessionUtil {
 
                 ret.put("userId", (Integer)session.getAttribute("userId"));
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 93f6a3b (9.13)
                 ret.put("username", (String)session.getAttribute("name"));
 =======
                 ret.put("userName", (String)session.getAttribute("name"));
+=======
+                ret.put("userName", (String)session.getAttribute("userName"));
+>>>>>>> a7e1d13 (17:37)
 
 >>>>>>> 5e11ab6 (10:06)
                 //ret.put(Constant.USER_TYPE, (Integer)session.getAttribute(Constant.USER_TYPE));

@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
             obj.put("userId", user.getUserId());
             obj.put("nickName",user.getNickName());
             obj.put("job",user.getJob());
-            obj.put("username", userVerify.getUsername());
+            obj.put("userName", userVerify.getUsername());
             setSession(obj);
             return MsgUtil.makeMsg(0,"success",obj);
         }
