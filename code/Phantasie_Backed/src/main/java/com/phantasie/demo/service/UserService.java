@@ -8,6 +8,8 @@ public interface UserService {
     Msg signup(String username, String password,String phone);
     User findUserByUsername(String username);
 
+    User findUserById(Integer id);
+
     void setToken(String token, Integer id);
 
     void setJobInfo(String toString, User user);

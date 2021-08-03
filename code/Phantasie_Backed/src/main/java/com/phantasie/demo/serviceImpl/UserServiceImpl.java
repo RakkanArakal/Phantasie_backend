@@ -60,15 +60,17 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private User findUserById(Integer id) {
-        if (id == 0) return null;
-        return userDao.findUserById(id);
-    }
 
     @Override
     public User findUserByUsername(String username) {
         if (username.isEmpty()) return null;
         return userDao.findUserByUsername(username);
+    }
+
+    @Override
+    public User findUserById(Integer id) {
+        if (id == 0) return null;
+        return userDao.findUserById(id);
     }
 
     @Override

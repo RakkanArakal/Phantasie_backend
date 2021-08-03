@@ -35,13 +35,11 @@ public class GameStatus implements Cloneable {
 //    private List<Card> graveList = new LinkedList<>();
 
 
-
     private int gameId;
 
     private int seat;
 
     private boolean isInRoom = false;
-
 
     private boolean isGameOver = false;
 

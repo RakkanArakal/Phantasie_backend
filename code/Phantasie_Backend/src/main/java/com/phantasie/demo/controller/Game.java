@@ -85,7 +85,10 @@ public class Game {
 
         if(deckList.size() == 0)     nowStatus.resetDeckList();
 
-//        timeStamp++;
+        timeStamp++;
+        newState stateGet = new newState(0);
+        allState.put(timeStamp,stateGet);
+
         return;
     }
 
@@ -105,9 +108,9 @@ public class Game {
             deckList.remove(0);
         }
 
-
-
-//        timeStamp++;
+        timeStamp++;
+        newState stateGet = new newState(0);
+        allState.put(timeStamp,stateGet);
         return;
     }
 

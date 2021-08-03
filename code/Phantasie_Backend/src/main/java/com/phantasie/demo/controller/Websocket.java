@@ -1,6 +1,7 @@
 package com.phantasie.demo.controller;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.phantasie.demo.utils.msgutils.Msg;
 import com.phantasie.demo.utils.msgutils.MsgUtil;
 =======
@@ -11,6 +12,12 @@ import com.phantasie.demo.config.config.WebSocketConfig;
 <<<<<<< HEAD
 >>>>>>> e24ea9e (session)
 =======
+=======
+
+import com.phantasie.demo.config.config.WebSocketConfig;
+import com.phantasie.demo.entity.User;
+import com.phantasie.demo.service.UserService;
+>>>>>>> d354314 (10:59)
 import com.phantasie.demo.utils.msgutils.Msg;
 import com.phantasie.demo.utils.msgutils.MsgUtil;
 >>>>>>> 1887f3e (9:11)
@@ -18,11 +25,15 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
+<<<<<<< HEAD
 =======
 import com.phantasie.demo.utils.SessionUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 >>>>>>> 1a79dbb (token)
+=======
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> d354314 (10:59)
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -39,6 +50,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ServerEndpoint(value = "/game/test/{token}",configurator = WebSocketConfig.class)
 @Component
 public class Websocket {
+
+    @Autowired
+    UserService userService;
     /**
      * 记录当前在线连接数
      */
@@ -46,6 +60,7 @@ public class Websocket {
 
     private static CloseReason closeReason = new CloseReason(CloseReason.CloseCodes.PROTOCOL_ERROR,
             "未经允许的连接");
+
 
     /**
      * 存放所有在线的客户端
@@ -72,9 +87,9 @@ public class Websocket {
 
         if(tokenMap.get(token) == null){
             session.close(closeReason);
+            return;
         }
-
-        //HttpSession httpSession = (HttpSession) endpointConfig.getUserProperties().get(HttpSession.class.getName());
+        User user = userService.findUserById(tokenMap.get(token));
         int cnt = onlineCount.incrementAndGet();
         clients.put(session.getId(),session);
         log.info("有新连接加入：{}，当前在线人数为：{}", session.getId(), cnt);
@@ -82,11 +97,7 @@ public class Websocket {
         GameStatus player = new GameStatus();
         player.setPlayerId(session.getId());
         //TODO:登陆后在此保存玩家昵称
-        player.setPlayerName("玩家名字");
-        //String id = httpSession.getId();
-        //log.info(session.getId()+"\n");
-        //log.info(id);
-        //sessionMap.put(session,httpSession);
+        player.setPlayerName(user.getNickName());
         allPlayers.put(session.getId(), player);
     }
 
@@ -101,7 +112,6 @@ public class Websocket {
         }
         clients.remove(sessionid);
         allPlayers.remove(sessionid);
-        //sessionMap.remove(sessionid);
         log.info("有一连接关闭：{}，当前在线人数为：{}", session.getId(), cnt);
     }
 
