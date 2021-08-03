@@ -17,23 +17,27 @@ public class GameStatus implements Cloneable {
 
     private String playerName;
 
-    private int hp ;
+    private int userId;
 
-    private int mp ;
+    private int curHp ;
 
-//    @JsonIgnore
+    private int curMp ;
+
+    private int hp;
+
+    private int mp;
+
     private List<Integer> deckList = new LinkedList<>();
 
     private List<Integer> cardList = new LinkedList<>();
 
-    private List<Status> statusList = new LinkedList<>();
+    private List<Integer> statusList = new LinkedList<>();
 
-//    private List<Integer> cardIndex = new LinkedList<>();
+    private List<Integer> usableCard = new LinkedList<>();
 
     private int turnCount;
 
 //    private List<Card> graveList = new LinkedList<>();
-
 
     private int gameId;
 
@@ -45,13 +49,13 @@ public class GameStatus implements Cloneable {
 
     private Job curJob;
 
-    public void hpChange(int num){
-        hp -= num;
+    public void curHpChange(int num){
+        curHp -= num;
         return;
     }
 
-    public void apChange(int num){
-        mp -= num;
+    public void curMpChange(int num){
+        curMp -= num;
         return;
     }
 
@@ -60,10 +64,9 @@ public class GameStatus implements Cloneable {
     }
 
     public void newGame() {
-        hp = 2000;
-        mp = 100;
+        curHp = hp = 2000;
+        curMp = 100;
         turnCount = 1 ;
-//        graveList.clear();
         cardList.clear();
         deckList = getPlayerDeck();
         curJob = Job.Warrior;

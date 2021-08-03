@@ -53,6 +53,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findUserByUsername(String username) {
         UserVerify userVerify = userVerifyRepository.findUserByName(username);
+        if(userVerify == null) return null;
         return userRepository.findUserById(userVerify.getUser_id());
     }
 

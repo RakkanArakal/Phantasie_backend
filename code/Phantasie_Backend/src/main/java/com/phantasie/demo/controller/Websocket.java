@@ -96,7 +96,7 @@ public class Websocket {
 
         GameStatus player = new GameStatus();
         player.setPlayerId(session.getId());
-        //TODO:登陆后在此保存玩家昵称
+        player.setUserId(user.getUserId());
         player.setPlayerName(user.getNickName());
         allPlayers.put(session.getId(), player);
     }
@@ -176,16 +176,6 @@ public class Websocket {
 
     private void searchRoom(Session session) {
         log.info("查询房间");
-//        String roomInfo = "allRoom";
-//        for(Map.Entry<Integer, Room> roomMap:allRooms.entrySet()){
-//            Room room = roomMap.getValue();
-//            if(room.getRoomsize() == 1) {
-//                roomInfo += "$";
-//                roomInfo += room.player[0].getPlayerName();
-//                roomInfo += "#";
-//                roomInfo += Integer.toString(room.getGameId());
-//            }
-//        }
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[] {"player"});
         JSONArray list = JSONArray.fromObject(waitRooms,jsonConfig);
@@ -313,7 +303,6 @@ public class Websocket {
                 game.getCard(seat);
                 sendMessageBack(MsgUtil.makeMsg(106,"getCard",game.cardMsg(true),msgCount),seatSession);
                 sendMessageBack(MsgUtil.makeMsg(107,"getCard",game.cardMsg(false),msgCount),enemySession);
-
             }
                 break;
             case 2:{
@@ -339,7 +328,6 @@ public class Websocket {
                 break;
         }
 
-
         if(game.stageChange(timeStamp) != null) {
             JSONArray data = game.stageChange(timeStamp);
             int msgCnt = game.getMsgCount() + 1 ;
@@ -351,7 +339,7 @@ public class Websocket {
         if(!game.isRunning())
         {                                                     //判断输赢
 
-            if(game.getPlayer()[enemy].getHp() <= 0){
+            if(game.getPlayer()[enemy].getCurHp() <= 0){
                 sendMessageBack(MsgUtil.makeMsg(120,"youWin"),seatSession);
                 sendMessageBack(MsgUtil.makeMsg(130,"enemyWin"),enemySession);
             }

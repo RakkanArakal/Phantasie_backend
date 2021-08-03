@@ -3,7 +3,6 @@ package com.phantasie.demo.utils.msg;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Setter
@@ -14,7 +13,7 @@ public class cardMsg {
 
     private Integer decks;
 
-    private List<Integer> cardList = new LinkedList<>();
+    private List<Integer> cardList;
 
     public cardMsg(Integer h,Integer d, List<Integer> c){
         hands = h;

@@ -3,6 +3,8 @@ package com.phantasie.demo.utils.msg;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 public class newState {
@@ -12,6 +14,7 @@ public class newState {
     private int changeVar;
     private int updateVar;
     private int special = 0;
+    private List<Integer> useableCard = null;
 
     public newState(int s, int v, boolean p, int c, int u) {
         seat = s;

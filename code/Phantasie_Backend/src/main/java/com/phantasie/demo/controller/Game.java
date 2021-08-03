@@ -154,19 +154,19 @@ public class Game {
         }
         if(card.getEmy_hp() != 0 ) {
             timeStamp++;
-            newState stateHp = new newState(id ^ 1, 0, true, card.getEmy_hp(), enemyStatus.getHp());
+            newState stateHp = new newState(id ^ 1, 0, true, card.getEmy_hp(), enemyStatus.getCurHp());
             allState.put(timeStamp, stateHp);
         }
 
         if(card.getMy_hp() != 0 ) {
             timeStamp++;
-            newState stateHp = new newState(id, 0, false, card.getMy_hp(), nowStatus.getHp());
+            newState stateHp = new newState(id, 0, false, card.getMy_hp(), nowStatus.getCurHp());
             allState.put(timeStamp, stateHp);
         }
 
         if(card.getMy_cost() != 0 ) {
             timeStamp++;
-            newState stateMp = new newState(id, 1, true, card.getMy_cost(), nowStatus.getMp());
+            newState stateMp = new newState(id, 1, true, card.getMy_cost(), nowStatus.getCurHp());
             allState.put(timeStamp, stateMp);
         }
 
@@ -185,7 +185,7 @@ public class Game {
         }
 
 
-        if(nowStatus.getHp() <= 0 || enemyStatus.getHp() <= 0)
+        if(nowStatus.getCurHp() <= 0 || enemyStatus.getCurHp() <= 0)
             isRunning = false;
 
         return cardId;
@@ -193,46 +193,46 @@ public class Game {
 
     private void normalCard(Card card) {
 
-        nowStatus.hpChange(card.getMy_hp());
-        nowStatus.apChange(card.getMy_cost());
-        enemyStatus.hpChange(card.getEmy_hp());
-        enemyStatus.apChange(card.getEmy_cost());
+        nowStatus.curHpChange(card.getMy_hp());
+        nowStatus.curMpChange(card.getMy_cost());
+        enemyStatus.curHpChange(card.getEmy_hp());
+        enemyStatus.curMpChange(card.getEmy_cost());
         return;
     }
 
     private void healCard(Card card) {
 
-        nowStatus.hpChange(-card.getMy_hp());
-        nowStatus.apChange(card.getMy_cost());
-        enemyStatus.hpChange(-card.getEmy_hp());
-        enemyStatus.apChange(card.getEmy_cost());
+        nowStatus.curHpChange(-card.getMy_hp());
+        nowStatus.curMpChange(card.getMy_cost());
+        enemyStatus.curHpChange(-card.getEmy_hp());
+        enemyStatus.curMpChange(card.getEmy_cost());
         return;
     }
 
     private void warriorCard(Card card) {
 
-        nowStatus.hpChange(card.getMy_hp());
-        nowStatus.apChange(card.getMy_cost());
-        enemyStatus.hpChange(card.getEmy_hp());
-        enemyStatus.apChange(card.getEmy_cost());
+        nowStatus.curHpChange(card.getMy_hp());
+        nowStatus.curMpChange(card.getMy_cost());
+        enemyStatus.curHpChange(card.getEmy_hp());
+        enemyStatus.curMpChange(card.getEmy_cost());
         return;
     }
 
     private void mageCard(Card card) {
 
-        nowStatus.hpChange(card.getMy_hp());
-        nowStatus.apChange(card.getMy_cost());
-        enemyStatus.hpChange(card.getEmy_hp());
-        enemyStatus.apChange(card.getEmy_cost());
+        nowStatus.curHpChange(card.getMy_hp());
+        nowStatus.curMpChange(card.getMy_cost());
+        enemyStatus.curHpChange(card.getEmy_hp());
+        enemyStatus.curMpChange(card.getEmy_cost());
         return;
     }
 
     private void hunterCard(Card card) {
 
-        nowStatus.hpChange(card.getMy_hp());
-        nowStatus.apChange(card.getMy_cost());
-        enemyStatus.hpChange(card.getEmy_hp());
-        enemyStatus.apChange(card.getEmy_cost());
+        nowStatus.curHpChange(card.getMy_hp());
+        nowStatus.curMpChange(card.getMy_cost());
+        enemyStatus.curHpChange(card.getEmy_hp());
+        enemyStatus.curMpChange(card.getEmy_cost());
         return;
     }
 
