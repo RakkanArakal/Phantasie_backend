@@ -28,6 +28,8 @@ public class jobInfo {
         job = i ;
         switch (job){
             case 0:{
+                buffId = 203;
+                skillId = 101;
                 unlockSkill= List.of(101);
                 unlockBuff = List.of(201,202,203);
                 unlockCard = List.of(0,100,500,200,201,202,203,204);
@@ -35,6 +37,8 @@ public class jobInfo {
 
             }break;
             case 1:{
+                buffId = 221;
+                skillId = 102;
                 unlockSkill= List.of(102);
                 unlockBuff = List.of(221,222,223,224,225);
                 unlockCard = List.of(0,100,500,300,301,302,303,304);
@@ -42,6 +46,8 @@ public class jobInfo {
 
             }break;
             case 2:{
+                buffId = 242;
+                skillId = 103;
                 unlockSkill= List.of(103);
                 unlockBuff = List.of(241,242);
                 unlockCard = List.of(0,100,500,400,401,402,403,404);

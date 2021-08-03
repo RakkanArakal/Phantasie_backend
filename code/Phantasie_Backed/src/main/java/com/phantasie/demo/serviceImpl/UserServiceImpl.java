@@ -5,7 +5,6 @@ import com.phantasie.demo.entity.User;
 import com.phantasie.demo.entity.UserVerify;
 import com.phantasie.demo.service.UserService;
 import com.phantasie.demo.utils.msgutils.Msg;
-import com.phantasie.demo.utils.msgutils.MsgCode;
 import com.phantasie.demo.utils.msgutils.MsgUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +27,10 @@ public class UserServiceImpl implements UserService {
             obj.put("userId", user.getUserId());
             obj.put("name", userVerify.getUsername());
             setSession(obj);
-            return MsgUtil.makeMsg(MsgCode.LOGIN_SUCCESS, MsgUtil.LOGIN_SUCCESS_MSG, obj);
+            return MsgUtil.makeMsg(0,"success",obj);
         }
         else {
-            return MsgUtil.makeMsg(MsgCode.LOGIN_USER_ERROR);
+            return MsgUtil.makeMsg(-1,"用户名或密码错误");
         }
     }
 
@@ -52,14 +51,12 @@ public class UserServiceImpl implements UserService {
             UserVerify userVerify = checkUser(username, password);
             obj.put("user_id", user.getUserId());
             obj.put("name", userVerify.getUsername());
-            return MsgUtil.makeMsg(MsgCode.SIGNUP_SUCCESS, MsgUtil.SIGNUP_SUCCESS_MSG, obj);
+            return MsgUtil.makeMsg(4,"success",obj);
         }
         else {
-            return MsgUtil.makeMsg(MsgCode.SIGNUP_USER_ERROR);
+            return MsgUtil.makeMsg(-1,"用户名已被占用");
         }
     }
-
-
 
     @Override
     public User findUserByUsername(String username) {
@@ -74,8 +71,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setToken(String token, Integer id){
-        userDao.setToken(token,id);
+    public void setToken(String token, User user){
+        userDao.setToken(token, user);
         return;
     }
 

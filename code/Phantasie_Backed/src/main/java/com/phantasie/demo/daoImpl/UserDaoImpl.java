@@ -51,11 +51,13 @@ public class UserDaoImpl implements UserDao {
     public User findUserById(Integer id) { return userRepository.findUserById(id); }
 
     @Override
-    public User findUserByUsername(String username) { return userRepository.findUserByName(username); }
+    public User findUserByUsername(String username) {
+        UserVerify userVerify = userVerifyRepository.findUserByName(username);
+        return userRepository.findUserById(userVerify.getUser_id());
+    }
 
     @Override
-    public void setToken(String token, Integer id){
-        User user = userRepository.findUserById(id);
+    public void setToken(String token, User user){
         user.setToken(token);
         userRepository.saveAndFlush(user);
     }

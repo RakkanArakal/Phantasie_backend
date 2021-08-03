@@ -10,7 +10,7 @@ public interface UserDao {
     User findUserById(Integer id);
     User findUserByUsername(String username);
 
-    void setToken(String token, Integer id);
+    void setToken(String token, User user);
 
     void setJobInfo(String data, User user);
 

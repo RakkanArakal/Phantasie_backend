@@ -10,7 +10,7 @@ public interface UserService {
 
     User findUserById(Integer id);
 
-    void setToken(String token, Integer id);
+    void setToken(String token, User user);
 
     void setJobInfo(String toString, User user);
 

@@ -363,8 +363,6 @@ public class Websocket {
             game.player[1].setInRoom(false);
             allRooms.remove(rid);
             allGames.remove(rid);
-
-
             return ;
         }
         if(type == 0){
@@ -420,9 +418,9 @@ public class Websocket {
                     gameRun(rid, session, seat, 3);
                     return;
                 }
-                case "update":
+//                case "update":
 //                    gameRun(rid,session,seat,3);
-                    return;
+//                    return;
                 default:
                     break;
             }

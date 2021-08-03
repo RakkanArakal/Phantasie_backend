@@ -56,7 +56,7 @@ public class LoginController {
         Integer id = user.getUserId();
 
         String token = TokenUtil.generate();
-        userService.setToken(token,id);
+        userService.setToken(token,user);
         ret.getData().put("token",token);
 
         String jobInfoStr = user.getJobInfo();

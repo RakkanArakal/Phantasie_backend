@@ -8,4 +8,7 @@ import org.springframework.data.repository.query.Param;
 public interface UserVerifyRepository extends JpaRepository<UserVerify, Integer> {
     @Query(value = "select uv from UserVerify uv where uv.username = :username")
     UserVerify checkUser(@Param("username") String username);
+
+    @Query(value = "select uv from UserVerify uv where uv.username = :username")
+    UserVerify findUserByName(@Param("username") String username);
 }
