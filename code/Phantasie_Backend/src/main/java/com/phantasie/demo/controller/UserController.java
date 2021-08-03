@@ -39,6 +39,7 @@ public class UserController {
         User user = userService.findUserByUsername(auth.getString("userName"));
 
         jobInfo jobInfoClass = JSONObject.parseObject(str,jobInfo.class);
+        if(jobInfoClass.getJob() == null) { return MsgUtil.makeMsg(-1,"Error"); }
         List<jobInfo> jobInfoList = com.alibaba.fastjson.JSONArray
                             .parseArray(user.getJobInfo(),jobInfo.class);
         jobInfoList.set(jobInfoClass.getJob(),jobInfoClass);
