@@ -21,7 +21,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter
@@ -30,9 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LoginController {
     @Autowired
     UserService userService;
-
-    public static Map<Integer ,User> allUsers = new ConcurrentHashMap<>();
-    public static Map<Integer ,List<jobInfo>> allJobInfos = new ConcurrentHashMap<>();
 
     @RequestMapping("/login")
     public Msg login(@RequestBody Map<String,String> map) throws UnsupportedEncodingException, NoSuchAlgorithmException {
@@ -59,23 +55,13 @@ public class LoginController {
         User user = userService.findUserByUsername(username);
         Integer id = user.getUserId();
 
-        if(allUsers.get(id) != null && allJobInfos.get(id) != null){
-            String token = allUsers.get(id).getToken();
-            ret.getData().put("token",token);
-            List<jobInfo> jobInfoList = allJobInfos.get(id);
-            ret.setList(jobInfoList);
-            return ret;
-        }
-
         String token = TokenUtil.generate();
         userService.setToken(token,id);
         ret.getData().put("token",token);
-        allUsers.put(id,user);
 
         String jobInfoStr = user.getJobInfo();
         List<jobInfo> jobInfoList = com.alibaba.fastjson.JSONArray.parseArray(jobInfoStr,jobInfo.class);
         ret.setList(jobInfoList);
-        allJobInfos.put(id,jobInfoList);
 
         Websocket.insertToken(token,id);
         return ret;

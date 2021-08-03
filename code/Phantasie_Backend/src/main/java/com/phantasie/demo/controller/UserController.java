@@ -19,10 +19,6 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
-import static com.phantasie.demo.controller.LoginController.allJobInfos;
-import static com.phantasie.demo.controller.LoginController.allUsers;
-
-
 @Getter
 @Setter
 @RestController
@@ -32,49 +28,26 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @RequestMapping("/changeInfo")
-//    public Msg changeInfo(@RequestBody Map<String,String> map){
-//        System.out.println("更新仓库");
-//        System.out.println(map);
-//        String token = map.get("token");
-//        int userId = tokenMap.get(token);
-//        jobInfo jobInfoClass = JSONObject.parseObject(map.get("data"),jobInfo.class);
-//        int job = jobInfoClass.getJob();
-//        net.sf.json.JSONObject auth = SessionUtil.getAuth();
-//
-//        if(auth == null){
-//            return MsgUtil.makeMsg(-1,"Error");
-//        }
-//        else{
-//            auth.get("userId");
-//            return MsgUtil.makeMsg(MsgCode.LOGIN_SUCCESS, MsgUtil.LOGIN_SUCCESS_MSG, auth);
-//        }
-//
-//        allJobInfos.get(userId).set(job,jobInfoClass);
-//
-//
-//        return MsgUtil.makeMsg(0,"success");
-//    }
-@RequestMapping("/changeInfo")
-public Msg changeInfo(@RequestBody String str){
-    System.out.println("更新仓库");
-    System.out.println(str);
-    net.sf.json.JSONObject auth = SessionUtil.getAuth();
+    @RequestMapping("/changeInfo")
+    public Msg changeInfo(@RequestBody String str){
+        System.out.println("更新仓库");
+        System.out.println(str);
+        net.sf.json.JSONObject auth = SessionUtil.getAuth();
+        if(auth == null){
+            return MsgUtil.makeMsg(-1,"Error");
+        }
+        User user = userService.findUserByUsername(auth.getString("userName"));
 
-    if(auth == null){
-        return MsgUtil.makeMsg(-1,"Error");
+        jobInfo jobInfoClass = JSONObject.parseObject(str,jobInfo.class);
+        List<jobInfo> jobInfoList = com.alibaba.fastjson.JSONArray
+                            .parseArray(user.getJobInfo(),jobInfo.class);
+        jobInfoList.set(jobInfoClass.getJob(),jobInfoClass);
+
+        String data = JSONArray.fromObject(jobInfoList).toString();
+        userService.setJobInfo(data,user);
+
+        return MsgUtil.makeMsg(0,"success");
     }
-    Integer userId = (Integer) auth.get("userId");
-    jobInfo jobInfoClass = JSONObject.parseObject(str,jobInfo.class);
-    User user = allUsers.get(userId);
-    List<jobInfo> jobInfoList = allJobInfos.get(userId);
-    jobInfoList.set(jobInfoClass.getJob(),jobInfoClass);
-
-    String data = JSONArray.fromObject(jobInfoList).toString();
-    userService.setJobInfo(data,user);
-
-    return MsgUtil.makeMsg(0,"success");
-}
 
     @RequestMapping("/changeName")
     public Msg changeName(@RequestBody Map<String,String> map){
@@ -85,15 +58,9 @@ public Msg changeInfo(@RequestBody String str){
         if(auth == null){
             return MsgUtil.makeMsg(-1,"Error");
         }
-
-        Integer userId = (Integer) auth.get("userId");
+        User user = userService.findUserByUsername(auth.getString("userName"));
         String nickName = map.get("nickName");
-        User user = allUsers.get(userId);
-        List<jobInfo> jobInfoList = allJobInfos.get(userId);
-//        jobInfoList.set(jobInfoClass.getJob(),jobInfoClass);
-
-        String data = JSONArray.fromObject(jobInfoList).toString();
-        userService.setJobInfo(data,user);
+        userService.setNickname(nickName,user);
 
         return MsgUtil.makeMsg(0,"success");
     }

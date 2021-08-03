@@ -11,4 +11,6 @@ public interface UserService {
     void setToken(String token, Integer id);
 
     void setJobInfo(String toString, User user);
+
+    void setNickname(String nickName, User user);
 }

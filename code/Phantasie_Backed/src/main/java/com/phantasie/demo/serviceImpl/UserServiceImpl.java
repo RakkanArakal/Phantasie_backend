@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
         if (userVerify != null) {
             User user = findUserById(userVerify.getUser_id());
             JSONObject obj = new JSONObject();
-            obj.put("user_id", user.getUserId());
+            obj.put("userId", user.getUserId());
             obj.put("name", userVerify.getUsername());
             setSession(obj);
             return MsgUtil.makeMsg(MsgCode.LOGIN_SUCCESS, MsgUtil.LOGIN_SUCCESS_MSG, obj);
@@ -80,6 +80,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setJobInfo(String data, User user){
         userDao.setJobInfo(data,user);
+    }
+
+    @Override
+    public void setNickname(String Nickname, User user){
+        userDao.setNickname(Nickname,user);
     }
 }
 

@@ -65,4 +65,10 @@ public class UserDaoImpl implements UserDao {
         user.setJobInfo(data);
         userRepository.saveAndFlush(user);
     }
+
+    @Override
+    public void setNickname(String nickname,User user){
+        user.setNickName(nickname);
+        userRepository.saveAndFlush(user);
+    }
 }

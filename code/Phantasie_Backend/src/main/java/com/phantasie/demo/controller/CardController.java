@@ -25,5 +25,4 @@ public class CardController {
         allCards = cards.stream().collect(Collectors.toMap(Card::getCard_id, a -> a,(k1, k2)->k1));
         return;
     }
-
 }
