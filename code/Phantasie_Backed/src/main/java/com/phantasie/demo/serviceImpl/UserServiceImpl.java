@@ -25,7 +25,9 @@ public class UserServiceImpl implements UserService {
             User user = findUserById(userVerify.getUser_id());
             JSONObject obj = new JSONObject();
             obj.put("userId", user.getUserId());
-            obj.put("name", userVerify.getUsername());
+            obj.put("nickName",user.getNickName());
+            obj.put("job",user.getJob());
+            obj.put("username", userVerify.getUsername());
             setSession(obj);
             return MsgUtil.makeMsg(0,"success",obj);
         }

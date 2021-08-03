@@ -97,7 +97,9 @@ public class Websocket {
         GameStatus player = new GameStatus();
         player.setPlayerId(session.getId());
         player.setUserId(user.getUserId());
+        player.setCurJob(user.getJob());
         player.setPlayerName(user.getNickName());
+
         allPlayers.put(session.getId(), player);
     }
 

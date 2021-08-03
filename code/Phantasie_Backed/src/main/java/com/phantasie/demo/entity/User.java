@@ -30,7 +30,8 @@ public class User {
 
     private String nickName;
 
-    private String achieve;
+//    @JsonIgnore
+//    private String achieve;
 
 <<<<<<< HEAD:code/Phantasie_Backed/src/main/java/com/phantasie/demo/entity/User.java
 <<<<<<< HEAD:code/Phantasie_Backed/src/main/java/com/phantasie/demo/entity/User.java
@@ -48,14 +49,16 @@ public class User {
     private Integer job;
 >>>>>>> 367b954 (17:33):code/Phantasie_Backend/src/main/java/com/phantasie/demo/entity/User.java
 
+//    @JsonIgnore
     private String jobInfo;
 
     private String token;
 
+//    @JsonIgnore
     private UserVerify userVerify;
 
     public User() {
-        achieve = null;
+//        achieve = null;
         job = 0;
     }
 
