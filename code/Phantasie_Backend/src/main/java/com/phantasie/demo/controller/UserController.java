@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Map;
 
 import static com.phantasie.demo.controller.LoginController.allJobInfos;
 import static com.phantasie.demo.controller.LoginController.allUsers;
@@ -74,6 +75,28 @@ public Msg changeInfo(@RequestBody String str){
 
     return MsgUtil.makeMsg(0,"success");
 }
+
+    @RequestMapping("/changeName")
+    public Msg changeName(@RequestBody Map<String,String> map){
+        System.out.println("更新仓库");
+        System.out.println(map);
+        net.sf.json.JSONObject auth = SessionUtil.getAuth();
+
+        if(auth == null){
+            return MsgUtil.makeMsg(-1,"Error");
+        }
+
+        Integer userId = (Integer) auth.get("userId");
+        String nickName = map.get("nickName");
+        User user = allUsers.get(userId);
+        List<jobInfo> jobInfoList = allJobInfos.get(userId);
+//        jobInfoList.set(jobInfoClass.getJob(),jobInfoClass);
+
+        String data = JSONArray.fromObject(jobInfoList).toString();
+        userService.setJobInfo(data,user);
+
+        return MsgUtil.makeMsg(0,"success");
+    }
 
     @PostConstruct
     private void init(){

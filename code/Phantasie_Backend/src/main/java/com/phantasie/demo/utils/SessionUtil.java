@@ -20,11 +20,10 @@ public class SessionUtil {
             System.out.println(url);
 
             if(session != null) {
-                //Integer userType = (Integer) session.getAttribute(Constant.USER_TYPE);
                 return true;
             }
         }
-        return true;
+        return false;
     }
 
     public static JSONObject getAuth(){
@@ -37,7 +36,12 @@ public class SessionUtil {
             if(session != null) {
                 JSONObject ret = new JSONObject();
                 //TODO:加上会话存在会返回的信息
+<<<<<<< HEAD
                 ret.put("userId", (Integer)session.getAttribute("user_id"));
+=======
+
+                ret.put("userId", (Integer)session.getAttribute("userId"));
+>>>>>>> 93f6a3b (9.13)
                 ret.put("username", (String)session.getAttribute("name"));
                 //ret.put(Constant.USER_TYPE, (Integer)session.getAttribute(Constant.USER_TYPE));
                 return ret;
