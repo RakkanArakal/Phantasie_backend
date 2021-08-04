@@ -156,10 +156,6 @@ public class Game {
         return;
     }
 
-    /**
-     *  todo
-        卡片使用
-     */
     public int useCard(int id, int cardOrder) {
 
 //        nowStatus = player[id];
