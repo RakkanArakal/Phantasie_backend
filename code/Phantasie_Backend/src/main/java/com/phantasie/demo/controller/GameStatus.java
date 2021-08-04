@@ -1,31 +1,25 @@
 package com.phantasie.demo.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.phantasie.demo.entity.User;
-import com.phantasie.demo.service.UserService;
 import com.phantasie.demo.utils.msg.jobInfo;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
 
-enum Job{Warrior,Magician,Ranger};
-
 @Setter
 @Getter
-
+@Component
 public class GameStatus implements Cloneable {
 
-    @Autowired
-    UserService userService;
 
     private String playerId;
 
     private String playerName;
 
-    private int userId;
+    private String jobInfo;
 
     private int curHp ;
 
@@ -39,6 +33,8 @@ public class GameStatus implements Cloneable {
 
     private int skillId;
 
+    private int turnCount;
+
     private List<Integer> cardLibrary = new LinkedList<>();
 
     private List<Integer> deckList = new LinkedList<>();
@@ -49,7 +45,6 @@ public class GameStatus implements Cloneable {
 
     private List<Integer> usableCard = new LinkedList<>();
 
-    private int turnCount;
 
 //    private List<Card> graveList = new LinkedList<>();
 
@@ -78,9 +73,7 @@ public class GameStatus implements Cloneable {
     }
 
     public void newGame() {
-
-        User user = userService.findUserById(userId);
-        List<jobInfo> jobInfoList= JSONArray.parseArray(user.getJobInfo(),jobInfo.class);
+        List<jobInfo> jobInfoList= JSONArray.parseArray(jobInfo,jobInfo.class);
         buffId = jobInfoList.get(curJob).getBuffId();
         skillId = jobInfoList.get(curJob).getSkillId();
         cardLibrary = jobInfoList.get(curJob).getCardLibrary();
