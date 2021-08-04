@@ -1,14 +1,15 @@
 package com.phantasie.demo.controller;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phantasie.demo.entity.Card;
 import com.phantasie.demo.utils.msg.cardMsg;
 import com.phantasie.demo.utils.msg.newState;
+import com.phantasie.demo.utils.msg.StatusMsg;
 import lombok.Getter;
 import lombok.Setter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,11 +24,6 @@ import static com.phantasie.demo.controller.CardController.allCards;
 public class Game {
     private int current_player;
 
-    public  GameStatus[] player = new GameStatus[2];
-
-    public Map<Integer, newState> allState = new ConcurrentHashMap<>();
-
-    @JsonIgnore
     private int gameId;
 
     private int timeStamp;
@@ -42,25 +38,79 @@ public class Game {
 
     public GameStatus enemyStatus ;
 
-    public GameStatus[] getPlayer() {
-        return player;
-    }
+    public  GameStatus[] player = new GameStatus[2];
+
+    public Map<Integer, newState> allState = new ConcurrentHashMap<>();
 
 
     public JSONArray packStat(int id){
         if(player.length != 2){
             return (null);
         }
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"deckList","jobInfo","cardLibrary"});
         List<JSONObject> jsonObjectList = new LinkedList<>();
 
-        JSONObject data0=JSONObject.fromObject(player[id]);
-        data0.remove("deckList");
+        JSONObject data0=JSONObject.fromObject(player[id],jsonConfig);
         data0.put("decksSize",player[id].getDeckList().size());
         jsonObjectList.add(data0);
 
-        JSONObject data1=JSONObject.fromObject(player[id^1]);
+        JSONObject data1=JSONObject.fromObject(player[id^1],jsonConfig);
         data1.remove("cardList");
-        data1.remove("deckList");
+        data1.put("hands",player[id].getCardList().size());
+        jsonObjectList.add(data1);
+
+        return JSONArray.fromObject(jsonObjectList);
+    }
+
+    public JSONArray gameBegin(int id){
+        if(player.length != 2){
+            return (null);
+        }
+        nowStatus = player[id];
+        enemyStatus = player[id^1];
+
+        int coldDown = player[id].getColdDown();
+        if(coldDown != 0) player[id].setColdDown(coldDown-1);
+
+        List<StatusMsg> nowBuffList = nowStatus.getStatusList();
+        List<StatusMsg> enemyBuffList = enemyStatus.getStatusList();
+
+        for(int i = nowBuffList.size() - 1; i >= 0 ;i--){
+            StatusMsg statusMsg = nowBuffList.get(i);
+            switch (statusMsg.getEffect_phase()){
+                case 0 :{
+                    switch (statusMsg.getStatusId()) {
+                        case 10:{                       //被瞄准
+
+                        }
+                            break;
+                        case 32:{                       //被点燃
+
+                        }
+                            break;
+                        case 35:{                       //中毒
+
+                        }
+                            break;
+                    }
+                }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"deckList","jobInfo","cardLibrary"});
+        List<JSONObject> jsonObjectList = new LinkedList<>();
+
+        JSONObject data0=JSONObject.fromObject(player[id],jsonConfig);
+        data0.put("decksSize",player[id].getDeckList().size());
+        jsonObjectList.add(data0);
+
+        JSONObject data1=JSONObject.fromObject(player[id^1],jsonConfig);
+        data1.remove("cardList");
         data1.put("hands",player[id].getCardList().size());
         jsonObjectList.add(data1);
 
@@ -69,14 +119,16 @@ public class Game {
 
     public void getCard(int id) {
 
-        nowStatus = player[id];
-        enemyStatus = player[id^1];
-
         List<Integer> cardList = nowStatus.getCardList();
         List<Integer> deckList = nowStatus.getDeckList();
         int total = nowStatus.getTurnCount();
-        if(total >= 3)            total = 3 - cardList.size();        //抽到3张为止;
-        if(deckList.size() < total)   total = deckList.size();
+
+        if(total >= 2){
+            if(deckList.size() == 1 || cardList.size() == 3)
+                total = 1 ;
+            else
+                total = 2;
+        }
 
         for(int i=0;i<total;i++){
             cardList.add(deckList.get(0));
@@ -85,32 +137,22 @@ public class Game {
 
         if(deckList.size() == 0)     nowStatus.resetDeckList();
 
-        timeStamp++;
-        newState stateGet = new newState(0);
-        allState.put(timeStamp,stateGet);
-
         return;
     }
 
 
     public void getCard(int id,int cnt) {
 
-//        nowStatus = player[id];
-//        enemyStatus = player[id^1];
-
         List<Integer> cardList = nowStatus.getCardList();
         List<Integer> deckList = nowStatus.getDeckList();
 
-        if(deckList.size() == 0)     nowStatus.resetDeckList();
+        if(deckList.size() == 0) nowStatus.resetDeckList();
 
         for(int i=0;i<cnt;i++){
             cardList.add(deckList.get(0));
             deckList.remove(0);
         }
 
-        timeStamp++;
-        newState stateGet = new newState(0);
-        allState.put(timeStamp,stateGet);
         return;
     }
 
@@ -237,7 +279,7 @@ public class Game {
     }
 
     public void endTurn(int id) {
-        GameStatus nowStatus = player[id];
+        if(nowStatus != player[id]) return;
         int turn = nowStatus.getTurnCount();
         nowStatus.setTurnCount(turn+1);                 //增加回合数
         return;
@@ -269,7 +311,6 @@ public class Game {
                     newStateList.add(allState.get(time));
             }
             JSONArray data=JSONArray.fromObject(newStateList);
-
             return data;
         }
     }

@@ -33,8 +33,12 @@ import net.sf.json.JSONObject;
 >>>>>>> 1a79dbb (token)
 =======
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
 >>>>>>> d354314 (10:59)
 import org.springframework.stereotype.Component;
+=======
+import org.springframework.web.bind.annotation.RestController;
+>>>>>>> f98c6f2 (17：32)
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -48,12 +52,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @ServerEndpoint(value = "/game/test/{token}",configurator = WebSocketConfig.class)
-@Component
+@RestController
 public class Websocket {
 
+    private static UserService userService;
     @Autowired
-    UserService userService;
-
+    public void setUserService(UserService userService){
+        Websocket.userService = userService;
+    }
     /**
      * 记录当前在线连接数
      */
@@ -69,7 +75,6 @@ public class Websocket {
 
     public static Map<String,Integer> tokenMap = new ConcurrentHashMap<>();
     private static  Map<String, Session> clients = new ConcurrentHashMap<>();
-    //private static Map<Session,HttpSession> sessionMap = new ConcurrentHashMap<>();
     private static  Map<String, GameStatus> allPlayers = new ConcurrentHashMap<>();
     public static  Map<Integer, Game> allGames = new ConcurrentHashMap<>();
     public static  Map<Integer, Room> allRooms = new ConcurrentHashMap<>();
@@ -313,6 +318,7 @@ public class Websocket {
         switch (type){
             case 0:{
                 //回合开始
+                game.gameBegin(seat);
                 sendMessageBack(MsgUtil.makeMsg(104,"yourTurn",game.packStat(seat),msgCount),seatSession);
                 sendMessageBack(MsgUtil.makeMsg(105,"waitTurn",game.packStat(enemy),msgCount),enemySession);
             }
@@ -375,6 +381,7 @@ public class Websocket {
             gameRun(rid,curSession,seat,1);
         }
         if(game.allState.size()>0 && game.allState.get(timeStamp).getSpecial() == 1){
+
             gameRun(rid,curSession,seat,4);
         }
         return ;

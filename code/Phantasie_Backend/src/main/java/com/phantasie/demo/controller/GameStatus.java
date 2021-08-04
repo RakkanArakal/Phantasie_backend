@@ -2,6 +2,7 @@ package com.phantasie.demo.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.phantasie.demo.utils.msg.jobInfo;
+import com.phantasie.demo.utils.msg.StatusMsg;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,10 @@ public class GameStatus implements Cloneable {
 
     private String jobInfo;
 
+    private int gameId;
+
+    private int seat;
+
     private int curHp ;
 
     private int curMp ;
@@ -29,11 +34,19 @@ public class GameStatus implements Cloneable {
 
     private int mp;
 
+    private int curJob;
+
     private int buffId;
 
     private int skillId;
 
+    private int coldDown;
+
     private int turnCount;
+
+    private boolean isInRoom = false;
+
+    private boolean isGameOver = false;
 
     private List<Integer> cardLibrary = new LinkedList<>();
 
@@ -41,22 +54,11 @@ public class GameStatus implements Cloneable {
 
     private List<Integer> cardList = new LinkedList<>();
 
-    private List<Integer> statusList = new LinkedList<>();
+    private List<StatusMsg> statusList = new LinkedList<>();
 
-    private List<Integer> usableCard = new LinkedList<>();
-
+    private List<Boolean> usableCard = new LinkedList<>();
 
 //    private List<Card> graveList = new LinkedList<>();
-
-    private int gameId;
-
-    private int seat;
-
-    private boolean isInRoom = false;
-
-    private boolean isGameOver = false;
-
-    private int curJob;
 
     public void curHpChange(int num){
         curHp -= num;
@@ -79,19 +81,24 @@ public class GameStatus implements Cloneable {
         cardLibrary = jobInfoList.get(curJob).getCardLibrary();
         curHp = hp = 2000;
         turnCount = 1 ;
+        coldDown = 5 ;
         cardList.clear();
+        deckList = getPlayerDeck();
+
         switch (curJob){
             case 0 :{
             mp = 5;
             curMp = 0;
+            statusList.add(new StatusMsg(100));
             }break;
             case 1 :
             case 2 : {
                 curMp = mp = 100;
             }break;
         }
-        deckList = getPlayerDeck();
+        statusList.add(new StatusMsg(buffId));
     }
+
     private List<Integer> getPlayerDeck() {
         deckList.clear();
         for (int i = 10; i > 0 ; i--) {
@@ -99,12 +106,18 @@ public class GameStatus implements Cloneable {
             deckList.add(cardLibrary.get(randomPos));
             cardLibrary.remove(randomPos);
         }
+        for (int i = 0;i<10;i++) {
+            cardLibrary.add(deckList.get(i));
+        }
         return deckList;
     }
-    public void resetDeckList() {
+    public boolean resetDeckList() {
+        if(deckList.size() != 0) return false;
         deckList = getPlayerDeck();
-        return;
+        return true;
     }
+
+
 }
 
 
