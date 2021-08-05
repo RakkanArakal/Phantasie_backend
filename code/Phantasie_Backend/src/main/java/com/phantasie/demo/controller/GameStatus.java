@@ -83,19 +83,23 @@ public class GameStatus implements Cloneable {
         cardLibrary = jobInfoList.get(curJob).getCardLibrary();
         curHp = hp = 2000;
         turnCount = 1 ;
-        coldDown = 5 ;
+        coldDown = 6 ;
         cardList.clear();
         deckList = getPlayerDeck();
 
         switch (curJob){
             case 0 :{
-            mp = 5;
-            curMp = 0;
-            statusList.add(new StatusMsg(100));
+                mp = 5;
+                curMp = 0;
+                statusList.add(new StatusMsg(100));
             }break;
-            case 1 :
+            case 1 :{
+                curMp = mp = 100;
+                statusList.add(new StatusMsg(98));
+            }
             case 2 : {
                 curMp = mp = 100;
+                statusList.add(new StatusMsg(99));
             }break;
         }
         statusList.add(new StatusMsg(buffId));

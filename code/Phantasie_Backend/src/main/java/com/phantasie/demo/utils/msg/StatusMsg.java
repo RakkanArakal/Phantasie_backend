@@ -29,6 +29,7 @@ public class StatusMsg {
 
 
     public StatusMsg(int statusId) {
+
         Status status = allStatus.get(statusId);
 
         this.statusId = status.getStatusId() ;

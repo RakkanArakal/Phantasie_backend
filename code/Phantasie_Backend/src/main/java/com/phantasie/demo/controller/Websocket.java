@@ -245,6 +245,12 @@ public class Websocket {
         return ;
     }
 
+    private void useSkill(int rid, Session session, int seat) {
+        Game game = allGames.get(rid);
+        int enemy = (seat ^ 1);
+    }
+
+
     private Game startGame(Room room) {
 
 
@@ -468,6 +474,8 @@ public class Websocket {
 //                case "update":
 //                    gameRun(rid,session,seat,3);
 //                    return;
+                case "useSkill": useSkill(rid,session,seat);
+                    return;
                 default:
                     break;
             }

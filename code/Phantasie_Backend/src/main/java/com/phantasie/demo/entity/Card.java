@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Table(name = "card")
 //@JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler", "userVerify", "cartList", "orderList"})
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cardId")
-public class Card {
+public class Card implements Serializable {
 
     @Id
 //    @GeneratedValue(generator = "increment", strategy = GenerationType.IDENTITYunlockCard)
@@ -26,6 +27,8 @@ public class Card {
     private String card_name;
 
     private Integer type;
+
+    private Integer job;
 
     private Integer attribute;
 
@@ -48,4 +51,5 @@ public class Card {
     private Integer special_count;
 
     private Integer rare;
+
 }

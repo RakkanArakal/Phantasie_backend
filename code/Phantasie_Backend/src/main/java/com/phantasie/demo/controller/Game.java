@@ -2,14 +2,15 @@ package com.phantasie.demo.controller;
 
 
 import com.phantasie.demo.entity.Card;
+import com.phantasie.demo.utils.msg.StatusMsg;
 import com.phantasie.demo.utils.msg.cardMsg;
 import com.phantasie.demo.utils.msg.newState;
-import com.phantasie.demo.utils.msg.StatusMsg;
 import lombok.Getter;
 import lombok.Setter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
+import org.apache.commons.lang.SerializationUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -113,7 +114,7 @@ public class Game {
                         }
                         break;
                         case 100:{
-                            if(r%4 == 0 && nowStatus.getCurJob() == 0 && nowStatus.getCurMp() < nowStatus.getMp()){
+                            if(r%5 == 0 && nowStatus.getCurJob() == 0 && nowStatus.getCurMp() < nowStatus.getMp()){
                                 flag.add(100);
                             }
                             continue;
@@ -171,7 +172,7 @@ public class Game {
         }
     }
 
-    private void makeHurt(Integer effect_value, int type,int index) {
+    private void makeHurt(Integer effect_value, int type,int statusId) {
         List<StatusMsg> nowBuffList = nowStatus.getStatusList();
         List<StatusMsg> enemyBuffList = enemyStatus.getStatusList();
         List<Integer> seat0 = new LinkedList<>();
@@ -192,12 +193,26 @@ public class Game {
                             if(duration == 1) nowBuffList.remove(i);
                         }
                         break;
-                        case 5:{
+                        case 101:{
                             value *= 2;
                         }
                         break;
+                        case 103:{
+                            value *= 2;
+                        }
+                        break;
+                        case 201:{
+                            //flag.add(201);
+                            continue;
+                        }
                         case 202:{
                             flag.add(202);
+                            continue;
+                        }
+                        case 203:{
+                            if(r%2 == 0) {
+                                flag.add(203);
+                            }
                             continue;
                         }
                         case 221:{
@@ -212,6 +227,15 @@ public class Game {
                             //todo
                         }
                         break;
+                        case 241:{
+                            flag.add(241);
+                            //todo
+                        }
+                        break;
+
+
+                        default:
+                            break;
 
                     }
                     if (nowStatus.getSeat() == 0) {
@@ -243,7 +267,7 @@ public class Game {
                         }
                         break;
                         case 100:{
-                            if(r%4 == 0 && enemyStatus.getCurJob() == 0 && enemyStatus.getCurMp() < enemyStatus.getMp()){
+                            if(r%5 == 0 && enemyStatus.getCurJob() == 0 && enemyStatus.getCurMp() < enemyStatus.getMp()){
                                 flag.add(100);
                             }
                             continue;
@@ -281,23 +305,6 @@ public class Game {
 
         for(int i = 0;i<flag.size();i++){
             switch (flag.get(i)){
-                case 202:{
-                    timeStamp++;
-                    nowStatus.curHpChange((int) (value * (-0.5)));
-                    newState newstate = new newState(nowStatus.getSeat(),0,false, (int) (value*0.5),nowStatus.getCurHp(),
-                            null,null,player[0].getStatusList(),player[1].getStatusList());
-                    int newIndex = 0;
-                    for(int j=0;j<nowStatus.getStatusList().size();j++)
-                        if (nowStatus.getStatusList().get(j).getStatusId() == flag.get(i))
-                            newIndex = j;
-
-                    if(nowStatus.getSeat() == 0 )
-                        newstate.setSeatStatusOrder0(List.of(newIndex));
-                    else
-                        newstate.setSeatStatusOrder1(List.of(newIndex));
-                    allState.put(timeStamp, newstate);
-                }
-                    break;
                 case 100:{
                     timeStamp++;
                     enemyStatus.curMpChange(-1);
@@ -314,15 +321,58 @@ public class Game {
                     allState.put(timeStamp, newstate);
                 }
                     break;
+                case 103:{
+
+                }
+                break;
+                case 201:{
+
+                }
+                break;
+                case 202:{
+                    timeStamp++;
+                    nowStatus.curHpChange((int) (value * (-0.5)));
+                    newState newstate = new newState(nowStatus.getSeat(),0,false, (int) (value*0.5),nowStatus.getCurHp(),
+                            null,null,player[0].getStatusList(),player[1].getStatusList());
+                    int newIndex = 0;
+                    for(int j=0;j<nowStatus.getStatusList().size();j++)
+                        if (nowStatus.getStatusList().get(j).getStatusId() == flag.get(i))
+                            newIndex = j;
+
+                    if(nowStatus.getSeat() == 0 )
+                        newstate.setSeatStatusOrder0(List.of(newIndex));
+                    else
+                        newstate.setSeatStatusOrder1(List.of(newIndex));
+                    allState.put(timeStamp, newstate);
+                }
+                break;
+                case 203:{
+
+                }
+                break;
                 case 221: {
                     timeStamp++;
                     StatusMsg statusMsg = new StatusMsg(221);
-                    statusMsg.setEffect_value(value *= 0.5);
+                    int curValue = 0;
+                    for(int k=0;i<enemyBuffList.size();k++) {
+                        if (enemyBuffList.get(k).getStatusId() == 221) {
+                            statusMsg = enemyBuffList.get(k);
+                            curValue = statusMsg.getEffect_value();
+                            enemyBuffList.remove(k);
+                            break;
+                        }
+                    }
+
+                    statusMsg.setEffect_value(curValue + (value *= 0.5));
                     enemyBuffList.add(statusMsg);
                     newState newstate = new newState(2, null,null,player[0].getStatusList(),player[1].getStatusList());
                     allState.put(timeStamp, newstate);
                 }
                     break;
+                case 241:{
+
+                }
+                break;
                 default:
                     break;
             }
@@ -409,12 +459,12 @@ public class Game {
                     switch (statusMsg.getStatusId()) {
                         case 10:                       //被瞄准
                         case 32:{                      //被点燃
-                            getHurt(statusMsg.getEffect_value(),1,i);
+                            getHurt(statusMsg.getEffect_value(),1,statusMsg.getStatusId());
                             nowBuffList.remove(i);
                         }
                         break;
                         case 35:{                       //中毒
-                            getHurt(statusMsg.getEffect_value()*duration,1,i);
+                            getHurt(statusMsg.getEffect_value()*duration,1,statusMsg.getStatusId());
                             statusMsg.setDuration(duration-1);
                             if(duration == 1)
                                 nowBuffList.remove(i);
@@ -422,6 +472,12 @@ public class Game {
                         break;
                         case 99:{
                             getCost(statusMsg.getEffect_value(),1,i);
+                        }
+                        break;
+                        case 98:{
+                            if(nowStatus.getCurMp() < 40) {
+                                getCost(40 - nowStatus.getCurMp(), 1, i);
+                            }
                         }
                         break;
                         case 9874:{
@@ -510,11 +566,46 @@ public class Game {
 
     public int useCard(int id, int cardOrder) {
 
+
         List<Integer> cardList = nowStatus.getCardList();
         Integer cardId = cardList.get(cardOrder);
         cardList.remove(cardOrder);
+        List<StatusMsg> nowBuffList = nowStatus.getStatusList();
+        List<StatusMsg> enemyBuffList = enemyStatus.getStatusList();
+        List<Integer> flag = new LinkedList<>();
 
-        Card card = allCards.get(cardId);
+        int r = (int) (Math.random() *352324);
+        Card card = (Card) SerializationUtils.clone(allCards.get(cardId));
+
+        for(int i = nowBuffList.size() - 1; i >= 0 ;i--){
+            StatusMsg statusMsg = nowBuffList.get(i);
+            int duration = statusMsg.getDuration();
+            switch (statusMsg.getEffect_phase()){
+                case 2:{
+                    switch (statusMsg.getStatusId()){
+                        case 102:{
+                            if(card.getJob() != 2) break;
+                            if(card.getCard_id() == 304) break;
+                            card.setMy_cost((int) (card.getMy_cost()*0.5));
+                            statusMsg.setDuration(duration - 1);
+                            if(duration == 1) nowBuffList.remove(i);
+                            //todo 非伤害卡
+                        }
+                        break;
+                        default:
+                            break;
+                    }
+                }
+                break;
+                case 4:{
+
+                }
+                break;
+                default:
+                    break;
+            }
+        }
+
         switch (card.getType()){
             case 0:{
                 hurtCard(card,cardOrder);
