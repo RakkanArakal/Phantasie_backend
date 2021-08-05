@@ -13,9 +13,9 @@ public class GameStatusTest {
     public void TestHpChange(){
         GameStatus gameStatus = new GameStatus();
         gameStatus.newGame();
-        gameStatus.hpChange(100);
+        gameStatus.curHpChange(100);
         Assert.assertEquals(1900,gameStatus.getHp());
-        gameStatus.hpChange(-100);
+        gameStatus.curHpChange(-100);
         Assert.assertEquals(2000,gameStatus.getHp());
     }
 
@@ -23,10 +23,10 @@ public class GameStatusTest {
     public void TestApChange(){
         GameStatus gameStatus = new GameStatus();
         gameStatus.newGame();
-        gameStatus.apChange(10);
-        Assert.assertEquals(90,gameStatus.getAp());
-        gameStatus.apChange(-10);
-        Assert.assertEquals(100,gameStatus.getAp());
+        gameStatus.curMpChange(10);
+        Assert.assertEquals(90,gameStatus.getCurMp());
+        gameStatus.curMpChange(-10);
+        Assert.assertEquals(100,gameStatus.getCurMp());
     }
 
 
@@ -64,9 +64,9 @@ class GameAndCardTest{
         //game.normalCard()
         game.normalCard(testCard_1);
         Assert.assertEquals(1900,p2.getHp());
-        Assert.assertEquals(90,p1.getAp());
+        Assert.assertEquals(90,p1.getMp());
         game.healCard(testCard_1);
-        Assert.assertEquals(80,p1.getAp());
+        Assert.assertEquals(80,p1.getMp());
         Assert.assertEquals(2000,p2.getHp());
     }
 }
