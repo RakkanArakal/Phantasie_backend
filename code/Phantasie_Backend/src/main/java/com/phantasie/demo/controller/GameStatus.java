@@ -62,11 +62,13 @@ public class GameStatus implements Cloneable {
 
     public void curHpChange(int num){
         curHp -= num;
+        if(curHp >= hp) curHp = hp;
         return;
     }
 
     public void curMpChange(int num){
         curMp -= num;
+        if(curMp >= mp) curMp = mp;
         return;
     }
 

@@ -416,7 +416,6 @@ public class Websocket {
         }
 
         if(game.allState.size()>0 && game.allState.get(timeStamp).getSpecial() == 1){
-
             gameRun(rid,curSession,seat,4);
         }
         return ;
