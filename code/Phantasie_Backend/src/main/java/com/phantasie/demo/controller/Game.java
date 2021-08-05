@@ -696,9 +696,36 @@ public class Game {
         return cardId;
     }
 
+<<<<<<< HEAD
     private void statusCard(Card card, int cardOrder) {
         makeStatus(card,cardOrder);
         getCost(card.getMy_cost(),0,cardOrder);
+=======
+    public void normalCard(Card card) {
+
+        nowStatus.hpChange(card.getMy_hp());
+        nowStatus.apChange(card.getMy_cost());
+        enemyStatus.hpChange(card.getEmy_hp());
+        enemyStatus.apChange(card.getEmy_cost());
+        return;
+    }
+
+    public void healCard(Card card) {
+
+        nowStatus.hpChange(-card.getMy_hp());
+        nowStatus.apChange(card.getMy_cost());
+        enemyStatus.hpChange(-card.getEmy_hp());
+        enemyStatus.apChange(card.getEmy_cost());
+        return;
+    }
+
+    private void warriorCard(Card card) {
+
+        nowStatus.hpChange(card.getMy_hp());
+        nowStatus.apChange(card.getMy_cost());
+        enemyStatus.hpChange(card.getEmy_hp());
+        enemyStatus.apChange(card.getEmy_cost());
+>>>>>>> 634c316 (test)
         return;
     }
 
