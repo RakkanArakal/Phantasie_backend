@@ -32,6 +32,8 @@ public class Status {
 
     private Integer duration;
 
+    private Integer durative;
+
     private Integer special;
 
     private Integer special_count;

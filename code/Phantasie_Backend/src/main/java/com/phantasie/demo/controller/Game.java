@@ -63,9 +63,18 @@ public class Game {
         return JSONArray.fromObject(jsonObjectList);
     }
 
-    public JSONArray gameBegin(int id){
+    private void getHurt(Integer effect_value, int i) {
+
+    }
+
+    private void makeHurt(Integer effect_value, int i) {
+    }
+
+
+
+    public void gameBegin(int id){
         if(player.length != 2){
-            return (null);
+            return ;
         }
         nowStatus = player[id];
         enemyStatus = player[id^1];
@@ -78,20 +87,32 @@ public class Game {
 
         for(int i = nowBuffList.size() - 1; i >= 0 ;i--){
             StatusMsg statusMsg = nowBuffList.get(i);
-            switch (statusMsg.getEffect_phase()){
-                case 0 :{
+            switch (statusMsg.getEffect_phase()) {
+                case 0 : {
                     switch (statusMsg.getStatusId()) {
-                        case 10:{                       //被瞄准
-
-                        }
-                            break;
-                        case 32:{                       //被点燃
-
+                        case 10:                       //被瞄准
+                        case 32:{                      //被点燃
+                            getHurt(statusMsg.getEffect_value(),i);
+                            nowBuffList.remove(i);
                         }
                             break;
                         case 35:{                       //中毒
+                            int duration = statusMsg.getDuration();
+                            getHurt(statusMsg.getEffect_value()*duration,i);
+                            statusMsg.setDuration(duration-1);
+                            if(duration == 1)
+                                nowBuffList.remove(i);
+                        }
+                            break;
+                        case 99:{
 
                         }
+                            break;
+                        case 9874:{
+                            makeHurt(statusMsg.getEffect_value(),i);
+                        }
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -99,22 +120,19 @@ public class Game {
                 default:
                     break;
             }
+
+            switch (statusMsg.getDurative()){
+                case 2:{
+
+                }
+                    break;
+                default:
+                    break;
+            }
         }
 
-        JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[] {"deckList","jobInfo","cardLibrary"});
-        List<JSONObject> jsonObjectList = new LinkedList<>();
 
-        JSONObject data0=JSONObject.fromObject(player[id],jsonConfig);
-        data0.put("decksSize",player[id].getDeckList().size());
-        jsonObjectList.add(data0);
-
-        JSONObject data1=JSONObject.fromObject(player[id^1],jsonConfig);
-        data1.remove("cardList");
-        data1.put("hands",player[id].getCardList().size());
-        jsonObjectList.add(data1);
-
-        return JSONArray.fromObject(jsonObjectList);
+        return ;
     }
 
     public void getCard(int id) {

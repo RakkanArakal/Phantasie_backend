@@ -247,6 +247,7 @@ public class Websocket {
 
     private Game startGame(Room room) {
 
+
         Game game = new Game();
         int rid = room.getRoomId();
         int r = (int) (Math.random ()*(352324 +1)) % 2;
@@ -310,59 +311,14 @@ public class Websocket {
 
         Session seatSession = clients.get(game.getPlayer()[seat].getPlayerId());
         Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());
-        
+        JSONObject cardData = new JSONObject();
         if(type >= 200) {
             cardOrder = type - 200;
             type = 2;
         }
-        switch (type){
-            case 0:{
-                //回合开始
-                game.gameBegin(seat);
-                sendMessageBack(MsgUtil.makeMsg(104,"yourTurn",game.packStat(seat),msgCount),seatSession);
-                sendMessageBack(MsgUtil.makeMsg(105,"waitTurn",game.packStat(enemy),msgCount),enemySession);
-            }
-                break;
-            case 1:{
-                game.getCard(seat);
-                sendMessageBack(MsgUtil.makeMsg(106,"getCard",game.cardMsg(true),msgCount),seatSession);
-                sendMessageBack(MsgUtil.makeMsg(107,"getCard",game.cardMsg(false),msgCount),enemySession);
-            }
-                break;
-            case 2:{
-                JSONObject data = new JSONObject();
-                data.put("cardId",game.useCard(seat,cardOrder));
-                sendMessageBack(MsgUtil.makeMsg(108,"useCard",data,msgCount),seatSession);
-                sendMessageBack(MsgUtil.makeMsg(109,"useCard",data,msgCount),enemySession);
-            }
-                break;
-            case 3:{
-                game.endTurn(seat);
-                gameRun(rid,enemySession,enemy,0);        // 敌方回合开始
-                game.setPlayerNow(enemy);
-                return ;
-            }
-            case 4:{
-                game.getCard(seat,1);
-                sendMessageBack(MsgUtil.makeMsg(106,"getCard",game.cardMsg(true),msgCount),seatSession);
-                sendMessageBack(MsgUtil.makeMsg(107,"getCard",game.cardMsg(false),msgCount),enemySession);
-            }
-                break;
-            default:
-                break;
-        }
-
-        if(game.stageChange(timeStamp) != null) {
-            JSONArray data = game.stageChange(timeStamp);
-            int msgCnt = game.getMsgCount() + 1 ;
-            game.setMsgCount(msgCnt);
-            sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
-            sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
-        }
 
         if(!game.isRunning())
         {                                                     //判断输赢
-
             if(game.getPlayer()[enemy].getCurHp() <= 0){
                 sendMessageBack(MsgUtil.makeMsg(120,"youWin"),seatSession);
                 sendMessageBack(MsgUtil.makeMsg(130,"enemyWin"),enemySession);
@@ -377,9 +333,88 @@ public class Websocket {
             allGames.remove(rid);
             return ;
         }
-        if(type == 0){
-            gameRun(rid,curSession,seat,1);
+
+        switch (type){
+            case 0:{
+                game.gameBegin(seat);
+            }
+                break;
+            case 1:{
+                game.getCard(seat);
+            }
+                break;
+            case 2:{
+                cardData.put("cardId",game.useCard(seat,cardOrder));
+            }
+                break;
+            case 3:{
+                game.endTurn(seat);
+            }
+                break;
+            case 4:{
+                game.getCard(seat,1);
+            }
+                break;
+            default:
+                break;
         }
+
+        if(game.stageChange(timeStamp) != null) {
+            JSONArray data = game.stageChange(timeStamp);
+            int msgCnt = game.getMsgCount() + 1 ;
+            game.setMsgCount(msgCnt);
+            sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
+            sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
+        }
+
+        switch (type){
+            case 0:{
+                sendMessageBack(MsgUtil.makeMsg(104,"yourTurn",game.packStat(seat),msgCount),seatSession);
+                sendMessageBack(MsgUtil.makeMsg(105,"waitTurn",game.packStat(enemy),msgCount),enemySession);
+                gameRun(rid,curSession,seat,1);
+                return;
+            }
+            case 1:
+            case 4:{                                            //抽卡信息
+                sendMessageBack(MsgUtil.makeMsg(106,"getCard",game.cardMsg(true),msgCount),seatSession);
+                sendMessageBack(MsgUtil.makeMsg(107,"getCard",game.cardMsg(false),msgCount),enemySession);
+            }
+            break;
+            case 2:{
+                sendMessageBack(MsgUtil.makeMsg(108,"useCard",cardData,msgCount),seatSession);
+                sendMessageBack(MsgUtil.makeMsg(109,"useCard",cardData,msgCount),enemySession);
+            }
+            break;
+            case 3:{
+                sendMessageBack(MsgUtil.makeMsg(104,"endTurn",game.packStat(seat),msgCount),seatSession);
+                sendMessageBack(MsgUtil.makeMsg(105,"endTurn",game.packStat(enemy),msgCount),enemySession);
+                gameRun(rid,enemySession,enemy,0);        // 敌方回合开始
+                game.setPlayerNow(enemy);
+                return ;
+            }
+
+            default:
+                break;
+        }
+
+
+        if(!game.isRunning())
+        {                                                     //判断输赢
+            if(game.getPlayer()[enemy].getCurHp() <= 0){
+                sendMessageBack(MsgUtil.makeMsg(120,"youWin"),seatSession);
+                sendMessageBack(MsgUtil.makeMsg(130,"enemyWin"),enemySession);
+            }
+            else{
+                sendMessageBack(MsgUtil.makeMsg(120,"youWin"),enemySession);
+                sendMessageBack(MsgUtil.makeMsg(130,"enemyWin"),seatSession);
+            }
+            game.player[0].setInRoom(false);
+            game.player[1].setInRoom(false);
+            allRooms.remove(rid);
+            allGames.remove(rid);
+            return ;
+        }
+
         if(game.allState.size()>0 && game.allState.get(timeStamp).getSpecial() == 1){
 
             gameRun(rid,curSession,seat,4);

@@ -16,6 +16,8 @@ public class StatusMsg {
 
     private Integer duration;
 
+    private Integer durative;
+
 //    private Integer special;
 //
 //    private Integer special_count;
@@ -34,6 +36,8 @@ public class StatusMsg {
         this.effect_phase = status.getEffect_phase();
 
         this.duration = status.getDuration();
+
+        this.durative = status.getDurative();
 
         this.effect_value = status.getEffect_value();
 

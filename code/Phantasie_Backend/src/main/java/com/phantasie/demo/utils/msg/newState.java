@@ -23,6 +23,13 @@ public class newState {
         changeVar = c;
         updateVar = u;
         special = 0;
+
+        if(changeVar < 0) {
+            changeVar = -1 * c;
+            if(plusVar = true) plusVar = false;
+            else plusVar = true;
+        }
+
     }
     public newState(int s){
         special = s;
