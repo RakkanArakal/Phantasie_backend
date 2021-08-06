@@ -609,6 +609,7 @@ public class Game {
             newState stateGet = new newState(3);
             allState.put(timeStamp,stateGet);
         }
+        nowStatus.setColdDown(6);
     }
 
     public int useCard(int id, int cardOrder) {

@@ -53,7 +53,6 @@ public class newState {
         this.seatStatusOrder1 = seat1;
         this.allStatus0 = statusList0;
         this.allStatus1 = statusList1;
-
     }
 
     public newState(int s){
