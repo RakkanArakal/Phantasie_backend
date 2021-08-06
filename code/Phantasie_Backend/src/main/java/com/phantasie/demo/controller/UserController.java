@@ -46,6 +46,7 @@ public class UserController {
 
         String data = JSONArray.fromObject(jobInfoList).toString();
         userService.setJobInfo(data,user);
+        userService.setJob(jobInfoClass.getJob(),user);
 
         return MsgUtil.makeMsg(0,"success");
     }

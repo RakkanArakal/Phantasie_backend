@@ -15,4 +15,6 @@ public interface UserService {
     void setJobInfo(String toString, User user);
 
     void setNickname(String nickName, User user);
+
+    void setJob(Integer job,User user);
 }

@@ -87,5 +87,8 @@ public class UserServiceImpl implements UserService {
     public void setNickname(String Nickname, User user){
         userDao.setNickname(Nickname,user);
     }
+
+    @Override
+    public void setJob(Integer job,User user){    userDao.setJob(job,user);}
 }
 

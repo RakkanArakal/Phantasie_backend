@@ -15,4 +15,6 @@ public interface UserDao {
     void setJobInfo(String data, User user);
 
     void setNickname(String nickname, User user);
+
+    void setJob(Integer job, User user);
 }
