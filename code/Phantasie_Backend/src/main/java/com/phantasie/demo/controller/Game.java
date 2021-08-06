@@ -498,12 +498,16 @@ public class Game {
                         }
                         break;
                         case 99:{
-                            getCost(statusMsg.getEffect_value(),1,i);
+                            if(nowStatus.getTurnCount() == 1) break;
+                            if(nowStatus.getCurMp() < 100)
+                                getCost(nowStatus.getCurMp()-100, 1, i);
+                            else
+                                getCost(statusMsg.getEffect_value(),1,i);
                         }
                         break;
                         case 98:{
                             if(nowStatus.getCurMp() < 40) {
-                                getCost(40 - nowStatus.getCurMp(), 1, i);
+                                getCost(nowStatus.getCurMp()-40, 1, i);
                             }
                         }
                         break;
