@@ -94,11 +94,13 @@ public class GameStatus implements Cloneable {
                 statusList.add(new StatusMsg(100));
             }break;
             case 1 :{
-                curMp = mp = 100;
+                mp = 100;
+                curMp = 50;
                 statusList.add(new StatusMsg(98));
             }
             case 2 : {
-                curMp = mp = 100;
+                mp = 100;
+                curMp = 50;
                 statusList.add(new StatusMsg(99));
             }break;
         }

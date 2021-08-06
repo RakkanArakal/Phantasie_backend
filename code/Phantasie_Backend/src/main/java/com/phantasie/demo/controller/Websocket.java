@@ -87,7 +87,7 @@ public class Websocket {
         return true;
     }
 
-    @OnOpen
+//    @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) throws IOException {
 
         if(tokenMap.get(token) == null){
@@ -108,7 +108,7 @@ public class Websocket {
         allPlayers.put(session.getId(), player);
     }
 
-//    @OnOpen
+    @OnOpen
     public void onOpen(Session session) throws IOException {
         int cnt = onlineCount.incrementAndGet();
         clients.put(session.getId(),session);
