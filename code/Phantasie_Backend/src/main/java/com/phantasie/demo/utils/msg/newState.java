@@ -14,7 +14,7 @@ public class newState {
     private int changeVar;
     private int updateVar;
     private int special;
-    private List<Integer> useableCard = null;
+//    private List<Integer> useableCard = null;
 
     private List<Integer> seatStatusOrder0;
     private List<Integer> seatStatusOrder1;

@@ -15,10 +15,12 @@ public class cardMsg {
 
     private List<Integer> cardList;
 
-    public cardMsg(Integer h,Integer d, List<Integer> c){
+    private List<Boolean> usableCard;
+
+    public cardMsg(Integer h, Integer d, List<Integer> c){
         hands = h;
         decks = d;
-        cardList = c;
+        this.cardList = c;
     }
 }
 

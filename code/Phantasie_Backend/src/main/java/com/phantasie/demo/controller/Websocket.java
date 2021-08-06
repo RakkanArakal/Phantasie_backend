@@ -87,7 +87,7 @@ public class Websocket {
         return true;
     }
 
-//    @OnOpen
+    @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) throws IOException {
 
         if(tokenMap.get(token) == null){
@@ -108,7 +108,7 @@ public class Websocket {
         allPlayers.put(session.getId(), player);
     }
 
-    @OnOpen
+//    @OnOpen
     public void onOpen(Session session) throws IOException {
         int cnt = onlineCount.incrementAndGet();
         clients.put(session.getId(),session);
@@ -309,7 +309,7 @@ public class Websocket {
     private void gameRun(int rid,Session curSession,int seat,int type) {
 
         Game game = allGames.get(rid);
-        int enemy = (seat ^ 1),cardOrder = 0;
+        int enemy = (seat ^ 1),cardOrder = 0,cardId = 0;
         int timeStamp = game.getTimeStamp();
 
         int msgCount = game.getMsgCount() + 1 ;
@@ -317,7 +317,7 @@ public class Websocket {
 
         Session seatSession = clients.get(game.getPlayer()[seat].getPlayerId());
         Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());
-        JSONObject cardData = new JSONObject();
+
         if(type >= 200) {
             cardOrder = type - 200;
             type = 2;
@@ -350,7 +350,7 @@ public class Websocket {
             }
                 break;
             case 2:{
-                cardData.put("cardId",game.useCard(seat,cardOrder));
+                cardId = game.useCard(seat,cardOrder);
             }
                 break;
             case 3:{
@@ -387,8 +387,12 @@ public class Websocket {
             }
             break;
             case 2:{
-                sendMessageBack(MsgUtil.makeMsg(108,"useCard",cardData,msgCount),seatSession);
-                sendMessageBack(MsgUtil.makeMsg(109,"useCard",cardData,msgCount),enemySession);
+                JSONObject cardData0 = game.cardMsg(true);
+                JSONObject cardData1 = game.cardMsg(false);
+                cardData0.put("cardId",cardId);
+                cardData1.put("cardId",cardId);
+                sendMessageBack(MsgUtil.makeMsg(108,"useCard",cardData0,msgCount),seatSession);
+                sendMessageBack(MsgUtil.makeMsg(109,"useCard",cardData1,msgCount),enemySession);
             }
             break;
             case 3:{

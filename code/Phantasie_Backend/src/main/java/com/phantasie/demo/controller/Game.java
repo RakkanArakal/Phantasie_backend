@@ -198,7 +198,7 @@ public class Game {
                         }
                         break;
                         case 103:{
-                            value *= 2;
+                            flag.add(103);
                         }
                         break;
                         case 201:{
@@ -297,8 +297,8 @@ public class Game {
         }
 
         timeStamp++;
-        nowStatus.curHpChange(value);
-        newState stateHp = new newState(nowStatus.getSeat(),0,true,value,nowStatus.getCurHp(),
+        enemyStatus.curHpChange(value);
+        newState stateHp = new newState(enemyStatus.getSeat(),0,true,value,enemyStatus.getCurHp(),
                 seat0,seat1,player[0].getStatusList(),player[1].getStatusList());
 
         allState.put(timeStamp, stateHp);
@@ -321,8 +321,22 @@ public class Game {
                     allState.put(timeStamp, newstate);
                 }
                     break;
-                case 103:{
+                case 103:
+                case 203:{
+                    timeStamp++;
+                    enemyStatus.curHpChange(value);
+                    newState newstate = new newState(enemyStatus.getSeat(),0,true,value,enemyStatus.getCurHp(),
+                            null,null,player[0].getStatusList(),player[1].getStatusList());
+                    int newIndex = 0;
+                    for(int j=0;j<enemyStatus.getStatusList().size();j++)
+                        if (enemyStatus.getStatusList().get(j).getStatusId() == flag.get(i))
+                            newIndex = j;
+                    if(enemyStatus.getSeat() == 0 )
+                        newstate.setSeatStatusOrder0(List.of(newIndex));
+                    else
+                        newstate.setSeatStatusOrder1(List.of(newIndex));
 
+                    allState.put(timeStamp, newstate);
                 }
                 break;
                 case 201:{
@@ -346,10 +360,6 @@ public class Game {
                     allState.put(timeStamp, newstate);
                 }
                 break;
-                case 203:{
-
-                }
-                break;
                 case 221: {
                     timeStamp++;
                     StatusMsg statusMsg = new StatusMsg(221);
@@ -370,6 +380,23 @@ public class Game {
                 }
                     break;
                 case 241:{
+                    if(statusId != 3) break;
+                    timeStamp++;
+                    StatusMsg statusMsg = new StatusMsg(241);
+                    int curValue = 0;
+                    for(int k=0;i<enemyBuffList.size();k++) {
+                        if (enemyBuffList.get(k).getStatusId() == 241) {
+                            statusMsg = enemyBuffList.get(k);
+                            curValue = statusMsg.getEffect_value();
+                            enemyBuffList.remove(k);
+                            break;
+                        }
+                    }
+
+                    statusMsg.setEffect_value(curValue + (value *= 2/3));
+                    enemyBuffList.add(statusMsg);
+                    newState newstate = new newState(2, null,null,player[0].getStatusList(),player[1].getStatusList());
+                    allState.put(timeStamp, newstate);
 
                 }
                 break;
@@ -652,7 +679,7 @@ public class Game {
 
 
     private void hurtCard(Card card, int cardOrder) {
-        makeHurt(card.getEmy_hp(),0,cardOrder);
+        makeHurt(card.getEmy_hp(),0,card.getJob());
         getCost(card.getMy_cost(),0,cardOrder);
         makeStatus(card,cardOrder);
         return;
@@ -717,10 +744,19 @@ public class Game {
 
     public JSONObject cardMsg(boolean flag) {
         cardMsg cardmsg = new cardMsg(nowStatus.getCardList().size(),nowStatus.getDeckList().size(),nowStatus.getCardList());
+
+        for(int i=0;i<cardmsg.getCardList().size();i++){
+            if(allCards.get(cardmsg.getCardList().get(i)).getMy_cost() <= nowStatus.getCurMp())
+                cardmsg.getUsableCard().add(true);
+            else
+                cardmsg.getUsableCard().add(false);
+        }
+
         JSONObject data = JSONObject.fromObject(cardmsg);
         if(!flag){
             data.replace("decks",null);
             data.replace("cardList",null);
+            data.replace("usableCard",null);
         }
         return data;
     }
