@@ -485,7 +485,7 @@ public class Websocket {
             }
         }catch (Exception e){
             log.info("发生错误");
-//            e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
