@@ -73,6 +73,15 @@ public class Msg {
         this.msg = extra;
         this.data = null;
     }
+
+    public Msg(int status, String msg, int time) {
+        this.status = status;
+        this.msg = msg;
+        this.data = null;
+        this.list = null;
+        this.timeStamp = time;
+    }
+
     public void setList(List<jobInfo> jobInfoList){
         this.list = JSONArray.fromObject(jobInfoList);
     }

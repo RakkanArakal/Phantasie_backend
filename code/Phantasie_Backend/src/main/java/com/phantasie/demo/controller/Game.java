@@ -364,17 +364,17 @@ public class Game {
                     timeStamp++;
                     StatusMsg statusMsg = new StatusMsg(221);
                     int curValue = 0;
-                    for(int k=0;i<enemyBuffList.size();k++) {
-                        if (enemyBuffList.get(k).getStatusId() == 221) {
-                            statusMsg = enemyBuffList.get(k);
+                    for(int k=0;i<nowBuffList.size();k++) {
+                        if (nowBuffList.get(k).getStatusId() == 221) {
+                            statusMsg = nowBuffList.get(k);
                             curValue = statusMsg.getEffect_value();
-                            enemyBuffList.remove(k);
+                            nowBuffList.remove(k);
                             break;
                         }
                     }
 
                     statusMsg.setEffect_value(curValue + (value *= 0.5));
-                    enemyBuffList.add(statusMsg);
+                    nowBuffList.add(statusMsg);
                     newState newstate = new newState(2, null,null,player[0].getStatusList(),player[1].getStatusList());
                     allState.put(timeStamp, newstate);
                 }
@@ -384,17 +384,17 @@ public class Game {
                     timeStamp++;
                     StatusMsg statusMsg = new StatusMsg(241);
                     int curValue = 0;
-                    for(int k=0;i<enemyBuffList.size();k++) {
-                        if (enemyBuffList.get(k).getStatusId() == 241) {
-                            statusMsg = enemyBuffList.get(k);
+                    for(int k=0;i<nowBuffList.size();k++) {
+                        if (nowBuffList.get(k).getStatusId() == 241) {
+                            statusMsg = nowBuffList.get(k);
                             curValue = statusMsg.getEffect_value();
-                            enemyBuffList.remove(k);
+                            nowBuffList.remove(k);
                             break;
                         }
                     }
 
                     statusMsg.setEffect_value(curValue + (value *= 2/3));
-                    enemyBuffList.add(statusMsg);
+                    nowBuffList.add(statusMsg);
                     newState newstate = new newState(2, null,null,player[0].getStatusList(),player[1].getStatusList());
                     allState.put(timeStamp, newstate);
 
@@ -591,6 +591,26 @@ public class Game {
         return;
     }
 
+
+    public void useSkill(int seat) {
+
+        timeStamp++;
+        nowStatus.getStatusList().add(new StatusMsg(nowStatus.getSkillId()));
+
+        newState newstate = new newState(2, null,null,player[0].getStatusList(),player[1].getStatusList());
+        allState.put(timeStamp, newstate);
+
+        timeStamp++;
+        if(nowStatus.getCurJob() == 1) {
+            newState stateGet = new newState(2);
+            allState.put(timeStamp,stateGet);
+        }
+        else {
+            newState stateGet = new newState(3);
+            allState.put(timeStamp,stateGet);
+        }
+    }
+
     public int useCard(int id, int cardOrder) {
 
 
@@ -760,4 +780,5 @@ public class Game {
         }
         return data;
     }
+
 }

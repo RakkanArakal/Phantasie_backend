@@ -244,13 +244,6 @@ public class Websocket {
         startGame(room);
         return ;
     }
-
-    private void useSkill(int rid, Session session, int seat) {
-        Game game = allGames.get(rid);
-        int enemy = (seat ^ 1);
-    }
-
-
     private Game startGame(Room room) {
 
 
@@ -304,6 +297,45 @@ public class Websocket {
 
 >>>>>>> 3a4695c (7.21 15:56)
         return game;
+    }
+
+
+
+    private void useSkill(int rid, Session session, int seat) {
+        Game game = allGames.get(rid);
+        int enemy = (seat ^ 1);
+        int timeStamp = game.getTimeStamp();
+        int msgCount = game.getMsgCount() + 1 ;
+        game.setMsgCount(msgCount);
+        Session seatSession = clients.get(game.getPlayer()[seat].getPlayerId());
+        Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());
+
+        game.useSkill(seat);
+
+        if(game.stageChange(timeStamp) != null) {
+            JSONArray data = game.stageChange(timeStamp);
+            int msgCnt = game.getMsgCount() + 1 ;
+            game.setMsgCount(msgCnt);
+            sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
+            sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
+        }
+
+        game.getCard(seat,game.allState.get(timeStamp).getSpecial());
+
+        timeStamp = game.getTimeStamp();
+        if(game.stageChange(timeStamp) != null) {
+            JSONArray data = game.stageChange(timeStamp);
+            int msgCnt = game.getMsgCount() + 1 ;
+            game.setMsgCount(msgCnt);
+            sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
+            sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
+        }
+
+        sendMessageBack(MsgUtil.makeMsg(106,"getCard",game.cardMsg(true),msgCount),seatSession);
+        sendMessageBack(MsgUtil.makeMsg(107,"getCard",game.cardMsg(false),msgCount),enemySession);
+
+        return;
+
     }
 
     private void gameRun(int rid,Session curSession,int seat,int type) {
@@ -396,8 +428,8 @@ public class Websocket {
             }
             break;
             case 3:{
-                sendMessageBack(MsgUtil.makeMsg(104,"endTurn",game.packStat(seat),msgCount),seatSession);
-                sendMessageBack(MsgUtil.makeMsg(105,"endTurn",game.packStat(enemy),msgCount),enemySession);
+                sendMessageBack(MsgUtil.makeMsg(104,"endTurn",msgCount),seatSession);
+                sendMessageBack(MsgUtil.makeMsg(105,"endTurn",msgCount),enemySession);
                 gameRun(rid,enemySession,enemy,0);        // 敌方回合开始
                 game.setPlayerNow(enemy);
                 return ;
@@ -425,7 +457,8 @@ public class Websocket {
             return ;
         }
 
-        if(game.allState.size()>0 && game.allState.get(timeStamp).getSpecial() == 1){
+        if(game.allState.size()>0 ){
+            if(game.allState.get(timeStamp).getSpecial() == 1)
             gameRun(rid,curSession,seat,4);
         }
         return ;
@@ -507,6 +540,7 @@ public class Websocket {
             log.error("服务端发送消息给客户端失败：", e);
         }
     }
+<<<<<<< HEAD
 //    private void sendMessageBack(String  message, Session fromSession) {
 //        try {
 //            log.info("服务端给客户端[{}]发送消息:{}", fromSession.getId(), message);
@@ -541,6 +575,8 @@ public class Websocket {
             }
         }
     }
+=======
+>>>>>>> 1a9d63d (14:57)
     public class ExceptionMessage  extends Exception {
         public ExceptionMessage(String message) {
             super(message);
