@@ -161,7 +161,7 @@ public class Websocket {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[] {"player"});
         JSONObject roomInfo = JSONObject.fromObject(room,jsonConfig);
-        Msg msg = MsgUtil.makeMsg(111,"新增房间",roomInfo);
+        Msg msg = MsgUtil.makeMsg(115,"新增房间",roomInfo);
         for(Map.Entry<String,GameStatus> playerMap:allPlayers.entrySet()){
             GameStatus gameStatus1 = playerMap.getValue();
             if(!gameStatus1.isInRoom()){
@@ -187,7 +187,7 @@ public class Websocket {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[] {"player"});
         JSONObject roomInfo = JSONObject.fromObject(room,jsonConfig);
-        Msg msg = MsgUtil.makeMsg(112,"退出房间",roomInfo);
+        Msg msg = MsgUtil.makeMsg(116,"退出房间",roomInfo);
         for(Map.Entry<String,GameStatus> playerMap:allPlayers.entrySet()){
             GameStatus gameStatus1 = playerMap.getValue();
             if(!gameStatus1.isInRoom()){

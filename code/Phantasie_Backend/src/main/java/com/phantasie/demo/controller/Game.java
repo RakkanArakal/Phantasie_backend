@@ -499,14 +499,14 @@ public class Game {
                         break;
                         case 99:{
                             if(nowStatus.getTurnCount() == 1) break;
-                            if(nowStatus.getCurMp() < 100)
+                            if(nowStatus.getCurMp() < 100 && nowStatus.getCurMp() > 80)
                                 getCost(nowStatus.getCurMp()-100, 1, i);
-                            else
+                            else if(nowStatus.getCurMp() <= 80 && nowStatus.getCurMp() >= 0)
                                 getCost(statusMsg.getEffect_value(),1,i);
                         }
                         break;
                         case 98:{
-                            if(nowStatus.getCurMp() < 40) {
+                            if(nowStatus.getCurMp() < 40 && nowStatus.getCurMp() > 0) {
                                 getCost(nowStatus.getCurMp()-40, 1, i);
                             }
                         }
