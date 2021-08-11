@@ -68,8 +68,6 @@ public class Game {
 
         List<StatusMsg> nowBuffList = nowStatus.getStatusList();
         List<StatusMsg> enemyBuffList = enemyStatus.getStatusList();
-        List<Integer> seat0 = new LinkedList<>();
-        List<Integer> seat1 = new LinkedList<>();
         List<Integer> flag = new LinkedList<>();
         int value = effect_value;
         int r = (int) (Math.random() *352324);
@@ -87,9 +85,9 @@ public class Game {
                     }
                 }
                 if (enemyStatus.getSeat() == 0) {
-                    seat0.add(i);
+//                    seat0.add(i);
                 } else {
-                    seat1.add(i);
+//                    seat1.add(i);
                 }
                     break;
                 case 4:{
@@ -110,7 +108,8 @@ public class Game {
                         case 2:{
                             value *= 0.5;
                             statusMsg.setDuration(duration - 1);
-                            if(duration == 1) nowBuffList.remove(i);
+//                            if(duration == 1) nowBuffList.remove(i);
+                            if(duration == 1) nowBuffList.get(i).setChangeFlag(1);
                         }
                         break;
                         case 100:{
@@ -127,9 +126,9 @@ public class Game {
                         break;
                     }
                     if (nowStatus.getSeat() == 0) {
-                        seat0.add(i);
+//                        seat0.add(i);
                     } else {
-                        seat1.add(i);
+//                        seat1.add(i);
                     }
                 }
                     break;
@@ -144,7 +143,7 @@ public class Game {
         timeStamp++;
         nowStatus.curHpChange(value);
         newState stateHp = new newState(nowStatus.getSeat(),0,true,value,nowStatus.getCurHp(),
-                seat0, seat1, player[0].getStatusList(),player[1].getStatusList());
+                player[0].getStatusList(),player[1].getStatusList());
 
         allState.put(timeStamp, stateHp);
 
@@ -154,15 +153,15 @@ public class Game {
                     timeStamp++;
                     nowStatus.curMpChange(-1);
                     newState stateMp = new newState(nowStatus.getSeat(),1,false,1,nowStatus.getCurMp(),
-                                            null,null,player[0].getStatusList(),player[1].getStatusList());
-                    int newIndex = 0;
-                    for(int j=0;j<nowStatus.getStatusList().size();j++)
-                        if (nowStatus.getStatusList().get(j).getStatusId() == flag.get(i))
-                            newIndex = j;
-                    if(nowStatus.getSeat() == 0 )
-                        stateMp.setSeatStatusOrder0(List.of(newIndex));
-                    else
-                        stateMp.setSeatStatusOrder1(List.of(newIndex));
+                                            player[0].getStatusList(),player[1].getStatusList());
+//                    int newIndex = 0;
+//                    for(int j=0;j<nowStatus.getStatusList().size();j++)
+//                        if (nowStatus.getStatusList().get(j).getStatusId() == flag.get(i))
+//                            newIndex = j;
+//                    if(nowStatus.getSeat() == 0 )
+//                        stateMp.setSeatStatusOrder0(List.of(newIndex));
+//                    else
+//                        stateMp.setSeatStatusOrder1(List.of(newIndex));
                     allState.put(timeStamp, stateMp);
                 }
                     break;
@@ -175,8 +174,8 @@ public class Game {
     private void makeHurt(Integer effect_value, int type,int statusId) {
         List<StatusMsg> nowBuffList = nowStatus.getStatusList();
         List<StatusMsg> enemyBuffList = enemyStatus.getStatusList();
-        List<Integer> seat0 = new LinkedList<>();
-        List<Integer> seat1 = new LinkedList<>();
+//        List<Integer> seat0 = new LinkedList<>();
+//        List<Integer> seat1 = new LinkedList<>();
         List<Integer> flag = new LinkedList<>();
         int value = effect_value;
         int r = (int) (Math.random() *352324);
@@ -190,7 +189,8 @@ public class Game {
                         case 1:{
                             value *= 1.5;
                             statusMsg.setDuration(duration - 1);
-                            if(duration == 1) nowBuffList.remove(i);
+//                            if(duration == 1) nowBuffList.remove(i);
+                            if(duration == 1) nowBuffList.get(i).setChangeFlag(1);
                         }
                         break;
                         case 101:{
@@ -239,9 +239,9 @@ public class Game {
 
                     }
                     if (nowStatus.getSeat() == 0) {
-                        seat0.add(i);
+//                        seat0.add(i);
                     } else {
-                        seat1.add(i);
+//                        seat1.add(i);
                     }
                 }
                     break;
@@ -263,7 +263,8 @@ public class Game {
                         case 2:{
                             value *= 0.5;
                             statusMsg.setDuration(duration - 1);
-                            if(duration == 1) enemyBuffList.remove(i);
+ //                            if(duration == 1) nowBuffList.remove(i);
+                            if(duration == 1) enemyBuffList.get(i).setChangeFlag(1);
                         }
                         break;
                         case 100:{
@@ -281,9 +282,9 @@ public class Game {
                     }
                 }
                 if (enemyStatus.getSeat() == 0) {
-                    seat0.add(i);
+//                    seat0.add(i);
                 } else {
-                    seat1.add(i);
+//                    seat1.add(i);
                 }
                     break;
                 case 4:{
@@ -299,7 +300,7 @@ public class Game {
         timeStamp++;
         enemyStatus.curHpChange(value);
         newState stateHp = new newState(enemyStatus.getSeat(),0,true,value,enemyStatus.getCurHp(),
-                seat0,seat1,player[0].getStatusList(),player[1].getStatusList());
+                player[0].getStatusList(),player[1].getStatusList());
 
         allState.put(timeStamp, stateHp);
 
@@ -309,15 +310,15 @@ public class Game {
                     timeStamp++;
                     enemyStatus.curMpChange(-1);
                     newState newstate = new newState(enemyStatus.getSeat(),1,false,1,enemyStatus.getCurMp(),
-                            null,null,player[0].getStatusList(),player[1].getStatusList());
-                    int newIndex = 0;
-                    for(int j=0;j<enemyStatus.getStatusList().size();j++)
-                        if (enemyStatus.getStatusList().get(j).getStatusId() == flag.get(i))
-                            newIndex = j;
-                    if(enemyStatus.getSeat() == 0 )
-                        newstate.setSeatStatusOrder0(List.of(newIndex));
-                    else
-                        newstate.setSeatStatusOrder1(List.of(newIndex));
+                            player[0].getStatusList(),player[1].getStatusList());
+//                    int newIndex = 0;
+//                    for(int j=0;j<enemyStatus.getStatusList().size();j++)
+//                        if (enemyStatus.getStatusList().get(j).getStatusId() == flag.get(i))
+//                            newIndex = j;
+//                    if(enemyStatus.getSeat() == 0 )
+//                        newstate.setSeatStatusOrder0(List.of(newIndex));
+//                    else
+//                        newstate.setSeatStatusOrder1(List.of(newIndex));
                     allState.put(timeStamp, newstate);
                 }
                     break;
@@ -326,15 +327,15 @@ public class Game {
                     timeStamp++;
                     enemyStatus.curHpChange(value);
                     newState newstate = new newState(enemyStatus.getSeat(),0,true,value,enemyStatus.getCurHp(),
-                            null,null,player[0].getStatusList(),player[1].getStatusList());
-                    int newIndex = 0;
-                    for(int j=0;j<enemyStatus.getStatusList().size();j++)
-                        if (enemyStatus.getStatusList().get(j).getStatusId() == flag.get(i))
-                            newIndex = j;
-                    if(enemyStatus.getSeat() == 0 )
-                        newstate.setSeatStatusOrder0(List.of(newIndex));
-                    else
-                        newstate.setSeatStatusOrder1(List.of(newIndex));
+                            player[0].getStatusList(),player[1].getStatusList());
+//                    int newIndex = 0;
+//                    for(int j=0;j<enemyStatus.getStatusList().size();j++)
+//                        if (enemyStatus.getStatusList().get(j).getStatusId() == flag.get(i))
+//                            newIndex = j;
+//                    if(enemyStatus.getSeat() == 0 )
+//                        newstate.setSeatStatusOrder0(List.of(newIndex));
+//                    else
+//                        newstate.setSeatStatusOrder1(List.of(newIndex));
 
                     allState.put(timeStamp, newstate);
                 }
@@ -347,55 +348,57 @@ public class Game {
                     timeStamp++;
                     nowStatus.curHpChange((int) (value * (-0.5)));
                     newState newstate = new newState(nowStatus.getSeat(),0,false, (int) (value*0.5),nowStatus.getCurHp(),
-                            null,null,player[0].getStatusList(),player[1].getStatusList());
-                    int newIndex = 0;
-                    for(int j=0;j<nowStatus.getStatusList().size();j++)
-                        if (nowStatus.getStatusList().get(j).getStatusId() == flag.get(i))
-                            newIndex = j;
-
-                    if(nowStatus.getSeat() == 0 )
-                        newstate.setSeatStatusOrder0(List.of(newIndex));
-                    else
-                        newstate.setSeatStatusOrder1(List.of(newIndex));
+                            player[0].getStatusList(),player[1].getStatusList());
+//                    int newIndex = 0;
+//                    for(int j=0;j<nowStatus.getStatusList().size();j++)
+//                        if (nowStatus.getStatusList().get(j).getStatusId() == flag.get(i))
+//                            newIndex = j;
+//
+//                    if(nowStatus.getSeat() == 0 )
+//                        newstate.setSeatStatusOrder0(List.of(newIndex));
+//                    else
+//                        newstate.setSeatStatusOrder1(List.of(newIndex));
                     allState.put(timeStamp, newstate);
                 }
                 break;
                 case 221: {
                     timeStamp++;
-                    StatusMsg statusMsg = new StatusMsg(221);
+                    StatusMsg statusMsg = new StatusMsg(221,3);
                     int curValue = 0;
                     for(int k=0;i<nowBuffList.size();k++) {
                         if (nowBuffList.get(k).getStatusId() == 221) {
                             statusMsg = nowBuffList.get(k);
                             curValue = statusMsg.getEffect_value();
                             nowBuffList.remove(k);
+                            statusMsg.setChangeFlag(2);
                             break;
                         }
                     }
 
                     statusMsg.setEffect_value(curValue + (value *= 0.5));
                     nowBuffList.add(statusMsg);
-                    newState newstate = new newState(2, null,null,player[0].getStatusList(),player[1].getStatusList());
+                    newState newstate = new newState(2,player[0].getStatusList(),player[1].getStatusList());
                     allState.put(timeStamp, newstate);
                 }
                     break;
                 case 241:{
                     if(statusId != 3) break;
                     timeStamp++;
-                    StatusMsg statusMsg = new StatusMsg(241);
+                    StatusMsg statusMsg = new StatusMsg(241,3);
                     int curValue = 0;
                     for(int k=0;i<nowBuffList.size();k++) {
                         if (nowBuffList.get(k).getStatusId() == 241) {
                             statusMsg = nowBuffList.get(k);
                             curValue = statusMsg.getEffect_value();
                             nowBuffList.remove(k);
+                            statusMsg.setChangeFlag(2);
                             break;
                         }
                     }
 
                     statusMsg.setEffect_value(curValue + (value *= 2/3));
                     nowBuffList.add(statusMsg);
-                    newState newstate = new newState(2, null,null,player[0].getStatusList(),player[1].getStatusList());
+                    newState newstate = new newState(2, player[0].getStatusList(),player[1].getStatusList());
                     allState.put(timeStamp, newstate);
 
                 }
@@ -410,8 +413,8 @@ public class Game {
 
         List<StatusMsg> nowBuffList = nowStatus.getStatusList();
         List<StatusMsg> enemyBuffList = enemyStatus.getStatusList();
-        List<Integer> seat0 = new LinkedList<>();
-        List<Integer> seat1 = new LinkedList<>();
+//        List<Integer> seat0 = new LinkedList<>();
+//        List<Integer> seat1 = new LinkedList<>();
         List<Integer> flag = new LinkedList<>();
         int value = effect_value;
         int r = (int) (Math.random() *352324);
@@ -419,7 +422,7 @@ public class Game {
         timeStamp++;
         nowStatus.curMpChange(value);
         newState newstate = new newState(nowStatus.getSeat(),1,true,value,nowStatus.getCurMp(),
-                null,null,player[0].getStatusList(),player[1].getStatusList());
+                player[0].getStatusList(),player[1].getStatusList());
 
         allState.put(timeStamp, newstate);
 
@@ -443,7 +446,7 @@ public class Game {
             statusId = card.getEmy_status();
         }
         timeStamp++;
-        StatusMsg statusMsg = new StatusMsg(statusId);
+        StatusMsg statusMsg = new StatusMsg(statusId,3);
         switch (card.getCard_id()){
 
             case 400:{
@@ -459,7 +462,7 @@ public class Game {
             default:
                 break;
         }
-        newState newstate = new newState(2, null,null,player[0].getStatusList(),player[1].getStatusList());
+        newState newstate = new newState(2,player[0].getStatusList(),player[1].getStatusList());
         allState.put(timeStamp, newstate);
 
     }
@@ -487,14 +490,15 @@ public class Game {
                         case 10:                       //被瞄准
                         case 32:{                      //被点燃
                             getHurt(statusMsg.getEffect_value(),1,statusMsg.getStatusId());
-                            nowBuffList.remove(i);
+                            nowBuffList.get(i).setChangeFlag(1);
+
                         }
                         break;
                         case 35:{                       //中毒
                             getHurt(statusMsg.getEffect_value()*duration,1,statusMsg.getStatusId());
                             statusMsg.setDuration(duration-1);
                             if(duration == 1)
-                                nowBuffList.remove(i);
+                                nowBuffList.get(i).setChangeFlag(1);
                         }
                         break;
                         case 99:{
@@ -599,9 +603,9 @@ public class Game {
     public void useSkill(int seat) {
 
         timeStamp++;
-        nowStatus.getStatusList().add(new StatusMsg(nowStatus.getSkillId()));
+        nowStatus.getStatusList().add(new StatusMsg(nowStatus.getSkillId(),3));
 
-        newState newstate = new newState(2, null,null,player[0].getStatusList(),player[1].getStatusList());
+        newState newstate = new newState(2,player[0].getStatusList(),player[1].getStatusList());
         allState.put(timeStamp, newstate);
 
         timeStamp++;
@@ -640,7 +644,7 @@ public class Game {
                             if(card.getCard_id() == 304) break;
                             card.setMy_cost((int) (card.getMy_cost()*0.5));
                             statusMsg.setDuration(duration - 1);
-                            if(duration == 1) nowBuffList.remove(i);
+                            if(duration == 1) nowBuffList.get(i).setChangeFlag(1);
                             //todo 非伤害卡
                         }
                         break;
@@ -813,4 +817,12 @@ public class Game {
         return data;
     }
 
+    public void changeAble() {
+        for(int i=player[0].getStatusList().size()-1;i >=0 ;i--){
+            if(player[0].getStatusList().get(i).getChangeFlag() == 1)
+                player[0].getStatusList().remove(i);
+            else
+                player[0].getStatusList().get(i).setChangeFlag(0);
+        }
+    }
 }

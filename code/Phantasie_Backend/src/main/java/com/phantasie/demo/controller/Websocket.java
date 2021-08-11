@@ -318,6 +318,8 @@ public class Websocket {
             game.setMsgCount(msgCnt);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
+            game.changeAble();
+
         }
 
         game.getCard(seat,game.allState.get(timeStamp).getSpecial());
@@ -329,6 +331,7 @@ public class Websocket {
             game.setMsgCount(msgCnt);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
+            game.changeAble();
         }
 
         sendMessageBack(MsgUtil.makeMsg(106,"getCard",game.cardMsg(true),msgCount),seatSession);
@@ -403,7 +406,9 @@ public class Websocket {
             game.setMsgCount(msgCnt);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
+            game.changeAble();
         }
+
 
         switch (type){
             case 0:{

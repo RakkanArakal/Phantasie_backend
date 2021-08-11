@@ -18,13 +18,15 @@ public class StatusMsg {
 
     private Integer durative;
 
-//    private Integer special;
-//
-//    private Integer special_count;
-
     private Integer effect_value;
 
     private Integer effect_cost;
+
+    private Integer changeFlag;
+
+    //    private Integer special;
+//
+//    private Integer special_count;
 
 
 
@@ -43,5 +45,25 @@ public class StatusMsg {
         this.effect_value = status.getEffect_value();
 
         this.effect_cost = status.getEffect_cost();
+
+        this.changeFlag = 0;
+    }
+
+    public StatusMsg(int statusId, int i) {
+        Status status = allStatus.get(statusId);
+
+        this.statusId = status.getStatusId() ;
+
+        this.effect_phase = status.getEffect_phase();
+
+        this.duration = status.getDuration();
+
+        this.durative = status.getDurative();
+
+        this.effect_value = status.getEffect_value();
+
+        this.effect_cost = status.getEffect_cost();
+
+        this.changeFlag = i;
     }
 }
