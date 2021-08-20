@@ -27,7 +27,17 @@ public class SingleMode {
 
     private int gold;
 
+    private int maxHp;
+
+    private int maxMp;
+
     private String mapRoute;
+
+    public String curJob;
+
+    public String curBless;
+
+    public String curSkill;
 
     @OneToMany(mappedBy = "singleMode",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<SingleModeCard> cardList;
