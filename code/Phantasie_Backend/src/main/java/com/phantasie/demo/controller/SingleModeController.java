@@ -24,4 +24,10 @@ public class SingleModeController {
         SingleModeInfo data = new SingleModeInfo();
         return MsgUtil.makeMsg(0,JSON.toJSONString(data) );
     }
+
+    @RequestMapping("/newGame")
+    public Msg newGame(){
+        //删除旧存档，创建新的游戏
+        return MsgUtil.makeMsg(0,"create success");
+    }
 }
