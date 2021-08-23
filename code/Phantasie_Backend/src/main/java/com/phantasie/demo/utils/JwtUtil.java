@@ -19,7 +19,7 @@
 //    public static String createJWT(String username) throws UnsupportedEncodingException {
 //        Date date = new Date();
 //        Calendar now = Calendar.getInstance();
-//        now.add(Calendar.MINUTE,1);
+//        now.add(Calendar.MINUTE,15);
 //        Date expireDate = now.getTime();
 //
 //        Map<String,Object> map = new HashMap<String,Object>();

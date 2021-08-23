@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class SingleModeInfo {
-    
+
     public int skillId;
 
     public int level;
@@ -24,7 +24,7 @@ public class SingleModeInfo {
 
     public int maxMp;
 
-    String mapRoute;
+    public String mapRoute;
 
     public String curJob;
 
@@ -32,8 +32,10 @@ public class SingleModeInfo {
 
     public String curSkill;
 
-    private List<Integer> curCardDeck = new LinkedList<>();
+    List<Integer> cardList = new LinkedList<>();
 
-    private List<Integer> curCardRepo = new LinkedList<>();
+    private List<Integer> deckList = new LinkedList<>();
+
+    private List<Integer> statusList = new LinkedList<>();
 
 }
