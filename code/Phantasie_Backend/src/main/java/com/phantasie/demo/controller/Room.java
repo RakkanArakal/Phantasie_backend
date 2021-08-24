@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -26,6 +28,9 @@ public class Room implements Serializable {
 //    public int playerNow;
     public int roomsize;
     public String ownerName;
+
+    public Date date;
+
 
     public Room() {
 <<<<<<< HEAD
@@ -41,6 +46,9 @@ public class Room implements Serializable {
 =======
 >>>>>>> 18b44a7 (11:29)
         player = new GameStatus[2];
+        Calendar expireDate = Calendar.getInstance();
+        expireDate.add(Calendar.MINUTE,30);
+        date = expireDate.getTime();
     }
 
 
@@ -55,5 +63,14 @@ public class Room implements Serializable {
 
     public GameStatus[] getPlayer() {
         return player;
+    }
+
+
+    public boolean isExpired(){
+        Calendar now = Calendar.getInstance();
+        if ( date.before(now.getTime()) ){
+            return true;
+        }
+        return false;
     }
 }

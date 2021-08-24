@@ -201,6 +201,7 @@ public class Websocket {
         log.info("查询房间");
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[] {"player"});
+        waitRooms.removeIf(Room::isExpired);
         JSONArray list = JSONArray.fromObject(waitRooms,jsonConfig);
 
         sendMessageBack(MsgUtil.makeMsg(100,"allRoom",list),session);

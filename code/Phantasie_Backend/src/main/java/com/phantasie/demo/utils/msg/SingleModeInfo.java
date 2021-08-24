@@ -12,17 +12,17 @@ public class SingleModeInfo {
 
     public int skillId;
 
-    public int level;
+    public int level = 0;
 
-    public int exp;
+    public int exp = 0;
 
-    public int gold;
+    public int gold = 100;
 
-    public int curHp;
+    public int curHp = 0;
 
-    public int maxHp;
+    public int maxHp = 100;
 
-    public int maxMp;
+    public int maxMp = 0;
 
     public String mapRoute;
 
