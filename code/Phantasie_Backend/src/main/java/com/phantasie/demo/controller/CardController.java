@@ -4,6 +4,7 @@ import com.phantasie.demo.entity.Card;
 import com.phantasie.demo.entity.Status;
 import com.phantasie.demo.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/database")
 public class CardController {
 
     @Autowired
@@ -31,4 +33,15 @@ public class CardController {
         System.out.print(allStatus);
         return;
     }
+
+    @RequestMapping("/getCard")
+    public List<Card> getDatabaseCard(){
+        return cardService.getAllCard();
+    }
+
+    @RequestMapping("/getStatus")
+    public List<Status> getDatabaseStatus(){
+        return cardService.getAllStatus();
+    }
+
 }
