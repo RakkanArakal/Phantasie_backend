@@ -434,8 +434,8 @@ public class Websocket {
             }
             break;
             case 3:{
-                sendMessageBack(MsgUtil.makeMsg(104,"endTurn",msgCount),seatSession);
-                sendMessageBack(MsgUtil.makeMsg(105,"endTurn",msgCount),enemySession);
+//                sendMessageBack(MsgUtil.makeMsg(104,"endTurn",msgCount),seatSession);
+//                sendMessageBack(MsgUtil.makeMsg(105,"endTurn",msgCount),enemySession);
                 gameRun(rid,enemySession,enemy,0);        // 敌方回合开始
                 game.setPlayerNow(enemy);
                 return ;

@@ -97,7 +97,7 @@ public class GameStatus implements Cloneable {
                 mp = 100;
                 curMp = 50;
                 statusList.add(new StatusMsg(98));
-            }
+            }break;
             case 2 : {
                 mp = 100;
                 curMp = 50;
