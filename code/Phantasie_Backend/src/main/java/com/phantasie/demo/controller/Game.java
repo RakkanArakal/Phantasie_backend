@@ -551,7 +551,7 @@ public class Game {
         int total = nowStatus.getTurnCount();
 
         if(total >= 2){
-            if(deckList.size() == 1 || cardList.size() == 3)
+            if(deckList.size() == 1 || cardList.size() >= 3)
                 total = 1 ;
             else
                 total = 2;
@@ -824,5 +824,12 @@ public class Game {
             else
                 player[0].getStatusList().get(i).setChangeFlag(0);
         }
+    }
+
+    public void disCarded(int seat, List<Integer> discardList) {
+        for(int i=discardList.size()-1;i >=0 ;i--){
+            player[seat].getCardList().remove(i);
+        }
+        return;
     }
 }

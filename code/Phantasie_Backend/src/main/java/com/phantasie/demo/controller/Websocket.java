@@ -302,6 +302,27 @@ public class Websocket {
 
 
 
+    private void disCarded(int rid, Session session, int seat,List<Integer> discardList) {
+        Game game = allGames.get(rid);
+        int enemy = (seat ^ 1);
+        int timeStamp = game.getTimeStamp();
+        Session seatSession = clients.get(game.getPlayer()[seat].getPlayerId());
+        Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());
+
+        game.disCarded(seat,discardList);
+
+        if(game.stageChange(timeStamp) != null) {
+            JSONArray data = game.stageChange(timeStamp);
+            int msgCnt = game.getMsgCount() + 1 ;
+            game.setMsgCount(msgCnt);
+            sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
+            sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
+            game.changeAble();
+        }
+        return;
+
+    }
+
     private void useSkill(int rid, Session session, int seat) {
         Game game = allGames.get(rid);
         int enemy = (seat ^ 1);
@@ -334,9 +355,6 @@ public class Websocket {
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
             game.changeAble();
         }
-
-        sendMessageBack(MsgUtil.makeMsg(106,"getCard",game.cardMsg(true),msgCount),seatSession);
-        sendMessageBack(MsgUtil.makeMsg(107,"getCard",game.cardMsg(false),msgCount),enemySession);
 
         return;
 
@@ -409,7 +427,6 @@ public class Websocket {
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
             game.changeAble();
         }
-
 
         switch (type){
             case 0:{
@@ -507,6 +524,10 @@ public class Websocket {
                 }
                 case "endTurn": {
                     playerNow = allGames.get(rid).getPlayerNow();
+                    if(splitMessage.length > 1){
+                        List<Integer> discardList = com.alibaba.fastjson.JSONArray.parseArray(splitMessage[1],Integer.class);
+                        disCarded(rid,session,seat,discardList);
+                    }
                     if (seat != playerNow){
                         sendMessageBack(MsgUtil.makeMsg(-100,"操作失败"),session);
                         break;
