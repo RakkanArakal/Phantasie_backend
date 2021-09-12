@@ -61,8 +61,8 @@ public class SingleMode {
         jobInfo myJob = new jobInfo(jobIndex);
         this.jsonArray = JSONObject.fromObject(myJob).toString();
 
-        if(job == "0") this.maxMp = 5;
-
+        if(this.jobIndex == 0)
+            this.maxMp = 5;
     }
 
     public SingleMode() {
