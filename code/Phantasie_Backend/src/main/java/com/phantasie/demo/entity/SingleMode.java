@@ -45,7 +45,7 @@ public class SingleMode {
 
     public String jsonArray;
 
-
+    public Class jobInfo;
 
     public SingleMode(String job, int userId) {
         this.user_id = userId;

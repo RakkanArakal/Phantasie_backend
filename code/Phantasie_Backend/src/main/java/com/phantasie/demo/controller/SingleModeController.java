@@ -27,6 +27,8 @@ public class SingleModeController {
         }
         SingleMode singleMode = JSONObject.parseObject(str,SingleMode.class);
         singleMode.setUser_id(auth.getInt("userId"));
+        singleMode.setJsonArray(net.sf.json.JSONObject.fromObject(singleMode.getJobInfo()).toString());
+
         singleModeService.save(singleMode);
         return MsgUtil.makeMsg(0,"success");
     }
