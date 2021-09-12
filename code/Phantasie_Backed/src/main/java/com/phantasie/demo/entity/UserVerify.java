@@ -31,6 +31,7 @@ public class UserVerify {
 
 //    private String token;
 
+
     private User user;
 
     public UserVerify() {

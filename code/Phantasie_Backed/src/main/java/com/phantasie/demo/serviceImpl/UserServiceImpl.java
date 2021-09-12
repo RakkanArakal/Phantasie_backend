@@ -10,10 +10,9 @@ import com.phantasie.demo.utils.msgutils.Msg;
 import com.phantasie.demo.utils.msgutils.MsgUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static com.phantasie.demo.utils.SessionUtil.setSession;
 
@@ -49,14 +48,14 @@ public class UserServiceImpl implements UserService {
         if(singleMode == null)
             return MsgUtil.makeMsg(-1,"无存档");
 
-        JSONObject obj = JSONObject.fromObject(singleMode);
-        obj.remove("jsonArray");
-
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"jsonArray","user"});
+        JSONObject obj = JSONObject.fromObject(singleMode,jsonConfig);
 
         String jobInfoStr = singleMode.getJsonArray();
-        List<jobInfo> jobInfoList = com.alibaba.fastjson.JSONArray.parseArray(jobInfoStr,jobInfo.class);
+        jobInfo myjobInfo = com.alibaba.fastjson.JSONArray.parseObject(jobInfoStr,jobInfo.class);
 
-        return MsgUtil.makeMsg(0,"success",obj,JSONArray.fromObject(jobInfoList));
+        return MsgUtil.makeMsg(0,"success",obj,JSONArray.fromObject(myjobInfo));
     }
 
 

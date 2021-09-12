@@ -1,6 +1,7 @@
 package com.phantasie.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.phantasie.demo.utils.msg.jobInfo;
@@ -19,6 +20,12 @@ public class SingleMode {
     @Id
     private int user_id;
 
+<<<<<<< HEAD
+=======
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+>>>>>>> ebffa55 (1648)
     private User user;
 
     private int level;

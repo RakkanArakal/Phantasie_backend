@@ -90,8 +90,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public SingleMode findSingleModeById(Integer user_id) {
         Optional<SingleMode> singleMode = singleModeRepository.findById(user_id);
-        if(singleMode.isPresent())
+        if(singleMode.isPresent()) {
+            singleMode.get().setUser(null);
             return singleMode.get();
+        }
         else
             return null;
     }
