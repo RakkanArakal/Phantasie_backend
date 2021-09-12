@@ -13,7 +13,7 @@ public class newState {
     private boolean plusVar;
     private int changeVar;
     private int updateVar;
-    private int special;
+    private int special;        //特殊值
 //    private List<Integer> useableCard = null;
 
 //    private List<Integer> seatStatusOrder0;

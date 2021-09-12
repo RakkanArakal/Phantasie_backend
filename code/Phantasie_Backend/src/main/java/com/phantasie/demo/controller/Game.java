@@ -58,6 +58,7 @@ public class Game {
 
         JSONObject data1=JSONObject.fromObject(player[id^1],jsonConfig);
         data1.remove("cardList");
+        data1.remove("usableCard");
         data1.put("hands",player[id].getCardList().size());
         jsonObjectList.add(data1);
 

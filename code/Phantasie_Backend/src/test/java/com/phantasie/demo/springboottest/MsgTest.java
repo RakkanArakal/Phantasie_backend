@@ -9,7 +9,7 @@ public class MsgTest {
     SingleModeController instance = new SingleModeController();
     @Test
     public void testStringfy(){
-        System.out.println(instance.getData().getStatus());
+//        System.out.println(instance.getData().getStatus());
         SingleModeInfo data = new SingleModeInfo();
         System.out.println(JSON.toJSON(data).toString());
     }
