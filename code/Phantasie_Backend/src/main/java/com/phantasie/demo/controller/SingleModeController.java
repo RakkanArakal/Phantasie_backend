@@ -1,6 +1,7 @@
 package com.phantasie.demo.controller;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.phantasie.demo.entity.SingleMode;
 import com.phantasie.demo.service.SingleModeService;
 import com.phantasie.demo.utils.SessionUtil;
 import com.phantasie.demo.utils.msgutils.Msg;
@@ -19,11 +20,14 @@ public class SingleModeController {
     private SingleModeService singleModeService;
 
     @RequestMapping("/saveData")
-    public Msg saveData(@RequestBody Map<String,String> data){
-        JSON.parse(data.toString());
-        //Claim name = jwtUtil.verify(token).get("name")
-
-//        singleModeService.save();
+    public Msg saveData(@RequestBody String str){
+        net.sf.json.JSONObject auth = SessionUtil.getAuth();
+        if(auth == null){
+            return MsgUtil.makeMsg(-1,"Error");
+        }
+        SingleMode singleMode = JSONObject.parseObject(str,SingleMode.class);
+        singleMode.setUser_id(auth.getInt("userId"));
+        singleModeService.save(singleMode);
         return MsgUtil.makeMsg(0,"success");
     }
 

@@ -10,4 +10,6 @@ public interface SingleModeService {
     List<SingleMode> getAllSingleMode();
 
     Msg newGame(String job, int userId);
+
+    void save(SingleMode singleMode);
 }

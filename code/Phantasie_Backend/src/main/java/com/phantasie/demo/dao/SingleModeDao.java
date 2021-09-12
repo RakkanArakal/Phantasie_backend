@@ -9,4 +9,6 @@ public interface SingleModeDao {
     List<SingleMode> getAllSingleMode();
 
     Msg cerateSingleMode(String job, int userId);
+
+    void save(SingleMode singleMode);
 }

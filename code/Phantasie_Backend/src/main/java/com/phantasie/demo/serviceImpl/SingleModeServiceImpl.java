@@ -25,4 +25,10 @@ public class SingleModeServiceImpl implements SingleModeService {
     public Msg newGame(String job, int userId) {
         return singleModeDao.cerateSingleMode(job,userId);
     }
+
+    @Override
+    public void save(SingleMode singleMode) {
+        singleModeDao.save(singleMode);
+        return ;
+    }
 }

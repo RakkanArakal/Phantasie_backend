@@ -42,4 +42,10 @@ public class SingleModeDaoImpl implements SingleModeDao {
         return MsgUtil.makeMsg(0,"success",obj, JSONArray.fromObject(myjobInfo));
     }
 
+    @Override
+    public void save(SingleMode singleMode) {
+        singleModeRepository.saveAndFlush(singleMode);
+        return;
+    }
+
 }
