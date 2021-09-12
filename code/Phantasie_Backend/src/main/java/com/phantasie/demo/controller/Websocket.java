@@ -87,7 +87,7 @@ public class Websocket {
         return true;
     }
 
-//    @OnOpen
+    @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) throws IOException {
 
         if(tokenMap.get(token) == null){
@@ -108,21 +108,21 @@ public class Websocket {
         allPlayers.put(session.getId(), player);
     }
 
-    @OnOpen
-    public void onOpen(Session session) throws IOException {
-        int cnt = onlineCount.incrementAndGet();
-        clients.put(session.getId(),session);
-        log.info("有新连接加入：{}，当前在线人数为：{}", session.getId(), cnt);
-
-        GameStatus player = new GameStatus();
-        player.setPlayerId(session.getId());
-        User user = userService.findUserById(2);
-        player.setPlayerId(session.getId());
-        player.setCurJob(user.getJob());
-        player.setPlayerName(user.getNickName());
-        player.setJobInfo(user.getJobInfo());
-        allPlayers.put(session.getId(), player);
-    }
+//    @OnOpen
+//    public void onOpen(Session session) throws IOException {
+//        int cnt = onlineCount.incrementAndGet();
+//        clients.put(session.getId(),session);
+//        log.info("有新连接加入：{}，当前在线人数为：{}", session.getId(), cnt);
+//
+//        GameStatus player = new GameStatus();
+//        player.setPlayerId(session.getId());
+//        User user = userService.findUserById(2);
+//        player.setPlayerId(session.getId());
+//        player.setCurJob(user.getJob());
+//        player.setPlayerName(user.getNickName());
+//        player.setJobInfo(user.getJobInfo());
+//        allPlayers.put(session.getId(), player);
+//    }
 
     @OnClose
     public void onClose(Session session){
@@ -499,7 +499,7 @@ public class Websocket {
         int seat = allPlayers.get(session.getId()).getSeat();
         int playerNow = 0;
         int argu1 = 0;
-        if(splitMessage.length > 1)
+        if(splitMessage.length > 1 && splitMessage[0] != "endTurn" )
             argu1 = Integer.parseInt(splitMessage[1]);
         try {
             switch (splitMessage[0]){
