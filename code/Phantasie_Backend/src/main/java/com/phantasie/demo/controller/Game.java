@@ -109,8 +109,8 @@ public class Game {
                         case 2:{
                             value *= 0.5;
                             statusMsg.setDuration(duration - 1);
-//                            if(duration == 1) nowBuffList.remove(i);
-                            if(duration == 1) nowBuffList.get(i).setChangeFlag(1);
+                            if(duration == 1) nowBuffList.remove(i);
+//                            if(duration == 1) nowBuffList.get(i).setChangeFlag(1);
                         }
                         break;
                         case 100:{
@@ -190,8 +190,8 @@ public class Game {
                         case 1:{
                             value *= 1.5;
                             statusMsg.setDuration(duration - 1);
-//                            if(duration == 1) nowBuffList.remove(i);
-                            if(duration == 1) nowBuffList.get(i).setChangeFlag(1);
+                            if(duration == 1) nowBuffList.remove(i);
+//                            if(duration == 1) nowBuffList.get(i).setChangeFlag(1);
                         }
                         break;
                         case 101:{
@@ -264,8 +264,8 @@ public class Game {
                         case 2:{
                             value *= 0.5;
                             statusMsg.setDuration(duration - 1);
- //                            if(duration == 1) nowBuffList.remove(i);
-                            if(duration == 1) enemyBuffList.get(i).setChangeFlag(1);
+                             if(duration == 1) nowBuffList.remove(i);
+//                            if(duration == 1) enemyBuffList.get(i).setChangeFlag(1);
                         }
                         break;
                         case 100:{
@@ -371,7 +371,7 @@ public class Game {
                             statusMsg = nowBuffList.get(k);
                             curValue = statusMsg.getEffect_value();
                             nowBuffList.remove(k);
-                            statusMsg.setChangeFlag(2);
+//                            statusMsg.setChangeFlag(2);
                             break;
                         }
                     }
@@ -392,7 +392,7 @@ public class Game {
                             statusMsg = nowBuffList.get(k);
                             curValue = statusMsg.getEffect_value();
                             nowBuffList.remove(k);
-                            statusMsg.setChangeFlag(2);
+//                            statusMsg.setChangeFlag(2);
                             break;
                         }
                     }
@@ -491,15 +491,14 @@ public class Game {
                         case 10:                       //被瞄准
                         case 32:{                      //被点燃
                             getHurt(statusMsg.getEffect_value(),1,statusMsg.getStatusId(), 2);
-                            nowBuffList.get(i).setChangeFlag(1);
+                            nowBuffList.remove(i);
 
                         }
                         break;
                         case 35:{                       //中毒
                             getHurt(statusMsg.getEffect_value()*duration,1,statusMsg.getStatusId(), 5);
                             statusMsg.setDuration(duration-1);
-                            if(duration == 1)
-                                nowBuffList.get(i).setChangeFlag(1);
+                            if(duration == 1) nowBuffList.remove(i);
                         }
                         break;
                         case 99:{
@@ -642,7 +641,7 @@ public class Game {
                             if(card.getCard_id() == 304) break;
                             card.setMy_cost((int) (card.getMy_cost()*0.5));
                             statusMsg.setDuration(duration - 1);
-                            if(duration == 1) nowBuffList.get(i).setChangeFlag(1);
+                            if(duration == 1) nowBuffList.remove(i);
                             //todo 非伤害卡
                         }
                         break;
@@ -819,14 +818,14 @@ public class Game {
         return data;
     }
 
-    public void changeAble() {
-        for(int i=player[0].getStatusList().size()-1;i >=0 ;i--){
-            if(player[0].getStatusList().get(i).getChangeFlag() == 1)
-                player[0].getStatusList().remove(i);
-            else
-                player[0].getStatusList().get(i).setChangeFlag(0);
-        }
-    }
+//    public void changeAble() {
+//        for(int i=player[0].getStatusList().size()-1;i >=0 ;i--){
+//            if(player[0].getStatusList().get(i).getChangeFlag() == 1)
+//                player[0].getStatusList().remove(i);
+//            else
+//                player[0].getStatusList().get(i).setChangeFlag(0);
+//        }
+//    }
 
     public void disCarded(int seat, List<Integer> discardList) {
         for(int i=discardList.size()-1;i >=0 ;i--){

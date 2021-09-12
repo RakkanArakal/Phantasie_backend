@@ -320,7 +320,7 @@ public class Websocket {
             game.setMsgCount(msgCnt);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
-            game.changeAble();
+//            game.changeAble();
         }
         return;
 
@@ -343,7 +343,7 @@ public class Websocket {
             game.setMsgCount(msgCnt);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
-            game.changeAble();
+//            game.changeAble();
 
         }
 
@@ -356,7 +356,7 @@ public class Websocket {
             game.setMsgCount(msgCnt);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
-            game.changeAble();
+//            game.changeAble();
         }
 
         return;
@@ -428,7 +428,7 @@ public class Websocket {
             game.setMsgCount(msgCnt);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
-            game.changeAble();
+//            game.changeAble();
         }
 
         switch (type){
@@ -502,7 +502,7 @@ public class Websocket {
         int seat = allPlayers.get(session.getId()).getSeat();
         int playerNow = 0;
         int argu1 = 0;
-        if(splitMessage.length > 1 && splitMessage[0] != "endTurn" )
+        if(splitMessage.length > 1 && !splitMessage[0].equals("endTurn"))
             argu1 = Integer.parseInt(splitMessage[1]);
         try {
             switch (splitMessage[0]){

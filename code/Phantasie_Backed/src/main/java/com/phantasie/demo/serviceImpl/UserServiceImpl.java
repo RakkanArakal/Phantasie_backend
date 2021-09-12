@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
             return MsgUtil.makeMsg(-1,"无存档");
 
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[] {"jsonArray","user"});
+        jsonConfig.setExcludes(new String[] {"jsonArray","user","jobInfo"});
         JSONObject obj = JSONObject.fromObject(singleMode,jsonConfig);
 
         String jobInfoStr = singleMode.getJsonArray();

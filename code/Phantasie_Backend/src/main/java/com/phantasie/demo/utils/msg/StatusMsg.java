@@ -22,8 +22,6 @@ public class StatusMsg {
 
     private Integer effect_cost;
 
-    private Integer changeFlag;
-
     //    private Integer special;
 //
 //    private Integer special_count;
@@ -45,8 +43,6 @@ public class StatusMsg {
         this.effect_value = status.getEffect_value();
 
         this.effect_cost = status.getEffect_cost();
-
-        this.changeFlag = 0;
     }
 
     public StatusMsg(int statusId, int i) {
@@ -63,7 +59,5 @@ public class StatusMsg {
         this.effect_value = status.getEffect_value();
 
         this.effect_cost = status.getEffect_cost();
-
-        this.changeFlag = i;
     }
 }
