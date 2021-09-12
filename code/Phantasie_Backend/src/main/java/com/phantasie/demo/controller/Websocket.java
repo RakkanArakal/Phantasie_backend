@@ -320,7 +320,6 @@ public class Websocket {
             game.setMsgCount(msgCnt);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
-//            game.changeAble();
         }
         return;
 
@@ -347,6 +346,10 @@ public class Websocket {
         }
 
         game.getCard(seat,game.allState.get(timeStamp).getSpecial());
+        int msgCount = game.getMsgCount() + 1 ;
+        game.setMsgCount(msgCount);
+        sendMessageBack(MsgUtil.makeMsg(106,"getCard",game.cardMsg(true),msgCount),seatSession);
+        sendMessageBack(MsgUtil.makeMsg(107,"getCard",game.cardMsg(false),msgCount),enemySession);
 
         timeStamp = game.getTimeStamp();
         if(game.stageChange(timeStamp) != null) {
@@ -424,7 +427,6 @@ public class Websocket {
             game.setMsgCount(msgCnt);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), seatSession);
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
-//            game.changeAble();
         }
 
         int msgCount = game.getMsgCount() + 1 ;
@@ -455,6 +457,7 @@ public class Websocket {
             case 3:{
 //                sendMessageBack(MsgUtil.makeMsg(104,"endTurn",msgCount),seatSession);
 //                sendMessageBack(MsgUtil.makeMsg(105,"endTurn",msgCount),enemySession);
+                game.setMsgCount(msgCount-1);
                 gameRun(rid,enemySession,enemy,0);        // 敌方回合开始
                 game.setPlayerNow(enemy);
                 return ;
