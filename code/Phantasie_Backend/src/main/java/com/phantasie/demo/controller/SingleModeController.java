@@ -19,7 +19,7 @@ public class SingleModeController {
     private SingleModeService singleModeService;
 
     @RequestMapping("/saveData")
-    public Msg saveData(@RequestBody Map data){
+    public Msg saveData(@RequestBody Map<String,String> data){
         JSON.parse(data.toString());
         //Claim name = jwtUtil.verify(token).get("name")
 
@@ -34,13 +34,13 @@ public class SingleModeController {
 //    }
 
     @RequestMapping("/newGame")
-    public Msg newGame(@RequestBody String job){
+    public Msg newGame(@RequestBody Map<String,String> data){
         //删除旧存档，创建新的游戏
         net.sf.json.JSONObject auth = SessionUtil.getAuth();
         if(auth == null){
             return MsgUtil.makeMsg(-1,"Error");
         }
-        singleModeService.newGame(job,auth.getInt("userId"));
+        singleModeService.newGame(data.get("jobIndex"),auth.getInt("userId"));
         return MsgUtil.makeMsg(0,"create success");
     }
 }

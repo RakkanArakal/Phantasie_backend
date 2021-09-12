@@ -5,11 +5,15 @@ import com.phantasie.demo.entity.SingleMode;
 import com.phantasie.demo.entity.User;
 import com.phantasie.demo.entity.UserVerify;
 import com.phantasie.demo.service.UserService;
+import com.phantasie.demo.utils.msg.jobInfo;
 import com.phantasie.demo.utils.msgutils.Msg;
 import com.phantasie.demo.utils.msgutils.MsgUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static com.phantasie.demo.utils.SessionUtil.setSession;
 
@@ -22,7 +26,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Msg login(String username, String password) {
         UserVerify userVerify = checkUser(username, password);
-        SingleMode singleMode = userDao.findSingleModeById(userVerify.getUser_id());
         if (userVerify != null) {
             User user = findUserById(userVerify.getUser_id());
             JSONObject obj = new JSONObject();
@@ -30,7 +33,7 @@ public class UserServiceImpl implements UserService {
             obj.put("nickName",user.getNickName());
             obj.put("job",user.getJob());
             obj.put("userName", userVerify.getUsername());
-            obj.put("singleMode",singleMode);
+
             setSession(obj);
             return MsgUtil.makeMsg(0,"success",obj);
         }
@@ -38,6 +41,24 @@ public class UserServiceImpl implements UserService {
             return MsgUtil.makeMsg(-1,"用户名或密码错误");
         }
     }
+
+    @Override
+    public Msg getSingleMode(Integer userId) {
+        SingleMode singleMode = userDao.findSingleModeById(userId);
+
+        if(singleMode == null)
+            return MsgUtil.makeMsg(-1,"无存档");
+
+        JSONObject obj = JSONObject.fromObject(singleMode);
+        obj.remove("jsonArray");
+
+
+        String jobInfoStr = singleMode.getJsonArray();
+        List<jobInfo> jobInfoList = com.alibaba.fastjson.JSONArray.parseArray(jobInfoStr,jobInfo.class);
+
+        return MsgUtil.makeMsg(0,"success",obj,JSONArray.fromObject(jobInfoList));
+    }
+
 
     private UserVerify checkUser(String username, String password) {
         UserVerify uv = userDao.checkUser(username);
@@ -93,5 +114,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setJob(Integer job,User user){    userDao.setJob(job,user);}
+
 }
 

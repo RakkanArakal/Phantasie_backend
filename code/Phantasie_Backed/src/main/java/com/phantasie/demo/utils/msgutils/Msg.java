@@ -82,6 +82,14 @@ public class Msg {
         this.timeStamp = time;
     }
 
+    public Msg(int status, String msg, JSONObject obj, JSONArray list) {
+        this.status = status;
+        this.msg = msg;
+        this.data = obj;
+        this.list = list;
+    }
+
+
     public void setList(List<jobInfo> jobInfoList){
         this.list = JSONArray.fromObject(jobInfoList);
     }

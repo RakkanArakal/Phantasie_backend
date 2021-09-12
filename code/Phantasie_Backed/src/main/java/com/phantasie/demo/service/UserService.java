@@ -17,4 +17,6 @@ public interface UserService {
     void setNickname(String nickName, User user);
 
     void setJob(Integer job,User user);
+
+    Msg getSingleMode(Integer userId);
 }

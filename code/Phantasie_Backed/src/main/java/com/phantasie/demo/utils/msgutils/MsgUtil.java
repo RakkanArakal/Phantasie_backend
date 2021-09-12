@@ -79,4 +79,8 @@ public class MsgUtil {
     public static Msg makeMsg(int status, String msg, int time) {
         return new Msg(status, msg,time);
     }
+
+    public static Msg makeMsg(int status, String msg, JSONObject obj, JSONArray list) {
+        return new Msg(status, msg,obj,list);
+    }
 }

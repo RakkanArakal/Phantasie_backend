@@ -68,6 +68,18 @@ public class LoginController {
 >>>>>>> 367b954 (17:33)
     }
 
+        @RequestMapping("/singleMode")
+    public Msg singleMode() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        System.out.println("用户存档请求");
+        net.sf.json.JSONObject auth = SessionUtil.getAuth();
+        if(auth == null){
+            return MsgUtil.makeMsg(-1,"Error");
+        }
+
+        return userService.getSingleMode(auth.getInt("userId"));
+    }
+
+
     @PostMapping(value = "/signup")
     public Msg signup(@RequestBody Map map) {
         String username = (String) map.get("username");

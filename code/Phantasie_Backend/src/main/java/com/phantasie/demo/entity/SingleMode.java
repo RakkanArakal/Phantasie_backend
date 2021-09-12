@@ -37,10 +37,6 @@ public class SingleMode {
 
     public Integer jobIndex;
 
-    public Integer buffId;
-
-    public Integer skillId;
-
     public String jsonArray;
 
     @OneToMany(mappedBy = "singleMode",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
