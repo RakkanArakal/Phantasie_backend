@@ -9,7 +9,6 @@ import lombok.Data;
 import net.sf.json.JSONObject;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Entity
@@ -46,8 +45,7 @@ public class SingleMode {
 
     public String jsonArray;
 
-    @OneToMany(mappedBy = "singleMode",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<SingleModeCard> cardList;
+
 
     public SingleMode(String job, int userId) {
         this.user_id = userId;
@@ -56,22 +54,33 @@ public class SingleMode {
         this.curHp = 2000;
         this.gold = 0 ;
         this.maxHp = 2000;
-        Integer jobIndex = this.jobIndex = Integer.valueOf(job);
+        this.maxMp = 100;
+        this.jobIndex = Integer.valueOf(job);
         this.mapRoute = "";
+
         jobInfo myJob = new jobInfo(jobIndex);
         this.jsonArray = JSONObject.fromObject(myJob).toString();
+
+        if(job == "0") this.maxMp = 5;
+
     }
 
     public SingleMode() {
 
     }
 
+<<<<<<< HEAD
 //    TODO:为每个状态设计实体
 //
 //    TODO:为剧情进度设计实体
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+=======
+//    @OneToMany(mappedBy = "singleMode",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//    private List<SingleModeCard> cardList;
+
+>>>>>>> e7e033a (1659)
     public User getUser(){
         return user;
     }

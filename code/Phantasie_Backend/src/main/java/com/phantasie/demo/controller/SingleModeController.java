@@ -40,7 +40,6 @@ public class SingleModeController {
         if(auth == null){
             return MsgUtil.makeMsg(-1,"Error");
         }
-        singleModeService.newGame(data.get("jobIndex"),auth.getInt("userId"));
-        return MsgUtil.makeMsg(0,"create success");
+        return singleModeService.newGame(data.get("jobIndex"),auth.getInt("userId"));
     }
 }
