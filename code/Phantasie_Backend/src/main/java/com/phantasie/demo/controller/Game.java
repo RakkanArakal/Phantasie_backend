@@ -65,7 +65,7 @@ public class Game {
         return JSONArray.fromObject(jsonObjectList);
     }
 
-    private void getHurt(Integer effect_value, int type,int index) {
+    private void getHurt(Integer effect_value, int type, int index, int attribute) {
 
         List<StatusMsg> nowBuffList = nowStatus.getStatusList();
         List<StatusMsg> enemyBuffList = enemyStatus.getStatusList();
@@ -143,7 +143,7 @@ public class Game {
         }
         timeStamp++;
         nowStatus.curHpChange(value);
-        newState stateHp = new newState(nowStatus.getSeat(),0,true,value,nowStatus.getCurHp(),
+        newState stateHp = new newState(nowStatus.getSeat(),0,true,value,nowStatus.getCurHp(),attribute,
                 player[0].getStatusList(),player[1].getStatusList());
 
         allState.put(timeStamp, stateHp);
@@ -153,7 +153,7 @@ public class Game {
                 case 100:{
                     timeStamp++;
                     nowStatus.curMpChange(-1);
-                    newState stateMp = new newState(nowStatus.getSeat(),1,false,1,nowStatus.getCurMp(),
+                    newState stateMp = new newState(nowStatus.getSeat(),1,false,1,nowStatus.getCurMp(),0,
                                             player[0].getStatusList(),player[1].getStatusList());
 //                    int newIndex = 0;
 //                    for(int j=0;j<nowStatus.getStatusList().size();j++)
@@ -172,7 +172,7 @@ public class Game {
         }
     }
 
-    private void makeHurt(Integer effect_value, int type,int statusId) {
+    private void makeHurt(Integer effect_value, int type,int statusId,int attribute) {
         List<StatusMsg> nowBuffList = nowStatus.getStatusList();
         List<StatusMsg> enemyBuffList = enemyStatus.getStatusList();
 //        List<Integer> seat0 = new LinkedList<>();
@@ -300,7 +300,7 @@ public class Game {
 
         timeStamp++;
         enemyStatus.curHpChange(value);
-        newState stateHp = new newState(enemyStatus.getSeat(),0,true,value,enemyStatus.getCurHp(),
+        newState stateHp = new newState(enemyStatus.getSeat(),0,true,value,enemyStatus.getCurHp(),attribute,
                 player[0].getStatusList(),player[1].getStatusList());
 
         allState.put(timeStamp, stateHp);
@@ -310,7 +310,7 @@ public class Game {
                 case 100:{
                     timeStamp++;
                     enemyStatus.curMpChange(-1);
-                    newState newstate = new newState(enemyStatus.getSeat(),1,false,1,enemyStatus.getCurMp(),
+                    newState newstate = new newState(enemyStatus.getSeat(),1,false,1,enemyStatus.getCurMp(),0,
                             player[0].getStatusList(),player[1].getStatusList());
 //                    int newIndex = 0;
 //                    for(int j=0;j<enemyStatus.getStatusList().size();j++)
@@ -327,7 +327,7 @@ public class Game {
                 case 203:{
                     timeStamp++;
                     enemyStatus.curHpChange(value);
-                    newState newstate = new newState(enemyStatus.getSeat(),0,true,value,enemyStatus.getCurHp(),
+                    newState newstate = new newState(enemyStatus.getSeat(),0,true,value,enemyStatus.getCurHp(),1,
                             player[0].getStatusList(),player[1].getStatusList());
 //                    int newIndex = 0;
 //                    for(int j=0;j<enemyStatus.getStatusList().size();j++)
@@ -348,7 +348,7 @@ public class Game {
                 case 202:{
                     timeStamp++;
                     nowStatus.curHpChange((int) (value * (-0.5)));
-                    newState newstate = new newState(nowStatus.getSeat(),0,false, (int) (value*0.5),nowStatus.getCurHp(),
+                    newState newstate = new newState(nowStatus.getSeat(),0,false, (int) (value*0.5),nowStatus.getCurHp(),0,
                             player[0].getStatusList(),player[1].getStatusList());
 //                    int newIndex = 0;
 //                    for(int j=0;j<nowStatus.getStatusList().size();j++)
@@ -422,7 +422,7 @@ public class Game {
 
         timeStamp++;
         nowStatus.curMpChange(value);
-        newState newstate = new newState(nowStatus.getSeat(),1,true,value,nowStatus.getCurMp(),
+        newState newstate = new newState(nowStatus.getSeat(),1,true,value,nowStatus.getCurMp(),0,
                 player[0].getStatusList(),player[1].getStatusList());
 
         allState.put(timeStamp, newstate);
@@ -490,13 +490,13 @@ public class Game {
                     switch (statusMsg.getStatusId()) {
                         case 10:                       //被瞄准
                         case 32:{                      //被点燃
-                            getHurt(statusMsg.getEffect_value(),1,statusMsg.getStatusId());
+                            getHurt(statusMsg.getEffect_value(),1,statusMsg.getStatusId(), 2);
                             nowBuffList.get(i).setChangeFlag(1);
 
                         }
                         break;
                         case 35:{                       //中毒
-                            getHurt(statusMsg.getEffect_value()*duration,1,statusMsg.getStatusId());
+                            getHurt(statusMsg.getEffect_value()*duration,1,statusMsg.getStatusId(), 5);
                             statusMsg.setDuration(duration-1);
                             if(duration == 1)
                                 nowBuffList.get(i).setChangeFlag(1);
@@ -517,7 +517,7 @@ public class Game {
                         }
                         break;
                         case 9874:{
-                            makeHurt(statusMsg.getEffect_value(),1,i);
+                            makeHurt(statusMsg.getEffect_value(),1,i,0);
                         }
                         break;
                         default:
@@ -582,7 +582,6 @@ public class Game {
         return;
     }
 
-
     public void getCard(int id,int cnt) {
 
         List<Integer> cardList = nowStatus.getCardList();
@@ -599,7 +598,6 @@ public class Game {
 
         return;
     }
-
 
     public void useSkill(int seat) {
 
@@ -622,7 +620,6 @@ public class Game {
     }
 
     public int useCard(int id, int cardOrder) {
-
 
         List<Integer> cardList = nowStatus.getCardList();
         Integer cardId = cardList.get(cardOrder);
@@ -680,7 +677,6 @@ public class Game {
                 break;
         }
 
-
         if(card.getSpecial() != 0){
             timeStamp++;
             switch (card.getSpecial()){
@@ -694,7 +690,6 @@ public class Game {
             }
         }
 
-
         if(nowStatus.getCurHp() <= 0 || enemyStatus.getCurHp() <= 0)
             isRunning = false;
 
@@ -702,6 +697,9 @@ public class Game {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 665edae (1)
     private void statusCard(Card card, int cardOrder) {
         makeStatus(card,cardOrder);
         getCost(card.getMy_cost(),0,cardOrder);
@@ -715,6 +713,7 @@ public class Game {
         return;
     }
 
+<<<<<<< HEAD
     public void healCard(Card card) {
 
         nowStatus.hpChange(-card.getMy_hp());
@@ -735,15 +734,17 @@ public class Game {
     }
 
 
+=======
+>>>>>>> 665edae (1)
     private void hurtCard(Card card, int cardOrder) {
-        makeHurt(card.getEmy_hp(),0,card.getJob());
+        makeHurt(card.getEmy_hp(),0,card.getJob(),card.getAttribute());
         getCost(card.getMy_cost(),0,cardOrder);
         makeStatus(card,cardOrder);
         return;
     }
 
     private void healCard(Card card, int cardOrder) {
-        getHurt(card.getMy_hp(),0,cardOrder);
+        getHurt(card.getMy_hp(),0,cardOrder,card.getAttribute());
         getCost(card.getMy_cost(),0,cardOrder);
         makeStatus(card,cardOrder);
         return;

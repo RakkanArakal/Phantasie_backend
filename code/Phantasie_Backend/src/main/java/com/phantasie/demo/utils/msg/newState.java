@@ -13,6 +13,7 @@ public class newState {
     private boolean plusVar;
     private int changeVar;
     private int updateVar;
+    private int attribute;
     private int special;        //特殊值
 //    private List<Integer> useableCard = null;
 
@@ -22,13 +23,13 @@ public class newState {
     private List<StatusMsg> allStatus0;
     private List<StatusMsg> allStatus1;
 
-
-    public newState(int s, int v, boolean p, int c, int u,  List<StatusMsg> statusList0, List<StatusMsg> statusList1) {
+    public newState(int s, int v, boolean p, int c, int u, int a, List<StatusMsg> statusList0, List<StatusMsg> statusList1) {
         this.seat = s;
         this.varType = v;
         this.plusVar = p;
         this.changeVar = c;
         this.updateVar = u;
+        this.attribute = a;
         this.special = 0;
 //        this.seatStatusOrder0 = seat0;
 //        this.seatStatusOrder1 = seat1;
