@@ -35,7 +35,7 @@ public class SingleMode {
 
     private String mapRoute;
 
-    public Integer curJob;
+    public Integer jobIndex;
 
     public Integer buffId;
 
@@ -53,7 +53,7 @@ public class SingleMode {
         this.curHp = 2000;
         this.gold = 0 ;
         this.maxHp = 2000;
-        Integer jobIndex = this.curJob = Integer.valueOf(job);
+        Integer jobIndex = this.jobIndex = Integer.valueOf(job);
         this.mapRoute = "";
         jobInfo myJob = new jobInfo(jobIndex);
         this.jsonArray = JSONObject.fromObject(myJob).toString();
