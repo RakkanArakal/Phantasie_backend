@@ -52,7 +52,7 @@ public class SingleMode {
         this.level = 1;
         this.exp = 100;
         this.curHp = 2000;
-        this.gold = 0 ;
+        this.gold = 100 ;
         this.maxHp = 2000;
         this.maxMp = 100;
         this.jobIndex = Integer.valueOf(job);
