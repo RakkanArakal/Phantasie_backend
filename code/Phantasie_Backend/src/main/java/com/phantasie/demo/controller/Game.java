@@ -12,6 +12,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import org.apache.commons.lang.SerializationUtils;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -828,8 +829,9 @@ public class Game {
 //    }
 
     public void disCarded(int seat, List<Integer> discardList) {
+        Collections.sort(discardList);
         for(int i=discardList.size()-1;i >=0 ;i--){
-            player[seat].getCardList().remove(i);
+            player[seat].getCardList().remove(discardList.get(i));
         }
         return;
     }

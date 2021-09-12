@@ -330,8 +330,7 @@ public class Websocket {
         Game game = allGames.get(rid);
         int enemy = (seat ^ 1);
         int timeStamp = game.getTimeStamp();
-        int msgCount = game.getMsgCount() + 1 ;
-        game.setMsgCount(msgCount);
+
         Session seatSession = clients.get(game.getPlayer()[seat].getPlayerId());
         Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());
 
@@ -368,9 +367,6 @@ public class Websocket {
         Game game = allGames.get(rid);
         int enemy = (seat ^ 1),cardOrder = 0,cardId = 0;
         int timeStamp = game.getTimeStamp();
-
-        int msgCount = game.getMsgCount() + 1 ;
-        game.setMsgCount(msgCount);
 
         Session seatSession = clients.get(game.getPlayer()[seat].getPlayerId());
         Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());
@@ -430,6 +426,9 @@ public class Websocket {
             sendMessageBack(MsgUtil.makeMsg(110, "newState", data,msgCnt), enemySession);
 //            game.changeAble();
         }
+
+        int msgCount = game.getMsgCount() + 1 ;
+        game.setMsgCount(msgCount);
 
         switch (type){
             case 0:{
