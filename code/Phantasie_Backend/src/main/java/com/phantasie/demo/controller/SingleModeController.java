@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.phantasie.demo.entity.SingleMode;
 import com.phantasie.demo.service.SingleModeService;
 import com.phantasie.demo.utils.SessionUtil;
+import com.phantasie.demo.utils.msg.jobInfo;
 import com.phantasie.demo.utils.msgutils.Msg;
 import com.phantasie.demo.utils.msgutils.MsgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,12 @@ public class SingleModeController {
         if(auth == null){
             return MsgUtil.makeMsg(-1,"Error");
         }
+
         SingleMode singleMode = JSONObject.parseObject(str,SingleMode.class);
         singleMode.setUser_id(auth.getInt("userId"));
-        singleMode.setJsonArray(net.sf.json.JSONObject.fromObject(singleMode.getJobInfo()).toString());
+
+        jobInfo myjobinfo = JSONObject.parseObject(singleMode.getJobInfo(),jobInfo.class);
+        singleMode.setJsonArray(net.sf.json.JSONObject.fromObject(myjobinfo).toString());
 
         singleModeService.save(singleMode);
         return MsgUtil.makeMsg(0,"success");
