@@ -2,8 +2,10 @@ package com.phantasie.demo.daoImpl;
 
 
 import com.phantasie.demo.dao.UserDao;
+import com.phantasie.demo.entity.SingleMode;
 import com.phantasie.demo.entity.User;
 import com.phantasie.demo.entity.UserVerify;
+import com.phantasie.demo.repository.SingleModeRepository;
 import com.phantasie.demo.repository.UserRepository;
 import com.phantasie.demo.repository.UserVerifyRepository;
 import com.phantasie.demo.utils.msg.jobInfo;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -20,6 +23,9 @@ public class UserDaoImpl implements UserDao {
 
     @Autowired
     private UserVerifyRepository userVerifyRepository;
+
+    @Autowired
+    private SingleModeRepository singleModeRepository;
 
     @Override
     public UserVerify checkUser(String username) { return userVerifyRepository.checkUser(username); }
@@ -79,5 +85,14 @@ public class UserDaoImpl implements UserDao {
     public void setJob(Integer job,User user){
         user.setJob(job);
         userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public SingleMode findSingleModeById(Integer user_id) {
+        Optional<SingleMode> singleMode = singleModeRepository.findById(user_id);
+        if(singleMode.isPresent())
+            return singleMode.get();
+        else
+            return null;
     }
 }

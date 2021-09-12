@@ -1,6 +1,7 @@
 package com.phantasie.demo.serviceImpl;
 
 import com.phantasie.demo.dao.UserDao;
+import com.phantasie.demo.entity.SingleMode;
 import com.phantasie.demo.entity.User;
 import com.phantasie.demo.entity.UserVerify;
 import com.phantasie.demo.service.UserService;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Msg login(String username, String password) {
         UserVerify userVerify = checkUser(username, password);
+        SingleMode singleMode = userDao.findSingleModeById(userVerify.getUser_id());
         if (userVerify != null) {
             User user = findUserById(userVerify.getUser_id());
             JSONObject obj = new JSONObject();
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
             obj.put("nickName",user.getNickName());
             obj.put("job",user.getJob());
             obj.put("userName", userVerify.getUsername());
+            obj.put("singleMode",singleMode);
             setSession(obj);
             return MsgUtil.makeMsg(0,"success",obj);
         }

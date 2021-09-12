@@ -49,7 +49,7 @@ public class LoginController {
 >>>>>>> efaab6e (14:15)
 =======
         Msg ret = userService.login(username, password);
-        if(ret.getStatus() == -100) {
+        if(ret.getStatus() == -1) {
             return ret;
         }
         User user = userService.findUserByUsername(username);

@@ -3,7 +3,9 @@ package com.phantasie.demo.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.phantasie.demo.utils.msg.jobInfo;
 import lombok.Data;
+import net.sf.json.JSONObject;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,7 +25,7 @@ public class SingleMode {
 
     private int exp;
 
-    private int curHP;
+    private int curHp;
 
     private int gold;
 
@@ -33,14 +35,33 @@ public class SingleMode {
 
     private String mapRoute;
 
-    public String curJob;
+    public Integer curJob;
 
-    public String curBless;
+    public Integer buffId;
 
-    public String curSkill;
+    public Integer skillId;
+
+    public String jsonArray;
 
     @OneToMany(mappedBy = "singleMode",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<SingleModeCard> cardList;
+
+    public SingleMode(String job, int userId) {
+        this.user_id = userId;
+        this.level = 1;
+        this.exp = 100;
+        this.curHp = 2000;
+        this.gold = 0 ;
+        this.maxHp = 2000;
+        Integer jobIndex = this.curJob = Integer.valueOf(job);
+        this.mapRoute = "";
+        jobInfo myJob = new jobInfo(jobIndex);
+        this.jsonArray = JSONObject.fromObject(myJob).toString();
+    }
+
+    public SingleMode() {
+
+    }
 
 //    TODO:为每个状态设计实体
 //

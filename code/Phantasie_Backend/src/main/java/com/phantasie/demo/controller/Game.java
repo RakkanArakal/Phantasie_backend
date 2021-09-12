@@ -49,7 +49,7 @@ public class Game {
             return (null);
         }
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[] {"deckList","jobInfo","cardLibrary"});
+        jsonConfig.setExcludes(new String[] {"deckList","jobInfo","cardLibrary","playerId"});
         List<JSONObject> jsonObjectList = new LinkedList<>();
 
         JSONObject data0=JSONObject.fromObject(player[id],jsonConfig);

@@ -1,6 +1,7 @@
 package com.phantasie.demo.dao;
 
 
+import com.phantasie.demo.entity.SingleMode;
 import com.phantasie.demo.entity.User;
 import com.phantasie.demo.entity.UserVerify;
 
@@ -17,4 +18,6 @@ public interface UserDao {
     void setNickname(String nickname, User user);
 
     void setJob(Integer job, User user);
+
+    SingleMode findSingleModeById(Integer user_id);
 }
