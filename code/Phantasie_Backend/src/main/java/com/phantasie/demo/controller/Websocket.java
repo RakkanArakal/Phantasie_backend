@@ -344,7 +344,7 @@ public class Websocket {
 //            game.changeAble();
 
         }
-
+        timeStamp = game.getTimeStamp();
         game.getCard(seat,game.allState.get(timeStamp).getSpecial());
         int msgCount = game.getMsgCount() + 1 ;
         game.setMsgCount(msgCount);
