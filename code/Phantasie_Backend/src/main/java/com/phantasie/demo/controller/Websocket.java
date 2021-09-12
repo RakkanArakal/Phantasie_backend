@@ -100,6 +100,7 @@ public class Websocket {
         log.info("有新连接加入：{}，当前在线人数为：{}", session.getId(), cnt);
 
         GameStatus player = new GameStatus();
+        player.setUserId(user.getUserId());
         player.setPlayerId(session.getId());
         player.setCurJob(user.getJob());
         player.setPlayerName(user.getNickName());
@@ -148,6 +149,7 @@ public class Websocket {
             throw new ExceptionMessage("error");
         }
 
+        gameStatus.setCurJob(userService.findUserById(gameStatus.getUserId()).getJob());
         Room room = new Room();
         int rid = currentGameId++;
         room.setOwner(rid,gameStatus);
@@ -224,6 +226,7 @@ public class Websocket {
         GameStatus gameStatus = allPlayers.get(session.getId());
         gameStatus.setGameId(rid);
         gameStatus.setInRoom(true);
+        gameStatus.setCurJob(userService.findUserById(gameStatus.getUserId()).getJob());
         room.player[1] = gameStatus;
         room.roomsize++;
         sendMessageBack(MsgUtil.makeMsg(102,"successJoin"),session);

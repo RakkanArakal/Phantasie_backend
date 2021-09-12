@@ -15,6 +15,7 @@ import java.util.List;
 @Component
 public class GameStatus implements Cloneable {
 
+    private Integer userId;
 
     private String playerId;
 
@@ -124,7 +125,6 @@ public class GameStatus implements Cloneable {
         deckList = getPlayerDeck();
         return true;
     }
-
 
 }
 
