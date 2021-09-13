@@ -484,9 +484,16 @@ public class Websocket {
             return ;
         }
 
+
         if(game.allState.size()>0 ){
-            if(game.allState.get(timeStamp).getSpecial() == 1)
-            gameRun(rid,curSession,seat,4);
+            timeStamp = game.getTimeStamp();
+            if(game.allState.get(timeStamp).getSpecial() == 1){
+                game.getCard(seat,game.allState.get(timeStamp).getSpecial());
+                msgCount = game.getMsgCount() + 1 ;
+                game.setMsgCount(msgCount);
+                sendMessageBack(MsgUtil.makeMsg(106,"getCard",game.cardMsg(true),msgCount),seatSession);
+                sendMessageBack(MsgUtil.makeMsg(107,"getCard",game.cardMsg(false),msgCount),enemySession);
+            }
         }
         return ;
     }
