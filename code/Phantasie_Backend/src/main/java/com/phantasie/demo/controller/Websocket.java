@@ -351,7 +351,6 @@ public class Websocket {
         sendMessageBack(MsgUtil.makeMsg(106,"getCard",game.cardMsg(true),msgCount),seatSession);
         sendMessageBack(MsgUtil.makeMsg(107,"getCard",game.cardMsg(false),msgCount),enemySession);
 
-        timeStamp = game.getTimeStamp();
         if(game.stageChange(timeStamp) != null) {
             JSONArray data = game.stageChange(timeStamp);
             int msgCnt = game.getMsgCount() + 1 ;

@@ -609,11 +609,11 @@ public class Game {
 
         timeStamp++;
         if(nowStatus.getCurJob() == 1) {
-            newState stateGet = new newState(2);
+            newState stateGet = new newState(3);
             allState.put(timeStamp,stateGet);
         }
         else {
-            newState stateGet = new newState(3);
+            newState stateGet = new newState(2);
             allState.put(timeStamp,stateGet);
         }
         nowStatus.setColdDown(6);
