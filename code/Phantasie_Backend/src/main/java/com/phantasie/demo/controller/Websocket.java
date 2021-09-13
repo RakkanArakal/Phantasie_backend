@@ -333,7 +333,7 @@ public class Websocket {
         Session seatSession = clients.get(game.getPlayer()[seat].getPlayerId());
         Session enemySession = clients.get(game.getPlayer()[enemy].getPlayerId());
 
-        game.useSkill(seat);
+        game.useSkill(seat);//
 
         if(game.stageChange(timeStamp) != null) {
             JSONArray data = game.stageChange(timeStamp);
